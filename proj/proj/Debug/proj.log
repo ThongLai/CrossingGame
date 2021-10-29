@@ -1,3 +1,4 @@
 ﻿  Source.cpp
-D:\KHTN\Co_so_nganh\OOP\PROJECT\CrossingGame\proj\proj\Window.h(1,14): warning C4083: expected 'newline'; found identifier 'window'
-  proj.vcxproj -> D:\KHTN\Co_so_nganh\OOP\PROJECT\CrossingGame\proj\Debug\proj.exe
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\proj\proj\Menu.h(1,14): warning C4083: expected 'newline'; found identifier 'MENU_H_'
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\proj\proj\Window.h(1,14): warning C4083: expected 'newline'; found identifier 'WINDOW_H_'
+  proj.vcxproj -> C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\proj\Debug\proj.exe

@@ -1,7 +1,4 @@
-#pragma once Character
-
-#ifndef _CHARACTER_H
-#define _CHARACTER_H
+#pragma once CHARACTER_H_
 
 class Character
 {
@@ -18,5 +15,3 @@ public:
 	void assignY(int);
 
 };
-#endif // !_CHARACTER_H
-
