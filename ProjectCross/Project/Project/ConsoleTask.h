@@ -20,6 +20,7 @@ public:
 	static void gotoXY(int, int, int, int);		//Di chuyển đến tọa độ và viết một số có màu
 	static void gotoXY(int, int, char);			//Di chuyển đến tọa độ và viết một kí tự	
 	static void gotoXY(int pX, int pY, char c, int color);
+	
 public:
 	static void setTextColor(int);			//Đổi màu chữ
 };

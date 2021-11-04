@@ -49,5 +49,5 @@ void Vans::initDraw()
 		cout << endl;
 	}
 	
-
+	y = temp;
 }
