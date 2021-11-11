@@ -1,0 +1,7 @@
+﻿  Source.cpp
+C:\Users\Lai Minh Thong\source\repos\OOP\AnimalCrossing\Menu.h(1,14): warning C4083: expected 'newline'; found identifier 'MENU_H_'
+C:\Users\Lai Minh Thong\source\repos\OOP\AnimalCrossing\Window.h(1,14): warning C4083: expected 'newline'; found identifier 'WINDOW_H_'
+C:\Users\Lai Minh Thong\source\repos\OOP\AnimalCrossing\Animal.h(1,14): warning C4083: expected 'newline'; found identifier 'ANIMAL_H_'
+C:\Users\Lai Minh Thong\source\repos\OOP\AnimalCrossing\People.h(1,14): warning C4083: expected 'newline'; found identifier 'PEOPLE_H_'
+C:\Users\Lai Minh Thong\source\repos\OOP\AnimalCrossing\Source.cpp(96,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  AnimalCrossing.vcxproj -> C:\Users\Lai Minh Thong\source\repos\OOP\Debug\AnimalCrossing.exe
