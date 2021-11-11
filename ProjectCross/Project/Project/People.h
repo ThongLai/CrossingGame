@@ -5,7 +5,7 @@ using namespace std;
 class People
 {
 	int x, y;
-	bool state;//1:live 0:die
+	bool state;//1:live ; 0:die
 
 	string table[3]= {
 	 " ",

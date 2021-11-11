@@ -1,3 +1,4 @@
-﻿  Source.cpp
-D:\KHTN\Co_so_nganh\OOP\PROJECT\CrossingGame\ProjectCross\Project\Project\Source.cpp(17,13): warning C4244: 'initializing': conversion from 'wint_t' to 'char', possible loss of data
+﻿  Vans.cpp
+D:\KHTN\Co_so_nganh\OOP\PROJECT\CrossingGame\ProjectCross\Project\Project\Vans.cpp(16,17): warning C4018: '<': signed/unsigned mismatch
+D:\KHTN\Co_so_nganh\OOP\PROJECT\CrossingGame\ProjectCross\Project\Project\Vans.cpp(148): warning C4715: 'Vans::isImpact': not all control paths return a value
   Project.vcxproj -> D:\KHTN\Co_so_nganh\OOP\PROJECT\CrossingGame\ProjectCross\Project\Debug\Project.exe
