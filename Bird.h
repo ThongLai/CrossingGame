@@ -19,17 +19,6 @@ private:
 		"      m m      ",
 	};
 
-	/*string table[5] =
-	{
-		"        _____    ",
-		" ______/__|__\\_  ",
-		"|  ,-.   |  ,-.`|",
-		"|_( o )____( o )|"
-		"   `-'      `-'  "
-	};
-	*/
-
-
 	int x, y;
 public:
 	Bird(int, int);
@@ -44,5 +33,5 @@ public:
 	void drawMoveLeft();
 	void drawMoveRight();
 	void drawMove() {};
-	//bool isImpact(int, int);
+	bool isImpact(int, int);
 };
