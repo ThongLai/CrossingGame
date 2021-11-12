@@ -6,6 +6,7 @@ using namespace std;
 
 int moveTurn = 0;
 
+
 string CAR[] =
 {
 	"  ÛßßßßßßßßßÛ",
@@ -153,6 +154,7 @@ void ThreadMovingObjects()
 
 			while (PLAYGAME)
 			{
+				moveTurn = 0;
 				if (TURN == 0)
 				{
 					if (flag == 1 && ix_alien >= GAMEPLAY_W - alien.getWidth())
@@ -168,9 +170,11 @@ void ThreadMovingObjects()
 					if (flag) ix_alien++;
 					else ix_alien--;
 
-					moveTurn = 0;
-					alien.Move(ix_alien, ALIEN_LAND);
+					while (moveTurn != 0) {
 
+					}
+					alien.Move(ix_alien, ALIEN_LAND);
+					moveTurn = 1;
 					count++;
 					if (count == alien_speed) {
 						count = 0;
@@ -189,9 +193,11 @@ void ThreadMovingObjects()
 
 					ix_car++;
 
-					moveTurn = 0;
-					moveObj(x_car, CAR_LANE, car_width, car_height, car_color, BLACK, ix_car, CAR_LANE, CAR);
+					while (moveTurn != 0) {
 
+					}
+					moveObj(x_car, CAR_LANE, car_width, car_height, car_color, BLACK, ix_car, CAR_LANE, CAR);
+					moveTurn = 1;
 					count++;
 					if (count == car_speed) {
 						count = 0;
@@ -210,9 +216,11 @@ void ThreadMovingObjects()
 
 					ix_player++;
 
-					moveTurn = 0;
-					moveObj(x_player, PLAYER_LAND, player_width, player_height, player_color, BLACK, ix_player, PLAYER_LAND, PLAYER);
+					while (moveTurn != 0) {
 
+					}
+					moveObj(x_player, PLAYER_LAND, player_width, player_height, player_color, BLACK, ix_player, PLAYER_LAND, PLAYER);
+					moveTurn = 1;
 					count++;
 					if (count == player_speed) {
 						count = 0;
@@ -231,9 +239,11 @@ void ThreadMovingObjects()
 
 					ix_car2--;
 
-					moveTurn = 0;
-					moveObj(x_car2, CAR2_LAND, car2_width, car2_height, car2_color, BLACK, ix_car2, CAR2_LAND, CAR2);
+					while (moveTurn != 0) {
 
+					}
+					moveObj(x_car2, CAR2_LAND, car2_width, car2_height, car2_color, BLACK, ix_car2, CAR2_LAND, CAR2);
+					moveTurn = 1;
 					count++;
 					if (count == car2_speed) {
 						count = 0;
@@ -241,7 +251,7 @@ void ThreadMovingObjects()
 					}
 				}
 
-				moveTurn = 1;
+				
 				Sleep(10);
 			}
 			MAINMENU = true;
@@ -327,30 +337,33 @@ void TestMenu()
 			Player.draw();
 
 			do {
+				moveTurn = 0;
 				buf = toupper(_getch());
-				while (moveTurn == 0)
-				{
+				while (moveTurn != 1) {
 
 				}
 				if (buf == KEY_UP || buf == 'W')
 				{
-					Player.remove();
+					moveTurn = 1;
 					Player.UP();
 				}
 				else if (buf == KEY_DOWN || buf == 'S')
 				{
-					Player.remove();
+					moveTurn = 1;
 					Player.DOWN();
+					
 				}
 				else if (buf == KEY_LEFT || buf == 'A')
 				{
-					Player.remove();
+					moveTurn = 1;
 					Player.LEFT();
+					
 				}
 				else if (buf == KEY_RIGHT || buf == 'D')
 				{
-					Player.remove();
+					moveTurn = 1;
 					Player.RIGHT();
+					
 				}
 				moveTurn = 0;
 			} while (buf != ESC);
@@ -380,22 +393,22 @@ void TestMenu()
 				if (buf == ESC) break;
 				else if (buf == KEY_UP || buf == 'W')
 				{
-					Player.draw();
+					
 					Player.UP();
 				}
 				else if (buf == KEY_DOWN || buf == 'S')
 				{
-					Player.draw();
+					
 					Player.DOWN();
 				}
 				else if (buf == KEY_LEFT || buf == 'A')
 				{
-					Player.draw();
+					
 					Player.LEFT();
 				}
 				else if (buf == KEY_RIGHT || buf == 'D')
 				{
-					Player.draw();
+					
 					Player.RIGHT();
 				}
 				

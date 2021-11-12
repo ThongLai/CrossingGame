@@ -1,1 +1,7 @@
-﻿  AnimalCrossing.vcxproj -> D:\Learning\SEMESTER-STUDYING\ObjectOriendtedProgramming\Git\CrossingGame\AnimalCrossing\Debug\AnimalCrossing.exe
+﻿  Source.cpp
+D:\Learning\SEMESTER-STUDYING\ObjectOriendtedProgramming\Git\CrossingGame\AnimalCrossing\AnimalCrossing\Menu.h(1,14): warning C4083: expected 'newline'; found identifier 'MENU_H_'
+D:\Learning\SEMESTER-STUDYING\ObjectOriendtedProgramming\Git\CrossingGame\AnimalCrossing\AnimalCrossing\Window.h(1,14): warning C4083: expected 'newline'; found identifier 'WINDOW_H_'
+D:\Learning\SEMESTER-STUDYING\ObjectOriendtedProgramming\Git\CrossingGame\AnimalCrossing\AnimalCrossing\Animal.h(1,14): warning C4083: expected 'newline'; found identifier 'ANIMAL_H_'
+D:\Learning\SEMESTER-STUDYING\ObjectOriendtedProgramming\Git\CrossingGame\AnimalCrossing\AnimalCrossing\People.h(1,14): warning C4083: expected 'newline'; found identifier 'PEOPLE_H_'
+D:\Learning\SEMESTER-STUDYING\ObjectOriendtedProgramming\Git\CrossingGame\AnimalCrossing\AnimalCrossing\Source.cpp(99,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  AnimalCrossing.vcxproj -> D:\Learning\SEMESTER-STUDYING\ObjectOriendtedProgramming\Git\CrossingGame\AnimalCrossing\Debug\AnimalCrossing.exe
