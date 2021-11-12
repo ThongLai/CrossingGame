@@ -1,5 +1,1 @@
-﻿  People.cpp
-C:\Users\Lai Minh Thong\source\repos\AnimalCrossing\AnimalCrossing\People.h(1,14): warning C4083: expected 'newline'; found identifier 'PEOPLE_H_'
-C:\Users\Lai Minh Thong\source\repos\AnimalCrossing\AnimalCrossing\Window.h(1,14): warning C4083: expected 'newline'; found identifier 'WINDOW_H_'
-C:\Users\Lai Minh Thong\source\repos\AnimalCrossing\AnimalCrossing\People.cpp(10,17): warning C4018: '<': signed/unsigned mismatch
-  AnimalCrossing.vcxproj -> C:\Users\Lai Minh Thong\source\repos\AnimalCrossing\Debug\AnimalCrossing.exe
+﻿  AnimalCrossing.vcxproj -> D:\Learning\SEMESTER-STUDYING\ObjectOriendtedProgramming\Git\CrossingGame\AnimalCrossing\Debug\AnimalCrossing.exe

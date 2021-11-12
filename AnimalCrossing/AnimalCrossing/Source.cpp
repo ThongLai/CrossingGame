@@ -168,6 +168,7 @@ void ThreadMovingObjects()
 					if (flag) ix_alien++;
 					else ix_alien--;
 
+					moveTurn = 0;
 					alien.Move(ix_alien, ALIEN_LAND);
 
 					count++;
@@ -188,6 +189,7 @@ void ThreadMovingObjects()
 
 					ix_car++;
 
+					moveTurn = 0;
 					moveObj(x_car, CAR_LANE, car_width, car_height, car_color, BLACK, ix_car, CAR_LANE, CAR);
 
 					count++;
@@ -208,6 +210,7 @@ void ThreadMovingObjects()
 
 					ix_player++;
 
+					moveTurn = 0;
 					moveObj(x_player, PLAYER_LAND, player_width, player_height, player_color, BLACK, ix_player, PLAYER_LAND, PLAYER);
 
 					count++;
@@ -228,6 +231,7 @@ void ThreadMovingObjects()
 
 					ix_car2--;
 
+					moveTurn = 0;
 					moveObj(x_car2, CAR2_LAND, car2_width, car2_height, car2_color, BLACK, ix_car2, CAR2_LAND, CAR2);
 
 					count++;
@@ -236,8 +240,8 @@ void ThreadMovingObjects()
 						TURN = (TURN + 1) % 4;
 					}
 				}
+
 				moveTurn = 1;
-				
 				Sleep(10);
 			}
 			MAINMENU = true;
