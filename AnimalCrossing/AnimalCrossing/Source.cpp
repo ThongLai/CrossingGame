@@ -2,6 +2,9 @@
 #include "Animal.h"
 #include "People.h"
 
+using namespace std;
+
+int moveTurn = 0;
 
 string CAR[] =
 {
@@ -13,7 +16,7 @@ string CAR[] =
 
 string PLAYER[] =
 {
-	 " ",
+	 "  ",
 	 "ÄÛÄ",
 	"/ \\"
 };
@@ -157,7 +160,7 @@ void ThreadMovingObjects()
 						flag = 0;
 						alien.setColor(rand() % 15 + 1, BLACK);
 					}
-					else if (flag == 0 && ix_alien <= 0) 
+					else if (flag == 0 && ix_alien <= 0)
 					{
 						flag = 1;
 						alien.setColor(rand() % 15 + 1, BLACK);
@@ -166,7 +169,7 @@ void ThreadMovingObjects()
 					else ix_alien--;
 
 					alien.Move(ix_alien, ALIEN_LAND);
-					
+
 					count++;
 					if (count == alien_speed) {
 						count = 0;
@@ -182,11 +185,11 @@ void ThreadMovingObjects()
 						ix_car = x_car;
 						car_color = rand() % 15 + 1;
 					}
-						
+
 					ix_car++;
-					
+
 					moveObj(x_car, CAR_LANE, car_width, car_height, car_color, BLACK, ix_car, CAR_LANE, CAR);
-					
+
 					count++;
 					if (count == car_speed) {
 						count = 0;
@@ -233,11 +236,10 @@ void ThreadMovingObjects()
 						TURN = (TURN + 1) % 4;
 					}
 				}
-
-
+				moveTurn = 1;
+				
 				Sleep(10);
 			}
-
 			MAINMENU = true;
 		}
 	}
@@ -314,35 +316,39 @@ void TestMenu()
 			system("cls");
 			TestScreen();
 			PLAYGAME = true;
+			People Player;
+
+			Player.setX(10);
+			Player.setY(10);
+			Player.draw();
 
 			do {
-				People Player;
-				Player.setX(10);
-				Player.setY(10);
-
 				buf = toupper(_getch());
+				while (moveTurn == 0)
+				{
 
+				}
 				if (buf == KEY_UP || buf == 'W')
 				{
-					Player.draw();
+					Player.remove();
 					Player.UP();
 				}
 				else if (buf == KEY_DOWN || buf == 'S')
 				{
-					Player.draw();
+					Player.remove();
 					Player.DOWN();
 				}
 				else if (buf == KEY_LEFT || buf == 'A')
 				{
-					Player.draw();
+					Player.remove();
 					Player.LEFT();
 				}
 				else if (buf == KEY_RIGHT || buf == 'D')
 				{
-					Player.draw();
+					Player.remove();
 					Player.RIGHT();
 				}
-
+				moveTurn = 0;
 			} while (buf != ESC);
 
 			//mciSendString(TEXT("stop Gameplay_Theme"), NULL, 0, NULL);
@@ -388,7 +394,7 @@ void TestMenu()
 					Player.draw();
 					Player.RIGHT();
 				}
-
+				
 			}
 
 			break;
@@ -463,20 +469,19 @@ int main()
 	FixConsoleWindow();
 	HideCursor();
 	SetUpScreenSize();
-	OpenSoundFiles();
-
-	thread t1(ThreadMovingObjects);
+	OpenSoundFiles(); 
+	thread t1(TestMenu);
 	//thread t2(ThreadCar);
 	//t1.detach();
 	//t2.detach();
+	
 
-
-	TestMenu();
+	ThreadMovingObjects();
 	//TestScreen();
 
 
 	mciSendString(TEXT("close Menu_Theme"), NULL, 0, NULL);
-	t1.detach();
+	t1.join();
 	//t2.detach();
 	system("cls");
 
