@@ -154,7 +154,7 @@ void ThreadMovingObjects()
 
 			while (PLAYGAME)
 			{
-				moveTurn = 0;
+				
 				if (TURN == 0)
 				{
 					if (flag == 1 && ix_alien >= GAMEPLAY_W - alien.getWidth())
@@ -173,6 +173,7 @@ void ThreadMovingObjects()
 					while (moveTurn != 0) {
 
 					}
+					moveTurn = 0;
 					alien.Move(ix_alien, ALIEN_LAND);
 					moveTurn = 1;
 					count++;
@@ -196,6 +197,7 @@ void ThreadMovingObjects()
 					while (moveTurn != 0) {
 
 					}
+					moveTurn = 0;
 					moveObj(x_car, CAR_LANE, car_width, car_height, car_color, BLACK, ix_car, CAR_LANE, CAR);
 					moveTurn = 1;
 					count++;
@@ -219,6 +221,7 @@ void ThreadMovingObjects()
 					while (moveTurn != 0) {
 
 					}
+					moveTurn = 0;
 					moveObj(x_player, PLAYER_LAND, player_width, player_height, player_color, BLACK, ix_player, PLAYER_LAND, PLAYER);
 					moveTurn = 1;
 					count++;
@@ -242,6 +245,7 @@ void ThreadMovingObjects()
 					while (moveTurn != 0) {
 
 					}
+					moveTurn = 0;
 					moveObj(x_car2, CAR2_LAND, car2_width, car2_height, car2_color, BLACK, ix_car2, CAR2_LAND, CAR2);
 					moveTurn = 1;
 					count++;
@@ -250,9 +254,9 @@ void ThreadMovingObjects()
 						TURN = (TURN + 1) % 4;
 					}
 				}
-
-				
 				Sleep(10);
+				
+				moveTurn = 0;
 			}
 			MAINMENU = true;
 		}
@@ -337,7 +341,7 @@ void TestMenu()
 			Player.draw();
 
 			do {
-				moveTurn = 0;
+				
 				buf = toupper(_getch());
 				while (moveTurn != 1) {
 
@@ -346,24 +350,25 @@ void TestMenu()
 				{
 					moveTurn = 1;
 					Player.UP();
+					moveTurn = 0;
 				}
 				else if (buf == KEY_DOWN || buf == 'S')
 				{
 					moveTurn = 1;
 					Player.DOWN();
-					
+					moveTurn = 0;
 				}
 				else if (buf == KEY_LEFT || buf == 'A')
 				{
 					moveTurn = 1;
 					Player.LEFT();
-					
+					moveTurn = 0;
 				}
 				else if (buf == KEY_RIGHT || buf == 'D')
 				{
 					moveTurn = 1;
 					Player.RIGHT();
-					
+					moveTurn = 0;
 				}
 				moveTurn = 0;
 			} while (buf != ESC);
@@ -487,18 +492,19 @@ int main()
 	HideCursor();
 	SetUpScreenSize();
 	OpenSoundFiles(); 
-	thread t1(TestMenu);
+	moveTurn = 0;
+	thread t1(ThreadMovingObjects);
 	//thread t2(ThreadCar);
 	//t1.detach();
 	//t2.detach();
-	
+	TestMenu();
 
-	ThreadMovingObjects();
 	//TestScreen();
 
 
 	mciSendString(TEXT("close Menu_Theme"), NULL, 0, NULL);
 	t1.join();
+	
 	//t2.detach();
 	system("cls");
 
