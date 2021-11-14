@@ -139,16 +139,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Alien.cpp" />
     <ClCompile Include="Animal.cpp" />
+    <ClCompile Include="Bird.cpp" />
+    <ClCompile Include="CGame.cpp" />
     <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="People.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Trafficlight.cpp" />
+    <ClCompile Include="Vans.cpp" />
+    <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Alien.h" />
     <ClInclude Include="Animal.h" />
+    <ClInclude Include="Bird.h" />
+    <ClInclude Include="CGame.h" />
     <ClInclude Include="Menu.h" />
-    <ClInclude Include="People.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Trafficlight.h" />
+    <ClInclude Include="Vans.h" />
+    <ClInclude Include="Vehicle.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

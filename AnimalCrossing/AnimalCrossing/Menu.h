@@ -1,4 +1,4 @@
-﻿#pragma once MENU_H_
+﻿#pragma once
 
 #include "Window.h"
 #include <conio.h>

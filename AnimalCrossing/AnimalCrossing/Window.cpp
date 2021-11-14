@@ -1,12 +1,20 @@
 #include "Window.h"
 
+int SCREEN_WIDTH_PXL = 1633;
+int SCREEN_HEIGHT_PXL = 900;
+
 int SCREEN_WIDTH;
 int SCREEN_HEIGHT;
+
+int MID_SCREEN_HEIGHT;
 int GAMEPLAY_W;
 int HIGHSCORE_W = 30;
 int ROAD_H = 9;
 int SIDEWALK_H = 3;
-int HIGHSCORE_H = 30;
+
+int LAND[4];
+int SIDEWALK[2];
+
 bool PLAYGAME = false;
 bool MAINMENU = true;
 
@@ -72,6 +80,13 @@ void SetUpScreenSize()
 {
 	GetWindowSize();
 	GAMEPLAY_W = SCREEN_WIDTH - HIGHSCORE_W;
+	MID_SCREEN_HEIGHT = midHeight(SCREEN_HEIGHT, ROAD_H * 4 + SIDEWALK_H * 2);
+
+	for (int i = 0; i < 4; i++)
+		LAND[i] = MID_SCREEN_HEIGHT + SIDEWALK_H + ROAD_H * i;
+
+	SIDEWALK[0] = MID_SCREEN_HEIGHT;
+	SIDEWALK[1] = MID_SCREEN_HEIGHT + 4 * ROAD_H + SIDEWALK_H;
 }
 void FullScreenMode()
 {
@@ -140,4 +155,15 @@ int midWidth(int width, int content_width)
 int midHeight(int height, int content_height)
 {
 	return (height - content_height) / 2;
+}
+
+void StartUp()
+{
+	//FullScreenMode();
+	setRasterFonts();
+	SetWindowSize(SCREEN_WIDTH_PXL, SCREEN_HEIGHT_PXL);
+	FixConsoleWindow();
+	HideCursor();
+	SetUpScreenSize();
+	OpenSoundFiles();
 }

@@ -1,11 +1,13 @@
 #include "Menu.h"
-#include "Animal.h"
-#include "People.h"
+#include "Bird.h"
+#include "Alien.h"
+#include "Vans.h"
+#include "Player.h"
+#include "CGame.h"
 
 using namespace std;
 
 int moveTurn = 0;
-
 
 string CAR[] =
 {
@@ -72,29 +74,6 @@ void moveObj(int &mX, int &mY,int width, int height, int text_color, int bg_colo
 	}
 }
 
-void TestScreen()
-{
-	Box lb(SCREEN_WIDTH - HIGHSCORE_H, 0, HIGHSCORE_H, SCREEN_HEIGHT, WHITE, BLACK, "HIGHSCORE");
-	lb.printBox();
-
-	Box land[4];
-
-	Box side[2];
-	int mid = midHeight(SCREEN_HEIGHT, ROAD_H * 4 + SIDEWALK_H * 2);
-	side[0].setBox(0, mid, SCREEN_WIDTH - HIGHSCORE_H, SIDEWALK_H, LIGHTGREEN, BLACK, "SIDEWALK");
-	side[0].printBox();
-	side[1].setBox(0, mid + 3 + 4 * ROAD_H, SCREEN_WIDTH - HIGHSCORE_H, SIDEWALK_H, LIGHTGREEN, BLACK, "SIDEWALK");
-	side[1].printBox();
-
-
-	for (int i = 0; i < 4; i++)
-	{
-		land[i].setBox(0, mid + SIDEWALK_H + i * ROAD_H, SCREEN_WIDTH - HIGHSCORE_H, ROAD_H, LIGHTCYAN, BLACK, "ROAD");
-		land[i].printBox();
-	}
-
-	//system("pause>0");
-}
 void ThreadMovingObjects()
 {
 	srand(time(NULL));
@@ -102,9 +81,9 @@ void ThreadMovingObjects()
 	int TURN = 0;
 	int ROAD[4]{ 0 };
 
-	CALIEN alien;
+	Alien alien;
 	int ix_alien = 0;
-	bool flag = 1;
+	bool direct = true;
 	alien.setColor(rand() % 15 + 1, BLACK);
 
 
@@ -157,25 +136,26 @@ void ThreadMovingObjects()
 				
 				if (TURN == 0)
 				{
-					if (flag == 1 && ix_alien >= GAMEPLAY_W - alien.getWidth())
+					if (direct == true && ix_alien >= GAMEPLAY_W - alien.getWidth())
 					{
-						flag = 0;
+						direct = false;
 						alien.setColor(rand() % 15 + 1, BLACK);
 					}
-					else if (flag == 0 && ix_alien <= 0)
+					else if (direct == false && ix_alien <= 0)
 					{
-						flag = 1;
+						direct = true;
 						alien.setColor(rand() % 15 + 1, BLACK);
 					}
-					if (flag) ix_alien++;
+					if (direct) ix_alien++;
 					else ix_alien--;
 
-					while (moveTurn != 0) {
-
-					}
+					while (moveTurn != 0) {}
 					moveTurn = 0;
+
 					alien.Move(ix_alien, ALIEN_LAND);
+
 					moveTurn = 1;
+					
 					count++;
 					if (count == alien_speed) {
 						count = 0;
@@ -194,10 +174,9 @@ void ThreadMovingObjects()
 
 					ix_car++;
 
-					while (moveTurn != 0) {
-
-					}
+					while (moveTurn != 0) {}
 					moveTurn = 0;
+
 					moveObj(x_car, CAR_LANE, car_width, car_height, car_color, BLACK, ix_car, CAR_LANE, CAR);
 					moveTurn = 1;
 					count++;
@@ -218,10 +197,9 @@ void ThreadMovingObjects()
 
 					ix_player++;
 
-					while (moveTurn != 0) {
-
-					}
+					while (moveTurn != 0) {}
 					moveTurn = 0;
+
 					moveObj(x_player, PLAYER_LAND, player_width, player_height, player_color, BLACK, ix_player, PLAYER_LAND, PLAYER);
 					moveTurn = 1;
 					count++;
@@ -242,10 +220,9 @@ void ThreadMovingObjects()
 
 					ix_car2--;
 
-					while (moveTurn != 0) {
-
-					}
+					while (moveTurn != 0) {}
 					moveTurn = 0;
+
 					moveObj(x_car2, CAR2_LAND, car2_width, car2_height, car2_color, BLACK, ix_car2, CAR2_LAND, CAR2);
 					moveTurn = 1;
 					count++;
@@ -332,9 +309,13 @@ void TestMenu()
 			//mciSendString(TEXT("play Gameplay_Theme from 0 repeat"), NULL, 0, NULL);
 			MAINMENU = false;
 			system("cls");
-			TestScreen();
+
+			CGame Game;
+			Game.drawGame();
+
 			PLAYGAME = true;
-			People Player;
+
+			Player Player;
 
 			Player.setX(10);
 			Player.setY(10);
@@ -387,7 +368,8 @@ void TestMenu()
 			Sleep(1000);
 			SavedState.ResetToCurrent();
 
-			People Player;
+			
+			Player Player;
 			Player.setX(10);
 			Player.setY(10);
 
@@ -418,6 +400,7 @@ void TestMenu()
 				}
 				
 			}
+			
 
 			break;
 		}
@@ -484,29 +467,40 @@ void TestMenu()
 
 int main()
 {	
+	/*
+	//BIRD/VANS TESTING.....
+	
+	StartUp();
+
+	drawGamePlayScreen();
+
+	Bird bird;
+	Vans vans(0, 10);
+
+	PLAYGAME = true;
+
+	bird.setXY(0, midHeight(ROAD_H, bird.getHeight()) + LAND[0]);
+
+	bird.Move(69, midHeight(ROAD_H, bird.getHeight()) + LAND[0]);
+
+	system("pause>0");
+	*/
+
+	
+
 	//SET UP WINDOW
-	//FullScreenMode();
-	setRasterFonts();
-	SetWindowSize(1633, 900);
-	FixConsoleWindow();
-	HideCursor();
-	SetUpScreenSize();
-	OpenSoundFiles(); 
+	StartUp();
+
 	moveTurn = 0;
 	thread t1(ThreadMovingObjects);
-	//thread t2(ThreadCar);
-	//t1.detach();
-	//t2.detach();
+
 	TestMenu();
 
-	//TestScreen();
+	//mciSendString(TEXT("close Menu_Theme"), NULL, 0, NULL);
 
-
-	mciSendString(TEXT("close Menu_Theme"), NULL, 0, NULL);
-	t1.join();
-	
-	//t2.detach();
 	system("cls");
+
+	t1.detach();
 
 	
 	return 0;

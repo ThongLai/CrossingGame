@@ -1,7 +1,6 @@
-#pragma once ANIMAL_H_
-#include "Window.h"
+#pragma once
 
-extern string ALIEN[];
+#include "Window.h"
 
 class CANIMAL
 {
@@ -9,40 +8,24 @@ protected:
 	int mX, mY;
 	int height, width;
 	int text_color, bg_color;
-
-	string ALIEN[5] =
-	{
-		"    .-\"\"`\"\"-.",
-		" _/`oOoOoOoOo`\\_",
-		"'.-=-=-=-=-=-=-.'",
-		"  `-=.=-.-=.=-'",
-		"     ^  ^  ^"
-	};
-
+	string *animal_table;
 public:
 	CANIMAL();
+	~CANIMAL();
 
 	//Moving pattern for each animal
 	virtual void Move(int, int) = 0;
+	virtual void Draw();
+	virtual void Remove();
 	virtual void Tell();
-	
+
 	int X();
 	int Y();
 	int getHeight();
 	int getWidth();
 
+	void setX(int);
+	void setY(int);
 	void setXY(int, int);
 	void setColor(int, int);
-};
-
-class CALIEN : public CANIMAL
-{
-public:
-	CALIEN();
-	~CALIEN();
-
-	void Move(int, int);
-
-	void draw();
-	void remove();
 };

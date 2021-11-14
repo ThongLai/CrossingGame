@@ -1,8 +1,10 @@
-#pragma once WINDOW_H_
+#pragma once
 #include <Windows.h>
 #include <iostream>
 #include <string>
+#include <vector>
 #include <thread>
+
 #pragma comment(lib, "Winmm.lib")
 using namespace std;
 
@@ -30,13 +32,21 @@ using namespace std;
 #define ENTER 13
 #define ESC 27
 
+extern int SCREEN_WIDTH_PXL;
+extern int SCREEN_HEIGHT_PXL;
+
 extern int SCREEN_WIDTH;
 extern int SCREEN_HEIGHT;
+
+extern int MID_SCREEN_HEIGHT;
 extern int GAMEPLAY_W;
 extern int HIGHSCORE_W;
 extern int ROAD_H;
 extern int SIDEWALK_H;
-extern int HIGHSCORE_H;
+
+extern int LAND[4];
+extern int SIDEWALK[2];
+
 extern bool PLAYGAME;
 extern bool MAINMENU;
 
@@ -62,6 +72,7 @@ int midWidth(int width, string content);
 int midWidth(int width, int content_width);
 int midHeight(int height, int content_height);
 
+void StartUp();
 
 //Save status of coordinates and text/background color
 class Status
