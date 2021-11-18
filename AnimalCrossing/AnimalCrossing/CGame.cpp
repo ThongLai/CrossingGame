@@ -53,3 +53,31 @@ vector<CANIMAL> CGame::getAnimal()
 {
 	return vector<CANIMAL>();
 }
+void CGame::resumeGame(HANDLE t)
+{
+	ResumeThread(t);
+}
+
+void CGame::pauseGame(HANDLE t)
+{
+	SuspendThread(t);
+}
+void CGame::exitGame(HANDLE t)
+{
+	TerminateThread(t, 0);
+	system("cls");
+}
+
+void CGame::updatePosPeople(char MOVING)
+{
+	
+	if (MOVING == ' ') return;
+
+	if (MOVING == 'W') player.UP();
+	else
+		if (MOVING == 'A') player.LEFT();
+		else
+			if (MOVING == 'D') player.RIGHT();
+			else
+				if (MOVING == 'S') player.DOWN();
+}

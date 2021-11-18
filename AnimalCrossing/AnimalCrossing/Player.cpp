@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player() : mX(0), mY(0), text_color(WHITE), bg_color(BLACK), mState(1)
+Player::Player() : mX(10), mY(10), text_color(WHITE), bg_color(BLACK), mState(1)
 {
 	height = sizeof(table) / sizeof(string);
 

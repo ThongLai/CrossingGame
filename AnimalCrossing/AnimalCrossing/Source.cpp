@@ -1,4 +1,4 @@
-#include "Menu.h"
+Ôªø#include "Menu.h"
 #include "Bird.h"
 #include "Alien.h"
 #include "Vans.h"
@@ -11,25 +11,25 @@ int moveTurn = 0;
 
 string CAR[] =
 {
-	"  €ﬂﬂﬂﬂﬂﬂﬂﬂﬂ€",
-	" €     O     €",
-	"€€€€€€€€€€€€€€€",
-	"  ﬂﬂ€€€€€€€ﬂﬂ"
+	"  √õ√ü√ü√ü√ü√ü√ü√ü√ü√ü√õ",
+	" √õ     O     √õ",
+	"√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ",
+	"  √ü√ü√õ√õ√õ√õ√õ√õ√õ√ü√ü"
 };
 
 string PLAYER[] =
 {
 	 "  ",
-	 "ƒ€ƒ",
+	 "√Ñ√õ√Ñ",
 	"/ \\"
 };
 
 string CAR2[] =
 {
-	"  €ﬂﬂ€€€€€€€€€€",
-	"€€€€€€€€€€€€€€€",
-	"€€€€€€€€€€€€€€€",
-	"€€€€€€€€€€€€€€€",
+	"  √õ√ü√ü√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ",
+	"√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ",
+	"√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ",
+	"√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ√õ",
 	"O             O"
 };
 
@@ -315,11 +315,12 @@ void TestMenu()
 
 			PLAYGAME = true;
 
-			Player Player;
+			Player Player=Game.getPeople();
 
 			Player.setX(10);
 			Player.setY(10);
 			Player.draw();
+
 
 			do {
 				
@@ -327,7 +328,7 @@ void TestMenu()
 				while (moveTurn != 1) {
 
 				}
-				if (buf == KEY_UP || buf == 'W')
+				/*if (buf == KEY_UP || buf == 'W')
 				{
 					moveTurn = 1;
 					Player.UP();
@@ -350,7 +351,8 @@ void TestMenu()
 					moveTurn = 1;
 					Player.RIGHT();
 					moveTurn = 0;
-				}
+				}*/
+				Game.updatePosPeople(buf);
 				moveTurn = 0;
 			} while (buf != ESC);
 
@@ -494,6 +496,7 @@ int main()
 	moveTurn = 0;
 	thread t1(ThreadMovingObjects);
 
+	//m√∫n d√πng m·∫•y h√†m pause, resume,exit ƒë·ªì th√¨ d√πng l·ªánh v√≠ d·ª•: g.resumeGame((HANDLE)t1.native_handle())
 	TestMenu();
 
 	//mciSendString(TEXT("close Menu_Theme"), NULL, 0, NULL);
