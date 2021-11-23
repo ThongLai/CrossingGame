@@ -75,26 +75,26 @@ void Player::UP()
 {
 	remove();
 	setY(mY - 1);
-	draw();
+	Draw();
 }
 
 void Player::DOWN()
 {
 	remove();
 	setY(mY + 1);
-	draw();
+	Draw();
 }
 
 void Player::LEFT()
 {
 	remove();
 	setX(mX - 1);
-	draw();
+	Draw();
 }
 
 void Player::RIGHT()
 {
 	remove();
 	setX(mX + 1);
-	draw();
+	Draw();
 }

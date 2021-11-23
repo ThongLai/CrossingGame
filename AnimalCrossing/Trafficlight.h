@@ -11,6 +11,8 @@ public:
 	Trafficlight();
 	Trafficlight(int, int, bool);
 
+	bool getState();
+
 	void setXY(int, int);
 
 	void initDraw();

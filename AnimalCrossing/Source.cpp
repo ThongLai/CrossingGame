@@ -555,6 +555,9 @@ using namespace std;
 int main()
 {
 	StartUp();
+	
+	CGame game;
 
-
+	game.drawGame();
+	
 }
