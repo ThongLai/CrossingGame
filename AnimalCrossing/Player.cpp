@@ -45,7 +45,7 @@ void Player::setXY(int x, int y)
 	mY = y;
 }
 
-void Player::draw()
+void Player::Draw()
 {
 	Status SavedStatus;
 	SetTextColor(DefineColor(text_color, bg_color));
@@ -98,4 +98,3 @@ void Player::RIGHT()
 	setX(mX + 1);
 	draw();
 }
-

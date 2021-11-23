@@ -64,6 +64,7 @@ void setRasterFonts();
 bool GetXY(int& x, int& y);
 bool GetColor(int& color);
 void OpenSoundFiles();
+int Distance(int, int);
 
 void PrintChar(int x, int y, char ch);
 void PrintString(int x, int y, string S);

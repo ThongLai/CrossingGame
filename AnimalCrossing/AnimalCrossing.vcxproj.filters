@@ -66,6 +66,9 @@
     <ClCompile Include="CGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Car.cpp">
+      <Filter>Source Files\Vehicle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Menu.h">
@@ -100,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="Source.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Car.h">
+      <Filter>Header Files\Vehicle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

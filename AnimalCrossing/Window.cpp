@@ -22,16 +22,16 @@ int Status::getX()
 {
 	return _X;
 }
+
 int Status::getY()
 {
 	return _Y;
 }
+
 int Status::getColor()
 {
 	return _COLOR;
 }
-
-
 
 void FixConsoleWindow() {
 	HWND consoleWindow = GetConsoleWindow();
@@ -39,6 +39,7 @@ void FixConsoleWindow() {
 	style = style & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME);
 	SetWindowLong(consoleWindow, GWL_STYLE, style);
 }
+
 void HideCursor()
 {
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -47,18 +48,22 @@ void HideCursor()
 	info.bVisible = FALSE;
 	SetConsoleCursorInfo(consoleHandle, &info);
 }
+
 void GotoXY(int x, int y) {
 	COORD coord = { x, y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
+
 void SetTextColor(WORD wColor)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), wColor);
 }
+
 WORD DefineColor(int t_color, int t_background)
 {
 	return ((t_background & 0x0F) << 4) + (t_color & 0x0F);
 }
+
 void GetWindowSize()
 {
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -67,6 +72,7 @@ void GetWindowSize()
 	SCREEN_WIDTH = csbi.srWindow.Right - csbi.srWindow.Left + 1;
 	SCREEN_HEIGHT = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 }
+
 void SetWindowSize(int width, int height)
 {
 	HWND console = GetConsoleWindow();
@@ -76,6 +82,7 @@ void SetWindowSize(int width, int height)
 	//MoveWindow(window_handle, x, y, width, height, redraw_window);
 	MoveWindow(console, r.left, r.top, width, height, TRUE);
 }
+
 void SetUpScreenSize()
 {
 	GetWindowSize();
@@ -88,10 +95,12 @@ void SetUpScreenSize()
 	SIDEWALK[0] = MID_SCREEN_HEIGHT;
 	SIDEWALK[1] = MID_SCREEN_HEIGHT + 4 * ROAD_H + SIDEWALK_H;
 }
+
 void FullScreenMode()
 {
 	SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
 }
+
 void setRasterFonts()
 {
 	CONSOLE_FONT_INFOEX cf = { 0 };
@@ -101,6 +110,7 @@ void setRasterFonts()
 	wcscpy_s(cf.FaceName, L"Terminal");
 	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), 0, &cf);
 }
+
 bool GetXY(int &x, int &y) {
 	CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
 	HANDLE hStd = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -112,6 +122,7 @@ bool GetXY(int &x, int &y) {
 	y = screenBufferInfo.dwCursorPosition.Y;
 	return true;
 }
+
 bool GetColor(int &color) {
 	CONSOLE_SCREEN_BUFFER_INFO info;
 	if (!GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info)) {
@@ -121,6 +132,7 @@ bool GetColor(int &color) {
 	color = info.wAttributes;
 	return true;
 }
+
 void OpenSoundFiles()
 {
 	mciSendString(TEXT("open \"MenuTheme.mp3\" type mpegvideo alias Menu_Theme"), NULL, 0, NULL);
@@ -128,30 +140,39 @@ void OpenSoundFiles()
 }
 
 
+int Distance(int objWidth, int objNum)
+{
+	return (GAMEPLAY_W - objWidth * objNum) / objNum;
+}
 
 void PrintChar(int x, int y, char ch)
 {
 	GotoXY(x, y);
 	cout << ch;
 }
+
 void PrintString(int x, int y, string S)
 {
 	GotoXY(x, y);
 	cout << S;
 }
+
 void printMessCenter(string message)
 {
 	GotoXY(midWidth(SCREEN_WIDTH, message), midHeight(SCREEN_HEIGHT, 1));
 	cout << message;
 }
+
 int midWidth(int width, string message)
 {
 	return (width - message.size()) / 2;
 }
+
 int midWidth(int width, int content_width)
 {
 	return (width - content_width) / 2;
 }
+
 int midHeight(int height, int content_height)
 {
 	return (height - content_height) / 2;

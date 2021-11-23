@@ -1,20 +1,26 @@
 ﻿#pragma once
 
+#include "Car.h"
 #include "Vans.h"
 #include "Alien.h"
 #include "Bird.h"
 #include "Player.h"
+#include "Trafficlight.h"
 #include "Menu.h"
 
 class CGame
 {
 private:
 	vector <Vans> vans;
-	//Car * axh;
+	vector <Car> cars;
 	vector <Alien> alien;
 	vector <Bird> bird;
 	Player player;
 	int difficulty;
+	int objNum;
+	int speed;
+	Trafficlight vansLight;
+	Trafficlight carLight;
 
 public:
 	CGame(); //Chuẩn bị dữ liệu cho tất cả các đối tượng 

@@ -142,6 +142,7 @@
     <ClCompile Include="Alien.cpp" />
     <ClCompile Include="Animal.cpp" />
     <ClCompile Include="Bird.cpp" />
+    <ClCompile Include="Car.cpp" />
     <ClCompile Include="CGame.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Alien.h" />
     <ClInclude Include="Animal.h" />
     <ClInclude Include="Bird.h" />
+    <ClInclude Include="Car.h" />
     <ClInclude Include="CGame.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />

@@ -556,34 +556,5 @@ int main()
 {
 	StartUp();
 
-	vector<Vans> v;
-	vector<Bird> b;
-	for (int i = 0; i < 3; ++i)
-	{
-		v.push_back(Vans(0 + 40 * i, 20));
-		b.push_back(Bird(0 + 40 * i, 40));
-	}
 
-	while (1)
-	{
-		//Tam thoi de day, phan nay se nam trong CGAME
-	//Neu rand() chia het cho x => doi huong
-		if (rand() % 20 == 0)
-		{
-			//Neu bien dem >=4 thi moi doi huong de tranh viec object di chuyen lac qua lac lai
-			if (b[0].getCount() >= 4)
-			{
-				//Doi huong va set lai bien dem count = 0
-				b[0].setCount(0);
-				b[0].Turn();
-			}
-		}
-
-		for (int i = 0; i < 3; ++i)
-		{
-			v[i].moveLeft();
-			b[i].Move();
-		}
-		Sleep(100);
-	}
 }

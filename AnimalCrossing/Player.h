@@ -28,7 +28,7 @@ public:
 	void setY(int);
 	void setXY(int x, int y);
 
-	void draw();
+	void Draw();
 	void remove();
 	void UP();
 	void DOWN();

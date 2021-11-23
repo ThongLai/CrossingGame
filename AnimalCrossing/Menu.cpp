@@ -144,7 +144,6 @@ void Box::removeBox()
 	}
 }
 
-
 //MENU
 Menu::Menu() : n(1), trench(0), title("") {
 	nBox = new Box[n];

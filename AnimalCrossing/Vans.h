@@ -19,10 +19,6 @@ public:
 	~Vans();
 
 	void Move();
-
-	//void Draw();
 	
 	bool isImpact(int,int);
-
-	void moveLeft();
 };

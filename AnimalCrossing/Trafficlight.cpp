@@ -14,6 +14,12 @@ Trafficlight::Trafficlight(int _x, int _y, bool _state)
 	state = _state;
 }
 
+void Trafficlight::setXY(int x, int y)
+{
+	this->x = x;
+	this->y = y;
+}
+
 void Trafficlight::initDraw()
 {
 	Status SavedStatus;
