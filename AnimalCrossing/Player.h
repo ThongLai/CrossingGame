@@ -1,6 +1,10 @@
 #pragma once
 
-#include "Window.h"
+#include"Window.h"
+#include "Car.h"
+#include "Vans.h"
+#include "Alien.h"
+#include "Bird.h"
 
 class Player
 {
@@ -35,4 +39,9 @@ public:
 	void LEFT();
 	void RIGHT();
 	bool isDead();
+
+	bool isImpact(int objNum, vector<Vans>, vector<Car>, vector<Bird>, vector<Alien>);
+
+	bool isImpactVehicle(CVEHICLE*);
+	bool isImpactAnimal(CANIMAL*);
 };

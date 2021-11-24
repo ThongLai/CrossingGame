@@ -98,3 +98,39 @@ void Player::RIGHT()
 	setX(mX + 1);
 	Draw();
 }
+
+bool Player::isDead()
+{
+	return mState;
+}
+
+bool Player::isImpact(int objNum, vector<Vans> vans, vector<Car> cars, vector<Bird> bird, vector<Alien> alien)
+{
+	if (mY <= LAND[0])
+	{
+		for (int i = 0; i < objNum; ++i)
+		{
+			if (isImpactVehicle(&vans[i]))
+			{
+				mState = 0;
+				return mState;
+			}			
+		}
+		return mState;
+	}
+}
+
+bool Player::isImpactVehicle(CVEHICLE* v)
+{
+	if (v->isImpact(mX, mY))
+		return true;
+	return false;
+}
+
+bool Player::isImpactAnimal(CANIMAL* a)
+{
+	if (a->isImpact(mX, mY))
+		return true;
+	return false;
+}
+

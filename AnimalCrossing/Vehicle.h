@@ -18,6 +18,7 @@ public:
 	virtual void Tell();
 	virtual void Draw();
 	virtual void Remove();
+	virtual bool isImpact(int, int) = 0;
 
 	int X();
 	int Y();
