@@ -23,10 +23,10 @@ CGame::CGame() : difficulty(0), objNum(2)
 
 void CGame::drawGame()
 {
-	Box highScoreBox(GAMEPLAY_W, 0, HIGHSCORE_W, SCREEN_HEIGHT, WHITE, BLACK);
+	BOX highScoreBox(GAMEPLAY_W, 0, HIGHSCORE_W, SCREEN_HEIGHT, WHITE, BLACK);
 	highScoreBox.printBox();
 
-	Box side[2];
+	BOX side[2];
 	side[0].setBox(0, SIDEWALK[0], GAMEPLAY_W, SIDEWALK_H, LIGHTGREEN, BLACK, "START");
 	side[0].printBox();
 	side[1].setBox(0, SIDEWALK[1], GAMEPLAY_W, SIDEWALK_H, LIGHTGREEN, BLACK, "FINISH");
@@ -78,6 +78,14 @@ void CGame::exitGame(HANDLE t)
 {
 	TerminateThread(t, 0);
 	system("cls");
+}
+
+void CGame::startGame()
+{
+}
+
+void CGame::loadGame(istream)
+{
 }
 
 void CGame::updatePosPeople(char MOVING)

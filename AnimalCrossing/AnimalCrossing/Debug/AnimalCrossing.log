@@ -1,3 +1,0 @@
-﻿  Source.cpp
-D:\KHTN\Co_so_nganh\OOP\NewfolderPro\CrossingGame\AnimalCrossing\AnimalCrossing\Source.cpp(79,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  AnimalCrossing.vcxproj -> D:\KHTN\Co_so_nganh\OOP\NewfolderPro\CrossingGame\AnimalCrossing\Debug\AnimalCrossing.exe

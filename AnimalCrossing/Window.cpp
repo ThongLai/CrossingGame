@@ -15,8 +15,8 @@ int SIDEWALK_H = 3;
 int LAND[4];
 int SIDEWALK[2];
 
-bool PLAYGAME = false;
-bool MAINMENU = true;
+bool PlayGameThread = false;
+bool MainThread = true;
 
 int Status::getX()
 {
