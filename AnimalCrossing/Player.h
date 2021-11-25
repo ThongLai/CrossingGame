@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Window.h"
-
+#include"Menu.h"
 class Player
 {
 	int mX, mY;
@@ -38,4 +38,7 @@ public:
 	void LEFT();
 	void RIGHT();
 	bool isDead();
+
+	
+	bool drawDead();
 };

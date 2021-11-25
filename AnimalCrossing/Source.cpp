@@ -284,8 +284,8 @@ void ThreadMovingObjects()
 
 void MainMenu()
 {
-	thread t1(ThreadMovingObjects);
-
+	
+	//t1.join();
 	int box_width = 20;
 	int box_height = 3;
 	MENU MainMenu("Main Menu", MAINMENU_SIZE, MAINMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * MAINMENU_SIZE), box_width, box_height, WHITE, BLACK);
@@ -297,10 +297,11 @@ void MainMenu()
 	Status SavedState;
 	while (true)
 	{
+		thread t1(ThreadMovingObjects);
 		system("cls");
 		MainMenu.printMenu();
 		buf = MainMenu.inputMenu();
-
+		Game.resumeGame(t1.native_handle());
 		switch (buf)
 		{
 		case 0:
@@ -318,7 +319,7 @@ void MainMenu()
 
 			PlayGameThread = true;
 			
-			Game.resumeGame(t1.native_handle());
+			//Game.resumeGame(t1.native_handle());
 
 			do {
 				
@@ -332,12 +333,17 @@ void MainMenu()
 				{
 					Game.resumeGame(t1.native_handle());
 				}
-
+				else if (buf == 'E')
+				{
+					Game.exitGame(t1.native_handle());
+					t1.join();
+					break;
+				}
 				Game.updatePosPeople(buf);
 			
 			} while (buf != ESC);
 
-			t1.detach();
+			
 
 			//mciSendString(TEXT("stop Gameplay_Theme"), NULL, 0, NULL);
 			//mciSendString(TEXT("play Menu_Theme from 0 repeat"), NULL, 0, NULL);
@@ -461,8 +467,8 @@ void DeadMenu()
 {
 	int box_width = 20;
 	int box_height = 5;
-	MENU DeadMenu("Game Over", DEADMENU_SIZE, DEADMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * DEADMENU_SIZE), box_width, box_height, LIGHTGRAY, BLACK);
-		 
+	MENU DeadMenu("Try Again?", DEADMENU_SIZE, DEADMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height) * 4 / 3, box_width, box_height, LIGHTGRAY, BLACK);
+
 	int buf = 0;
 	Status SavedState;
 	while (true)
@@ -499,7 +505,6 @@ void DeadMenu()
 	}
 }
 
-
 int main()
 {
 	srand(time(0));
@@ -507,7 +512,42 @@ int main()
 
 	//MainMenu();
 
-	DeadMenu();
+	//DeadMenu();
+	
+	Player a;
+	a.Draw();
 
+	Vans b(15, 20);
+	b.Draw();
+
+	char c;
+
+	while (true)
+	{
+		c = toupper(_getwch());
+
+		if (c == 'W') a.UP();
+		else if (c == 'A') a.LEFT();
+		else if (c == 'D') a.RIGHT();
+		else if (c == 'S') a.DOWN();
+
+		bool check;
+		if (c == 'Q')
+		{
+			check=a.drawDead();
+			if (check == false) break;
+			else
+			{
+				system("cls");
+
+				
+				a.Draw();
+
+				
+				b.Draw();
+			}
+		}
+
+	}
 	return 0;
 }
