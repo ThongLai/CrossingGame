@@ -1,4 +1,4 @@
 ﻿  Source.cpp
-C:\Users\Lai Minh Thong\source\repos\AnimalCrossing\AnimalCrossing\Source.cpp(79,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\Lai Minh Thong\source\repos\AnimalCrossing\AnimalCrossing\Source.cpp(500,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  AnimalCrossing.vcxproj -> C:\Users\Lai Minh Thong\source\repos\AnimalCrossing\Debug\AnimalCrossing.exe
+D:\KHTN\Co_so_nganh\OOP\testPro\CrossingGame\AnimalCrossing\Source.cpp(79,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\KHTN\Co_so_nganh\OOP\testPro\CrossingGame\AnimalCrossing\Source.cpp(510,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  AnimalCrossing.vcxproj -> D:\KHTN\Co_so_nganh\OOP\testPro\CrossingGame\Debug\AnimalCrossing.exe

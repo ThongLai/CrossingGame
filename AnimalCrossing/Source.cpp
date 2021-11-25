@@ -60,7 +60,7 @@ void removeObj(int mX, int mY, int width, int height)
 
 void moveObj(int &mX, int &mY,int width, int height, int text_color, int bg_color, int x, int y, string Obj[])
 {
-	while ((mX != x || mY != y) && PLAYGAME)
+	while ((mX != x || mY != y) && PlayGameThread)
 	{
 		removeObj(mX, mY, width, height);
 
@@ -109,7 +109,7 @@ void ThreadMovingObjects()
 	int car2_speed = 1;
 
 	while (true) {
-		if (PLAYGAME)
+		if (PlayGameThread)
 		{
 			int count = 0;
 			for (int i = 0; i < 4; i++)
@@ -131,7 +131,7 @@ void ThreadMovingObjects()
 			alien.setXY(0, ALIEN_LAND);
 
 
-			while (PLAYGAME)
+			while (PlayGameThread)
 			{
 				
 				if (TURN == 0)
@@ -235,7 +235,7 @@ void ThreadMovingObjects()
 				
 				moveTurn = 0;
 			}
-			MAINMENU = true;
+			MainThread = true;
 		}
 	}
 }
@@ -284,11 +284,11 @@ void ThreadMovingObjects()
 
 void MainMenu()
 {
-	thread t1(ThreadMovingObjects);
-
+	
+	//t1.join();
 	int box_width = 20;
 	int box_height = 3;
-	Menu menu("MENU", MENU_SIZE, MENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * MENU_SIZE), box_width, box_height, WHITE, BLACK);
+	MENU MainMenu("Main Menu", MAINMENU_SIZE, MAINMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * MAINMENU_SIZE), box_width, box_height, WHITE, BLACK);
 	//mciSendString(TEXT("play Menu_Theme repeat"), NULL, 0, NULL);
 	
 	CGame Game;
@@ -297,36 +297,34 @@ void MainMenu()
 	Status SavedState;
 	while (true)
 	{
+		thread t1(ThreadMovingObjects);
 		system("cls");
-		menu.printMenu();
-		buf = menu.inputMenu();
-
+		MainMenu.printMenu();
+		buf = MainMenu.inputMenu();
+		Game.resumeGame(t1.native_handle());
 		switch (buf)
 		{
 		case 0:
 		{
 			system("cls");
-			printMessCenter(MENU[0] + " is selected");
+			printMessCenter(MAINMENU[0] + " is selected");
 			//mciSendString(TEXT("stop Menu_Theme"), NULL, 0, NULL);
 			Sleep(1000);
 			
 			//mciSendString(TEXT("play Gameplay_Theme from 0 repeat"), NULL, 0, NULL);
-			MAINMENU = false;
+			MainThread = false;
 			system("cls");
 
 			Game.drawGame();
 
-			PLAYGAME = true;
+			PlayGameThread = true;
 			
-			Game.resumeGame(t1.native_handle());
-
+			//Game.resumeGame(t1.native_handle());
 
 			do {
 				
 				buf = toupper(_getch());
-				while (moveTurn != 1) {
 
-				}
 				if (buf == 'P')
 				{
 					Game.pauseGame(t1.native_handle());
@@ -335,59 +333,32 @@ void MainMenu()
 				{
 					Game.resumeGame(t1.native_handle());
 				}
-
+				else if (buf == 'E')
+				{
+					Game.exitGame(t1.native_handle());
+					t1.join();
+					break;
+				}
 				Game.updatePosPeople(buf);
-				moveTurn = 0;
+			
 			} while (buf != ESC);
 
-
+			
 
 			//mciSendString(TEXT("stop Gameplay_Theme"), NULL, 0, NULL);
 			//mciSendString(TEXT("play Menu_Theme from 0 repeat"), NULL, 0, NULL);
-			PLAYGAME = false;
-			while (!MAINMENU) {}
+			PlayGameThread = false;
+			MainThread = true;
+			while (!MainThread) {}
 
 			break;
 		}
 		case 1:
 		{
 			system("cls");
-			printMessCenter(MENU[1] + " is selected");
+			printMessCenter(MAINMENU[1] + " is selected");
 			Sleep(1000);
 			SavedState.ResetToCurrent();
-
-			
-			Player Player;
-			Player.setX(10);
-			Player.setY(10);
-
-			while (true)
-			{
-				buf = toupper(_getch());
-
-				if (buf == ESC) break;
-				else if (buf == KEY_UP || buf == 'W')
-				{
-					
-					Player.UP();
-				}
-				else if (buf == KEY_DOWN || buf == 'S')
-				{
-					
-					Player.DOWN();
-				}
-				else if (buf == KEY_LEFT || buf == 'A')
-				{
-					
-					Player.LEFT();
-				}
-				else if (buf == KEY_RIGHT || buf == 'D')
-				{
-					
-					Player.RIGHT();
-				}
-				
-			}
 			
 
 			break;
@@ -395,7 +366,7 @@ void MainMenu()
 		case 2:
 		{
 			system("cls");
-			printMessCenter(MENU[2] + " is selected");
+			printMessCenter(MAINMENU[2] + " is selected");
 			Sleep(1000);
 			SavedState.ResetToCurrent();
 
@@ -404,7 +375,7 @@ void MainMenu()
 		case 3:
 		{
 			system("cls");
-			printMessCenter(MENU[3] + " is selected");
+			printMessCenter(MAINMENU[3] + " is selected");
 			Sleep(1000);
 			SavedState.ResetToCurrent();
 
@@ -413,7 +384,7 @@ void MainMenu()
 		case 4:
 		{
 			system("cls");
-			printMessCenter(MENU[4] + " is selected");
+			printMessCenter(MAINMENU[4] + " is selected");
 			Sleep(1000);
 			SavedState.ResetToCurrent();
 
@@ -422,7 +393,7 @@ void MainMenu()
 		case 5:
 		{
 			system("cls");
-			printMessCenter(MENU[5] + " is selected");
+			printMessCenter(MAINMENU[5] + " is selected");
 			Sleep(1000);
 			SavedState.ResetToCurrent();
 
@@ -431,7 +402,7 @@ void MainMenu()
 		case 6:
 		{
 			system("cls");
-			printMessCenter(MENU[6] + " is selected");
+			printMessCenter(MAINMENU[6] + " is selected");
 			Sleep(1000);
 			SavedState.ResetToCurrent();
 
@@ -440,11 +411,9 @@ void MainMenu()
 		case 7:
 		{
 			system("cls");
-			printMessCenter(MENU[7] + " is selected");
+			printMessCenter(MAINMENU[7] + " is selected");
 			Sleep(1000);
 			SavedState.ResetToCurrent();
-
-			Game.exitGame(t1.native_handle());
 
 			break;
 		}
@@ -494,13 +463,91 @@ void MainMenu()
 //	return 0;
 //}
 
+void DeadMenu()
+{
+	int box_width = 20;
+	int box_height = 5;
+	MENU DeadMenu("Try Again?", DEADMENU_SIZE, DEADMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height) * 4 / 3, box_width, box_height, LIGHTGRAY, BLACK);
+
+	int buf = 0;
+	Status SavedState;
+	while (true)
+	{
+		system("cls");
+		DeadMenu.printMenu();
+		buf = DeadMenu.inputMenu();
+
+		switch (buf)
+		{
+		case 0:
+		{
+			system("cls");
+			printMessCenter(DEADMENU[0] + " is selected");
+			Sleep(1000);
+			SavedState.ResetToCurrent();
+
+
+			break;
+		}
+		case 1:
+		{
+			system("cls");
+			printMessCenter(DEADMENU[1] + " is selected");
+			Sleep(1000);
+			SavedState.ResetToCurrent();
+
+
+			break;
+		}
+		}
+		if (buf == -1 || buf == 1)
+			break;
+	}
+}
 
 int main()
 {
 	srand(time(0));
 	StartUp();
 
-	MainMenu();
+	//MainMenu();
 
+	//DeadMenu();
+	
+	Player a;
+	a.Draw();
+
+	Vans b(15, 20);
+	b.Draw();
+
+	char c;
+
+	while (true)
+	{
+		c = toupper(_getwch());
+
+		if (c == 'W') a.UP();
+		else if (c == 'A') a.LEFT();
+		else if (c == 'D') a.RIGHT();
+		else if (c == 'S') a.DOWN();
+
+		bool check;
+		if (c == 'Q')
+		{
+			check=a.drawDead();
+			if (check == false) break;
+			else
+			{
+				system("cls");
+
+				
+				a.Draw();
+
+				
+				b.Draw();
+			}
+		}
+
+	}
 	return 0;
 }

@@ -47,8 +47,8 @@ extern int SIDEWALK_H;
 extern int LAND[4];
 extern int SIDEWALK[2];
 
-extern bool PLAYGAME;
-extern bool MAINMENU;
+extern bool PlayGameThread;
+extern bool MainThread;
 
 
 void FixConsoleWindow();

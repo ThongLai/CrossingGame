@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Window.h"
 
 Player::Player() : mX(0), mY(0), text_color(WHITE), bg_color(BLACK), mState(1)
 {
@@ -101,4 +102,84 @@ void Player::RIGHT()
 	Remove();
 	setX(mX + 1);
 	Draw();
+}
+
+bool Player::drawDead()
+{
+	
+	string s[100] =
+	{
+
+"            ,-.-.       ",
+"           / ,-. \\      ",
+"      ,-. ( |a a| ) ,-.     ",
+"     :   `( : o ; )'   :       ",
+" ____|____(_.>-<._)____|____",
+"(_|        /     \\        |_)",
+" ||      :  `.|,' :       ||",
+"  |___..--|_\\_|_/_|-...___| ",
+"    ;     | /SSt\\ | :",
+"   /  ;  ;| ,'|`. |:  :  \\",
+"  /  /| /|;._____.:|\\ |\\  \\",
+" / ,' `' /  ;| |:  \\ `' `. \\",
+" `'     /  / | | \\  \\     `'",
+"       /  /  ; :  \\  \\",
+"      /  /  /| |\\  \\  \\",
+"     /  /  / | | \\  \\  \\",
+"    /  /  /  ; :  \\  \\  \\",
+"   /  /  /  /| |\\  \\  \\  \\",
+"  (  /  /  / | | \\  \\  \\  )",
+"   `(_ /  /  ; :  \\  \\ _)'",
+"      `'.(_./___\\._).`'",
+	};
+
+
+	int box_width = 20;
+	int box_height = 5;
+	MENU DeadMenu("Do you want to play again?", DEADMENU_SIZE, DEADMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height) * 4 / 3, box_width, box_height, LIGHTGRAY, BLACK);
+
+	int buf = 0;
+	Status SavedState;
+
+	system("cls");
+	int y = 0;
+	int x = SCREEN_HEIGHT + 19;
+	for (int i = 0; i < 21; i++)
+	{
+
+		PrintString(x, y, s[i]);
+		y++;
+	}
+	DeadMenu.printMenu();
+	buf = DeadMenu.inputMenu();
+
+	switch (buf)
+	{
+	case 0:
+	{
+		system("cls");
+		printMessCenter(DEADMENU[0] + " is selected");
+		Sleep(1000);
+		SavedState.ResetToCurrent();
+		//Neu chon muon choi lai
+		return true;
+
+		break;
+	}
+	case 1:
+	{
+		system("cls");
+		printMessCenter(DEADMENU[1] + " is selected");
+		Sleep(1000);
+		SavedState.ResetToCurrent();
+		//Neu chon khong muon choi lai
+		return false;
+		break;
+	}
+	}
+	//nhan nut ESC
+	if (buf == -1 || buf == 1)
+		return false;
+	system("pause");
+	return true;
 }
