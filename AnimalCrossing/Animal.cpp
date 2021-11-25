@@ -1,6 +1,6 @@
 #include "Animal.h"
 
-CANIMAL::CANIMAL() : mX(0), mY(0), width(0), height(0), text_color(WHITE), bg_color(BLACK){}
+CANIMAL::CANIMAL() : mX(0), mY(0), animal_table(NULL), width(0), height(0), text_color(WHITE), bg_color(BLACK){}
 
 CANIMAL::~CANIMAL()
 {
@@ -12,6 +12,49 @@ CANIMAL::~CANIMAL()
 void CANIMAL::Tell()
 {
 	//ANIMAL CRYING SOUND HERE
+}
+
+void CANIMAL::RemoveMoving(bool direct)
+{
+	Status SavedStatus;
+	SetTextColor(SavedStatus.getColor());
+
+	if (direct)
+	{
+		for (int i = 0; i < height; ++i)
+		{
+			GotoXY(mX, mY + i);
+			cout << " ";
+		}
+
+		return;
+	}
+	else
+	{
+		if (mX + width <= GAMEPLAY_W)
+		{
+			for (int i = 0; i < height; ++i)
+			{
+				GotoXY(mX + width - 1, mY + i);
+				cout << " ";
+			}
+
+			return;
+		}
+		else if (mX + width > GAMEPLAY_W)
+		{
+			int part2_length = (mX + width) - GAMEPLAY_W;
+			int part1_length = width - part2_length;
+
+			for (int i = 0; i < height; ++i)
+			{
+				GotoXY(0 + part2_length - 1, mY + i);
+				cout << " ";
+			}
+
+			return;
+		}
+	}
 }
 
 void CANIMAL::Remove()

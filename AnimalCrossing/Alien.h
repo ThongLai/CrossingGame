@@ -7,8 +7,8 @@ class Alien : public CANIMAL
 private:
 	string table[5] =
 	{
-		"    .-\"\"`\"\"-.",
-		" _/`oOoOoOoOo`\\_",
+		"    .-\"\"`\"\"-.    ",
+		" _/`oOoOoOoOo`\\_ ",
 		"'.-=-=-=-=-=-=-.'",
 		"  `-=.=-.-=.=-'  ",
 		"     ^  ^  ^     "

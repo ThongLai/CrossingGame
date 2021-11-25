@@ -29,14 +29,14 @@ void Trafficlight::initDraw()
 {
 	Status SavedStatus;
 
-	if (state == 1)
+	if (state==1)
 	{
 		SetTextColor(DefineColor(LIGHTGREEN, BLACK));
 		GotoXY(x, y);
 		cout << char(219);
 
 		SetTextColor(DefineColor(DARKGRAY, BLACK));
-		GotoXY(x + 1, y);
+		GotoXY(x+1, y);
 		cout << char(219);
 	}
 	else

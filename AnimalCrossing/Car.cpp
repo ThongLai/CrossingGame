@@ -29,10 +29,10 @@ Car::~Car()
 
 void Car::Move()
 {
-	Remove();
+	RemoveMoving(true);
 
 	mX++;
-	if (mX = GAMEPLAY_W)
+	if (mX == GAMEPLAY_W)
 		mX = 0;
 
 	Draw();

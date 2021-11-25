@@ -6,14 +6,9 @@ int Bird::count = 0;
 Bird::Bird() : CANIMAL()
 {
 	animal_table = table;
+
 	height = sizeof(table) / sizeof(string);
-
-	int max_width = table[0].size();
-	for (int i = 0; i < height; i++)
-		if (max_width < table[i].size())
-			max_width = table[i].size();
-
-	width = max_width;
+	width = table[0].size();
 }
 
 Bird::Bird(int x, int y) : Bird()
@@ -61,7 +56,7 @@ void Bird::Turn()
 
 void Bird::Move() 
 {
-	Remove(); //Xoa object
+	RemoveMoving(direct); //Xoa object
 	
 	if (direct) //Bien direct quyet dinh huong di chuyen cua object, direct = true => qua phai
 	{

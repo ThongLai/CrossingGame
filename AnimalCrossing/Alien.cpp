@@ -6,14 +6,9 @@ int Alien::count = 0;
 Alien::Alien() : CANIMAL()
 {
 	animal_table = table;
+
 	height = sizeof(table) / sizeof(string);
-
-	int max_width = table[0].size();
-	for (int i = 0; i < height; i++)
-		if (max_width < table[i].size())
-			max_width = table[i].size();
-
-	width = max_width;
+	width = table[0].size();
 }
 
 Alien::Alien(int x, int y) : Alien()
@@ -56,17 +51,7 @@ void Alien::Turn()
 void Alien::Move()
 {
 	//Xoa object
-	Remove();
-
-	//Bien dem count se dem so buoc object da di chuyen, neu count == 8 object se doi huong
-	if (count == 8)
-	{
-		//Reset count ve 0 va doi huong
-		count = 0;
-		if (direct == true)
-			direct = false;
-		else direct = true;
-	}
+	RemoveMoving(direct);
 
 	if (direct)
 	{

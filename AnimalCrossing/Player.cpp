@@ -1,15 +1,9 @@
 #include "Player.h"
 
-Player::Player() : mX(10), mY(10), text_color(WHITE), bg_color(BLACK), mState(1)
+Player::Player() : mX(LAND[0] + ROAD_H), mY(midWidth(GAMEPLAY_W, width)), text_color(WHITE), bg_color(BLACK), mState(1)
 {
 	height = sizeof(table) / sizeof(string);
-
-	int max_width = table[0].size();
-	for (int i = 0; i < height; i++)
-		if (max_width < table[i].size())
-			max_width = table[i].size();
-
-	width = max_width;
+	width = table[0].size();
 }
 
 Player::~Player()
@@ -57,7 +51,7 @@ void Player::Draw()
 	}
 }
 
-void Player::remove()
+void Player::Remove()
 {
 	Status SavedStatus;
 	SetTextColor(SavedStatus.getColor());
@@ -73,64 +67,134 @@ void Player::remove()
 
 void Player::UP()
 {
-	remove();
-	setY(mY - 1);
-	Draw();
+	if (mY == SIDEWALK[1])
+		return;
+	else
+	{
+		Remove();
+		setY(mY - 1);
+		Draw();
+	}
+	
 }
 
 void Player::DOWN()
 {
-	remove();
-	setY(mY + 1);
-	Draw();
+	if (mY == SIDEWALK[0])
+		return;
+	else
+	{
+		Remove();
+		setY(mY + 1);
+		Draw();
+	}
 }
 
 void Player::LEFT()
 {
-	remove();
-	setX(mX - 1);
-	Draw();
+	if (mX == 0)
+		return;
+	else
+	{
+		Remove();
+		setX(mX - 1);
+		Draw();
+	}
 }
 
 void Player::RIGHT()
 {
-	remove();
-	setX(mX + 1);
-	Draw();
+	if (mX + width == GAMEPLAY_W)
+		return;
+	else
+	{
+		Remove();
+		setX(mX + 1);
+		Draw();
+	}
 }
 
 bool Player::isDead()
 {
-	return mState;
+	return !mState;
 }
 
-bool Player::isImpact(int objNum, vector<Vans> vans, vector<Car> cars, vector<Bird> bird, vector<Alien> alien)
+bool Player::drawDead()
 {
-	if (mY <= LAND[0])
+
+	string s[100] =
 	{
-		for (int i = 0; i < objNum; ++i)
-		{
-			if (isImpactVehicle(&vans[i]))
-			{
-				mState = 0;
-				return mState;
-			}			
-		}
-		return mState;
+
+"            ,-.-.       ",
+"           / ,-. \\      ",
+"      ,-. ( |a a| ) ,-.     ",
+"     :   `( : o ; )'   :       ",
+" ___|____(.>-<._)____|____",
+"(|        /     \\        |)",
+" ||      :  `.|,' :       ||",
+"  |___..--|_\\_|_/_|-...___| ",
+"    ;     | /SSt\\ | :",
+"   /  ;  ;| ,'|`. |:  :  \\",
+"  /  /| /|;._____.:|\\ |\\  \\",
+" / ,' ' /  ;| |:  \\ ' `. \\",
+" '     /  / | | \\  \\     '",
+"       /  /  ; :  \\  \\",
+"      /  /  /| |\\  \\  \\",
+"     /  /  / | | \\  \\  \\",
+"    /  /  /  ; :  \\  \\  \\",
+"   /  /  /  /| |\\  \\  \\  \\",
+"  (  /  /  / | | \\  \\  \\  )",
+"   `(_ /  /  ; :  \\  \\ _)'",
+"      '.(_./___\\._).'",
+	};
+
+
+	int box_width = 20;
+	int box_height = 5;
+	MENU DeadMenu("Do you want to play again?", DEADMENU_SIZE, DEADMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height) * 4 / 3, box_width, box_height, LIGHTGRAY, BLACK);
+
+	int buf = 0;
+	Status SavedState;
+
+	system("cls");
+	int y = 0;
+	int x = SCREEN_HEIGHT + 19;
+	for (int i = 0; i < 21; i++)
+	{
+
+		PrintString(x, y, s[i]);
+		y++;
 	}
-}
+	DeadMenu.printMenu();
+	buf = DeadMenu.inputMenu();
 
-bool Player::isImpactVehicle(CVEHICLE* v)
-{
-	if (v->isImpact(mX, mY))
+	switch (buf)
+	{
+	case 0:
+	{
+		system("cls");
+		printMessCenter(DEADMENU[0] + " is selected");
+		Sleep(1000);
+		SavedState.ResetToCurrent();
+		//Neu chon muon choi lai
 		return true;
-	return false;
-}
 
-bool Player::isImpactAnimal(CANIMAL* a)
-{
-	if (a->isImpact(mX, mY))
-		return true;
-	return false;
+		break;
+	}
+	case 1:
+	{
+		system("cls");
+		printMessCenter(DEADMENU[1] + " is selected");
+		Sleep(1000);
+		SavedState.ResetToCurrent();
+		//Neu chon khong muon choi lai
+		return false;
+		break;
+	}
+	}
+	//nhan nut ESC
+	if (buf == -1 || buf == 1)
+		return false;
+	system("pause");
+	return true;
 }
-

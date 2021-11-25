@@ -14,7 +14,7 @@ public:
 	bool getState();
 
 	void setXY(int, int);
-
+	
 	void initDraw();
 	void changeLight();
 };

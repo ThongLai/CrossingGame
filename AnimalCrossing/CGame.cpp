@@ -93,10 +93,11 @@ void CGame::updatePosPeople(char MOVING)
 				if (MOVING == 'S') player.DOWN();
 }
 
-void CGame::updatePosVehicle()
+void CGame::updatePosVehicle(int time)
 {
 	//Thay doi den giao thong
-	
+	if (time % 30 == 0) vansLight.changeLight();
+	if (time % 50 == 0)carLight.changeLight();
 
 	//Di chuyen xe
 	if (vansLight.getState())
@@ -128,7 +129,7 @@ void CGame::updatePosAnimal()
 
 	//Di chuyen Alien
 	//Neu bien count bang khoang cach thi alien quay dau
-	if (alien[0].getCount() >= Distance(alien[0].getWidth(), objNum))
+	if (alien[0].getCount() >= (objNum * Distance(alien[0].getWidth(), objNum)))
 	{
 		alien[0].setCount(0);
 		alien[0].Turn();
@@ -136,4 +137,24 @@ void CGame::updatePosAnimal()
 
 	for (int i = 0; i < objNum; ++i)
 		alien[i].Move();
+}
+
+bool CGame::checkImpact()
+{
+	if (player.Y() >= LAND[0])
+		return player.isImpact<Vans>(vans, objNum);
+	else if (player.Y() >= LAND[1])
+		return player.isImpact<Car>(cars, objNum);
+	else if (player.Y() >= LAND[2])
+		return player.isImpact<Bird>(bird, objNum);
+	else if (player.Y() >= LAND[3])
+		return player.isImpact<Alien>(alien, objNum);
+	else return false;
+}
+
+bool CGame::isFinish()
+{
+	if (player.Y() == 2)
+		return true;
+	else return false;
 }

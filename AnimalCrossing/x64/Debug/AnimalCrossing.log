@@ -1,16 +1,21 @@
 ﻿  CGame.cpp
-  Car.cpp
-D:\Project\CrossingGame\CrossingGame\AnimalCrossing\Car.cpp(12,25): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Menu.cpp
+C:\Users\anhta\Downloads\CrossingGame-ThongLai (1)\CrossingGame-ThongLai\AnimalCrossing\AnimalCrossing\Menu.cpp(268,6): error C2825: 'MENU': must be a class or namespace when followed by '::'
+C:\Users\anhta\Downloads\CrossingGame-ThongLai (1)\CrossingGame-ThongLai\AnimalCrossing\AnimalCrossing\Menu.cpp(268,12): error C2510: 'MENU': left of '::' must be a class/struct/union
+C:\Users\anhta\Downloads\CrossingGame-ThongLai (1)\CrossingGame-ThongLai\AnimalCrossing\AnimalCrossing\Menu.cpp(272,7): error C2146: syntax error: missing ';' before identifier 'DeadMenu'
+C:\Users\anhta\Downloads\CrossingGame-ThongLai (1)\CrossingGame-ThongLai\AnimalCrossing\AnimalCrossing\Menu.cpp(272,30): error C2065: 'DEADMENU_SIZE': undeclared identifier
+C:\Users\anhta\Downloads\CrossingGame-ThongLai (1)\CrossingGame-ThongLai\AnimalCrossing\AnimalCrossing\Menu.cpp(272,45): error C2065: 'DEADMENU': undeclared identifier
+C:\Users\anhta\Downloads\CrossingGame-ThongLai (1)\CrossingGame-ThongLai\AnimalCrossing\AnimalCrossing\Menu.cpp(287,20): error C2065: 'DEADMENU': undeclared identifier
+C:\Users\anhta\Downloads\CrossingGame-ThongLai (1)\CrossingGame-ThongLai\AnimalCrossing\AnimalCrossing\Menu.cpp(297,20): error C2065: 'DEADMENU': undeclared identifier
   Player.cpp
-D:\Project\CrossingGame\CrossingGame\AnimalCrossing\Player.cpp(7,33): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\Project\CrossingGame\CrossingGame\AnimalCrossing\Player.cpp(10,31): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\anhta\Downloads\CrossingGame-ThongLai (1)\CrossingGame-ThongLai\AnimalCrossing\AnimalCrossing\Player.cpp(6,25): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\anhta\Downloads\CrossingGame-ThongLai (1)\CrossingGame-ThongLai\AnimalCrossing\AnimalCrossing\Player.cpp(154,7): error C2146: syntax error: missing ';' before identifier 'DeadMenu'
+C:\Users\anhta\Downloads\CrossingGame-ThongLai (1)\CrossingGame-ThongLai\AnimalCrossing\AnimalCrossing\Player.cpp(154,46): error C2065: 'DEADMENU_SIZE': undeclared identifier
+C:\Users\anhta\Downloads\CrossingGame-ThongLai (1)\CrossingGame-ThongLai\AnimalCrossing\AnimalCrossing\Player.cpp(154,61): error C2065: 'DEADMENU': undeclared identifier
+C:\Users\anhta\Downloads\CrossingGame-ThongLai (1)\CrossingGame-ThongLai\AnimalCrossing\AnimalCrossing\Player.cpp(154,7): error C3861: 'DeadMenu': identifier not found
+C:\Users\anhta\Downloads\CrossingGame-ThongLai (1)\CrossingGame-ThongLai\AnimalCrossing\AnimalCrossing\Player.cpp(168,2): error C2065: 'DeadMenu': undeclared identifier
+C:\Users\anhta\Downloads\CrossingGame-ThongLai (1)\CrossingGame-ThongLai\AnimalCrossing\AnimalCrossing\Player.cpp(169,8): error C2065: 'DeadMenu': undeclared identifier
+C:\Users\anhta\Downloads\CrossingGame-ThongLai (1)\CrossingGame-ThongLai\AnimalCrossing\AnimalCrossing\Player.cpp(176,19): error C2065: 'DEADMENU': undeclared identifier
+C:\Users\anhta\Downloads\CrossingGame-ThongLai (1)\CrossingGame-ThongLai\AnimalCrossing\AnimalCrossing\Player.cpp(187,19): error C2065: 'DEADMENU': undeclared identifier
   Source.cpp
-  Vans.cpp
-D:\Project\CrossingGame\CrossingGame\AnimalCrossing\Vans.cpp(8,33): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\Project\CrossingGame\CrossingGame\AnimalCrossing\Vans.cpp(11,31): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  Vehicle.cpp
   Generating Code...
-D:\Project\CrossingGame\CrossingGame\AnimalCrossing\Vans.cpp(133): warning C4715: 'Vans::isImpact': not all control paths return a value
-D:\Project\CrossingGame\CrossingGame\AnimalCrossing\Player.cpp(121): warning C4715: 'Player::isImpact': not all control paths return a value
-  LINK : D:\Project\CrossingGame\CrossingGame\x64\Debug\AnimalCrossing.exe not found or not built by the last incremental link; performing full link
-  AnimalCrossing.vcxproj -> D:\Project\CrossingGame\CrossingGame\x64\Debug\AnimalCrossing.exe

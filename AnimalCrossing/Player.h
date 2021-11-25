@@ -1,10 +1,7 @@
 #pragma once
 
-#include"Window.h"
-#include "Car.h"
-#include "Vans.h"
-#include "Alien.h"
-#include "Bird.h"
+#include "Window.h"
+#include"Menu.h"
 
 class Player
 {
@@ -14,9 +11,9 @@ class Player
 
 	bool mState;	//1 is alive - 0 is dead
 	string table[3]= {
-	 " ",
+	 "  ",
 	 "ÄÛÄ",
-	"/ \\"
+	 "/ \\"
 	};
 
 
@@ -33,15 +30,26 @@ public:
 	void setXY(int x, int y);
 
 	void Draw();
-	void remove();
+	void Remove();
 	void UP();
 	void DOWN();
 	void LEFT();
 	void RIGHT();
+
 	bool isDead();
 
-	bool isImpact(int objNum, vector<Vans>, vector<Car>, vector<Bird>, vector<Alien>);
-
-	bool isImpactVehicle(CVEHICLE*);
-	bool isImpactAnimal(CANIMAL*);
+	bool drawDead();
+	
+	template<class T>//Kiem tra lai kieu ham tra ve, boool hay void, neu la bool thi tra ve cai gi
+	bool isImpact(vector<T> v, int objNum)
+	{
+		for (int i = 0; i < objNum; ++i)
+			if (v[i].isImpact(mX,mY))
+			{
+				mState = 0;
+				return true;
+			}
+		return false;
+	}
+	
 };

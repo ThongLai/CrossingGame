@@ -3,14 +3,9 @@
 Vans::Vans() : CVEHICLE()
 {
 	vehicle_table = table;
+
 	height = sizeof(table) / sizeof(string);
-
-	int max_width = table[0].size();
-	for (int i = 0; i < height; i++)
-		if (max_width < table[i].size())
-			max_width = table[i].size();
-
-	width = max_width;
+	width = table[0].size();
 }
 
 Vans::Vans(int x, int y) : Vans()
@@ -30,7 +25,7 @@ Vans::~Vans()
 
 void Vans::Move()
 {
-	Remove();
+	RemoveMoving(false);
 
 	mX--;
 	if (mX < 0)
@@ -121,13 +116,25 @@ bool Vans::isImpact(int x, int y)
 			if (x == X() - 1 || x == X() - 2) return false;
 			else return true;
 		}
+
 		//than xe
-		else if (y == Y() + 1 || y == Y() + 2 || y == Y() + 3 || y == Y() || y == Y() - 1) return true;
+		if (y == Y() - 1) return true;
+
+		if (y == Y()) return true;
+
+		if (y == Y() + 1) return true;
+
+		if (y == Y() + 2) return true;
+
+		if (y == Y() + 3) return true;
+		
 		//2 banh xe 
-		else if (y == Y() + 4)
+		if (y == Y() + 4)
 		{
-			if (x == X()-1 || x == X() + 13) return true;
+			if (x == X() - 1 || x == X() + 13) return true;
 			else return false;
 		}
 	}
+	return true;
 }
+

@@ -4,7 +4,7 @@
 #include "Vans.h"
 #include "Alien.h"
 #include "Bird.h"
-#include "Player.h"
+#include"Player.h" //Check lai
 #include "Trafficlight.h"
 #include "Menu.h"
 
@@ -18,7 +18,7 @@ private:
 	Player player;
 	int difficulty;
 	int objNum;
-	int speed;
+	//int speed;
 	Trafficlight vansLight;
 	Trafficlight carLight;
 
@@ -38,7 +38,11 @@ public:
 	void saveGame(istream); // Thực hiện lưu lại dữ liệu trò chơi
 	void pauseGame(HANDLE); // Tạm dừng Thread
 	void resumeGame(HANDLE); //Quay lai Thread
+
 	void updatePosPeople(char); //Thực hiện điều khiển di chuyển của CPEOPLE
-	void updatePosVehicle(); //Thực hiện cho CTRUCK & CCAR di chuyển
+	void updatePosVehicle(int); //Thực hiện cho CTRUCK & CCAR di chuyển
 	void updatePosAnimal();//Thực hiện cho CDINAUSOR & CBIRD di chuyển
+
+	bool checkImpact();
+	bool isFinish();
 };

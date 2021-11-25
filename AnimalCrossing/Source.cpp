@@ -3,6 +3,7 @@
 #include "Alien.h"
 #include "Vans.h"
 #include "Player.h"
+
 #include "CGame.h"
 
 using namespace std;
@@ -517,15 +518,17 @@ using namespace std;
 //{
 //	StartUp();
 //	vector<Bird*> b;
+//	vector<Vans*> v;
 //	for (int i = 0; i < 3; ++i)
 //	{
-//		
+//		v.push_back(new Vans(0 + 40 * i, 30));
 //		b.push_back(new Bird(0 + 40 * i, 20));
 //	}
 //	while (true)
 //	{
 //		for (int i = 0; i < b.size(); ++i)
 //		{
+//			v[i]->Move();
 //			b[i]->Move();
 //		}
 //		Sleep(100);
@@ -533,8 +536,10 @@ using namespace std;
 //
 //	for (int i = 0; i < 3; ++i)
 //	{
+//		delete v[i];
 //		delete b[i];
 //	}
+//	v.clear();
 //	b.clear();
 //}
 
@@ -542,22 +547,93 @@ using namespace std;
 //{
 //	StartUp();
 //
-//	Bird b(0, 20);
+//	vector<Bird> b;
+//	b.resize(3);
+//		
+//	for (int i = 0; i < 3; ++i)
+//	{
+//		Bird b1(0 + 30 * i, 20);
+//		b[i] ;
+//	}
+//
 //	while (true)
 //	{
-//		b.Move();
+//		for (int i = 0; i < 3; ++i)
+//		{
+//			b[i].Move();
+//		}
 //		Sleep(50);
 //	}
 //
 //	return 0;
 //}
 
+//int main()
+//{
+//	StartUp();
+//
+//	CGame game;
+//	game.drawGame();
+//
+//	char buf;
+//	while (true)
+//	{
+//		buf = toupper(_getch());
+//
+//		if (buf == ESC) break;
+//		else game.updatePosPeople(buf);
+//
+//		if (game.checkImpact())
+//		{
+//			cout << "DEAD";
+//			break;
+//		}
+//		
+//		
+//	}
+//}
+
+int buf = 0;
+void SubThread() {
+    CGame game;
+    game.drawGame();
+    int time = 0;
+
+    while (true) {
+
+        game.updatePosPeople(buf);
+        buf = 0;
+        ++time;
+
+        game.updatePosAnimal();
+        game.updatePosVehicle(time);
+
+        //Đây là if kết thúc
+        if (game.getPeople().Y() == SIDEWALK[1]) {
+            cout << "WIN";
+            break;
+        }
+
+        //If impact ở đây
+        if (game.checkImpact())
+        {
+           	cout << "DEAD";
+           	break;
+      	}
+
+        Sleep(100);
+    }
+}
 int main()
 {
-	StartUp();
-	
-	CGame game;
+    StartUp();
 
-	game.drawGame();
-	
+    thread sub(SubThread);
+
+    do {
+        buf = toupper(_getch());
+    } while (buf != ESC);
+
+    sub.join();
+    return 0;
 }
