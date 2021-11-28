@@ -31,6 +31,8 @@ void Car::Move()
 {
 	RemoveMoving(true);
 
+	//Remove();
+
 	mX++;
 	if (mX == GAMEPLAY_W)
 		mX = 0;

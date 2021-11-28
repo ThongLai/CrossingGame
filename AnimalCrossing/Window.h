@@ -47,8 +47,8 @@ extern int SIDEWALK_H;
 extern int LAND[4];
 extern int SIDEWALK[2];
 
-extern bool PLAYGAME;
-extern bool MAINMENU;
+extern bool PlayGameThread;
+extern bool MainThread;
 
 
 void FixConsoleWindow();
@@ -64,7 +64,7 @@ void setRasterFonts();
 bool GetXY(int& x, int& y);
 bool GetColor(int& color);
 void OpenSoundFiles();
-int Distance(int, int);
+int Distance(int objWidth, int objNum);
 
 void PrintChar(int x, int y, char ch);
 void PrintString(int x, int y, string S);

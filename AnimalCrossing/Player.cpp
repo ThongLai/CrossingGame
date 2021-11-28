@@ -44,11 +44,13 @@ void Player::Draw()
 	Status SavedStatus;
 	SetTextColor(DefineColor(text_color, bg_color));
 
-	for (int i = 0, iy = mY; iy < mY + height; iy++, i++)
-	{
-		GotoXY(mX, iy);
-		cout << table[i];
-	}
+	for (int i = 0; i < height; ++i)
+		for (int j = 0; j < width; ++j)
+			if (table[i][j] != ' ')
+			{
+				GotoXY(mX + j, mY + i);
+				cout << table[i][j];
+			}
 }
 
 void Player::Remove()
@@ -56,12 +58,13 @@ void Player::Remove()
 	Status SavedStatus;
 	SetTextColor(SavedStatus.getColor());
 
-	for (int iy = mY; iy < mY + height; iy++)
-		for (int ix = mX; ix < mX + width; ix++)
-		{
-			GotoXY(ix, iy);
-			cout << " ";
-		}
+	for (int i = 0; i < height; ++i)
+		for (int j = 0; j < width; ++j)
+			if (table[i][j] != ' ')
+			{
+				GotoXY(mX + j, mY + i);
+				cout << " ";
+			}
 }
 
 

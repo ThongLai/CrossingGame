@@ -21,9 +21,12 @@ private:
 	//int speed;
 	Trafficlight vansLight;
 	Trafficlight carLight;
+	int point;
+	bool checkPoint[4]; //Check point de tranh viec cong diem nhieu lan
 
 public:
 	CGame(); //Chuẩn bị dữ liệu cho tất cả các đối tượng 
+	void Init();
 	void drawGame(); //Thực hiện vẽ trò chơi ra màn hình sau khi có dữ liệu
 	~CGame(); // Hủy tài nguyên đã cấp phát
 
@@ -45,4 +48,5 @@ public:
 
 	bool checkImpact();
 	bool isFinish();
+	void calcPoint();
 };

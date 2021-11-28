@@ -617,10 +617,9 @@ void SubThread() {
         //If impact ở đây
         if (game.checkImpact())
         {
-           	cout << "DEAD";
-           	break;
+            game.getPeople().drawDead();
       	}
-
+        
         Sleep(100);
     }
 }

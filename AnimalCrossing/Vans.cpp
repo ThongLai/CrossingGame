@@ -27,6 +27,7 @@ void Vans::Move()
 {
 	RemoveMoving(false);
 
+	//Remove();
 	mX--;
 	if (mX < 0)
 		mX = GAMEPLAY_W - 1;

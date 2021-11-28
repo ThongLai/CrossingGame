@@ -1,6 +1,6 @@
 ﻿#include "Menu.h"
 
-string MENU[] = {
+string MAINMENU[] = {
 	"Play",
 	"Continue",
 	"Leader Board",
@@ -10,26 +10,32 @@ string MENU[] = {
 	"Credits",
 	"Exit",
 };
-int MENU_SIZE = sizeof(MENU) / sizeof(string);
+int MAINMENU_SIZE = sizeof(MAINMENU) / sizeof(string);
+
+string DEADMENU[] = {
+	"Yes",
+	"No",
+};
+extern int DEADMENU_SIZE = sizeof(DEADMENU) / sizeof(string);
 
 
 //BOX
-Box::Box()
+BOX::BOX()
 {
 	setBox(0, 0, 0, 0, WHITE, BLACK, "");
 }
 
-Box::Box(int _x, int _y, int _width, int _height, int _text_color, int _bg_color, string _content)
+BOX::BOX(int _x, int _y, int _width, int _height, int _text_color, int _bg_color, string _content)
 {
 	setBox(_x, _y, _width, _height, _text_color, _bg_color, _content);
 }
 
-Box::Box(int _x, int _y, int _width, int _height, int _text_color, int _bg_color)
+BOX::BOX(int _x, int _y, int _width, int _height, int _text_color, int _bg_color)
 {
 	setBox(_x, _y, _width, _height, _text_color, _bg_color, "");
 }
 
-void Box::setBox(int _x, int _y, int _width, int _height, int _text_color, int _bg_color, string _content)
+void BOX::setBox(int _x, int _y, int _width, int _height, int _text_color, int _bg_color, string _content)
 {
 	setPosition(_x, _y);
 	setFormat(_width, _height, _text_color, _bg_color);
@@ -37,29 +43,29 @@ void Box::setBox(int _x, int _y, int _width, int _height, int _text_color, int _
 
 }
 
-void Box::setPosition(int _x, int _y)
+void BOX::setPosition(int _x, int _y)
 {
 	x = _x; y = _y;
 }
 
-void Box::setFormat(int _w, int _h, int _text_color, int _bg_color)
+void BOX::setFormat(int _w, int _h, int _text_color, int _bg_color)
 {
 	width = _w; height = _h;
 	text_color = _text_color; bg_color = _bg_color;
 }
 
-void Box::setContent(string _content)
+void BOX::setContent(string _content)
 {
 	content = _content;
 }
 
-void Box::printBox()
+void BOX::printBox()
 {
 	printBorder();
 	printContent();
 }
 
-void Box::printBorder()
+void BOX::printBorder()
 {
 	if (height <= 1 || width <= 1) return;
 	Status SavedState;
@@ -93,7 +99,7 @@ void Box::printBorder()
 	}
 }
 
-void Box::printContent()
+void BOX::printContent()
 {
 	if (height <= 1 || width <= 1) return;
 	Status SavedState;
@@ -111,7 +117,7 @@ void Box::printContent()
 	cout << content;
 }
 
-void Box::printContent(int _text_color, int _bg_color)
+void BOX::printContent(int _text_color, int _bg_color)
 {
 	if (height <= 1 || width <= 1) return;
 	Status SavedState;
@@ -129,7 +135,7 @@ void Box::printContent(int _text_color, int _bg_color)
 	cout << content;
 }
 
-void Box::removeBox()
+void BOX::removeBox()
 {
 	if (height <= 1 || width <= 1) return;
 	Status SavedState;
@@ -144,30 +150,31 @@ void Box::removeBox()
 	}
 }
 
+
 //MENU
-Menu::Menu() : n(1), trench(0), title("") {
-	nBox = new Box[n];
+MENU::MENU() : n(1), trench(0), title("") {
+	nBox = new BOX[n];
 }
 
-Menu::Menu(string _title, int _n, string* content, int _x, int _y, int _width, int _height, int _text_color, int _bg_color) : n(_n), trench(0)
+MENU::MENU(string _title, int _n, string* content, int _x, int _y, int _width, int _height, int _text_color, int _bg_color) : n(_n), trench(0)
 {
-	nBox = new Box[n];
+	nBox = new BOX[n];
 	setMenu(_title, content, _x, _y, _width, _height, _text_color, _bg_color);
 }
 
-Menu::~Menu()
+MENU::~MENU()
 {
 	delete[]nBox;
 }
 
-void Menu::setMenu(string _title, string* content, int _x, int _y, int _width, int _height, int _text_color, int _bg_color)
+void MENU::setMenu(string _title, string* content, int _x, int _y, int _width, int _height, int _text_color, int _bg_color)
 {
 	setBox(_x, _y, _width, _height, _text_color, _bg_color);
 	setBoxContent(content);
 	setTitle(_title);
 }
 
-void Menu::setBox(int _x, int _y, int _width, int _height, int _text_color, int _bg_color)
+void MENU::setBox(int _x, int _y, int _width, int _height, int _text_color, int _bg_color)
 {
 	setFormat(_width, _height, _text_color, _bg_color);
 	setPosition(_x, _y);
@@ -179,28 +186,28 @@ void Menu::setBox(int _x, int _y, int _width, int _height, int _text_color, int 
 	}
 }
 
-void Menu::setBoxPosition(int box_index, int _x, int _y)
+void MENU::setBoxPosition(int box_index, int _x, int _y)
 {
 	nBox[box_index].setPosition(_x, _y);
 }
 
-void Menu::setBoxFormat(int box_index, int _width, int _height, int _text_color, int _bg_color)
+void MENU::setBoxFormat(int box_index, int _width, int _height, int _text_color, int _bg_color)
 {
 	nBox[box_index].setFormat(_width, _height, _text_color, _bg_color);
 }
 
-void Menu::setBoxContent(string* content)
+void MENU::setBoxContent(string* content)
 {
 	for (int i = 0; i < n; i++)
 		nBox[i].setContent(content[i]);
 }
 
-void Menu::setTitle(string _title)
+void MENU::setTitle(string _title)
 {
 	title = _title;
 }
 
-void Menu::printMenu()
+void MENU::printMenu()
 {
 	printTitle();
 
@@ -208,22 +215,21 @@ void Menu::printMenu()
 		nBox[i].printBox();
 }
 
-void Menu::printTitle()
+void MENU::printTitle()
 {
 	Status SavedState;
-
 	SetTextColor(DefineColor(text_color, bg_color));
 
 	GotoXY(x + midWidth(width, title), y - height);
 	cout << title;
 }
 
-void Menu::selectedBox(int index)
+void MENU::selectedBox(int index)
 {
 	nBox[index].printContent(BLACK, LIGHTGRAY);
 }
 
-int Menu::inputMenu()
+int MENU::inputMenu()
 {
 	int i = 0;
 	char input;

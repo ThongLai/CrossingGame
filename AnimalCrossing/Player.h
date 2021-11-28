@@ -40,16 +40,15 @@ public:
 
 	bool drawDead();
 	
-	template<class T>//Kiem tra lai kieu ham tra ve, boool hay void, neu la bool thi tra ve cai gi
+	template<class T>
 	bool isImpact(vector<T> v, int objNum)
 	{
 		for (int i = 0; i < objNum; ++i)
-			if (v[i].isImpact(mX,mY))
+			if (v[i].isImpact(mX, mY))
 			{
 				mState = 0;
 				return true;
 			}
 		return false;
 	}
-	
 };

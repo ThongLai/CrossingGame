@@ -1,13 +1,21 @@
 #include "CGame.h"
 
-CGame::CGame() : difficulty(0), objNum(2)
+CGame::CGame() : difficulty(0), objNum(2), point(0)
+{
+	Init();
+}
+
+void CGame::Init()
 {
 	vans.resize(objNum);
 	cars.resize(objNum);
 	bird.resize(objNum);
 	alien.resize(objNum);
 
-	for (int i = 0; i < objNum; i++)
+	for (int i = 0; i < 4; ++i)
+		checkPoint[i] = false;
+
+	for (int i = 0; i < objNum; ++i)
 	{
 		vans[i].setXY(i * (Distance(vans[0].getWidth(), objNum) + vans[0].getWidth()), midHeight(ROAD_H, vans[i].getHeight()) + LAND[0]);
 		cars[i].setXY(i * (Distance(cars[0].getWidth(), objNum) + cars[0].getWidth()), midHeight(ROAD_H, cars[i].getHeight()) + LAND[1]);
@@ -23,10 +31,10 @@ CGame::CGame() : difficulty(0), objNum(2)
 
 void CGame::drawGame()
 {
-	Box highScoreBox(GAMEPLAY_W, 0, HIGHSCORE_W, SCREEN_HEIGHT, WHITE, BLACK);
+	BOX highScoreBox(GAMEPLAY_W, 0, HIGHSCORE_W, SCREEN_HEIGHT, WHITE, BLACK);
 	highScoreBox.printBox();
 
-	Box side[2];
+	BOX side[2];
 	side[0].setBox(0, SIDEWALK[0], GAMEPLAY_W, SIDEWALK_H, LIGHTGREEN, BLACK, "START");
 	side[0].printBox();
 	side[1].setBox(0, SIDEWALK[1], GAMEPLAY_W, SIDEWALK_H, LIGHTGREEN, BLACK, "FINISH");
@@ -103,7 +111,7 @@ void CGame::updatePosVehicle(int time)
 	if (vansLight.getState())
 		for (int i = 0; i < objNum; ++i)
 			vans[i].Move();
-	
+
 	if (carLight.getState())
 		for (int i = 0; i < objNum; ++i)
 			cars[i].Move();
@@ -154,7 +162,20 @@ bool CGame::checkImpact()
 
 bool CGame::isFinish()
 {
-	if (player.Y() == 2)
+	if (player.Y() == SIDEWALK[1])
 		return true;
 	else return false;
+}
+
+void CGame::calcPoint()
+{
+	if (!checkPoint[0] && player.Y() == LAND[0])
+		point += 100;
+	else if (!checkPoint[1] && player.Y() == LAND[1])
+		point += 200;
+	else if (!checkPoint[2] && player.Y() == LAND[2])
+		point += 300;
+	else if (!checkPoint[3] && player.Y() == LAND[3])
+		point += 400;
+	else --point;
 }
