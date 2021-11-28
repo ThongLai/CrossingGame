@@ -77,6 +77,31 @@ void CGame::resumeGame(HANDLE t)
 	ResumeThread(t);
 }
 
+void CGame::Remove()
+{
+	for (int i = 0; i < objNum; i++)
+	{
+		vans[i].Remove();
+		cars[i].Remove();
+		bird[i].Remove();
+		alien[i].Remove();
+	}
+
+	player.Remove();
+}
+
+void CGame::nextRound()
+{
+	Remove();
+
+	++difficulty;
+	if (objNum < 4)
+		objNum = difficulty + 2;
+
+	Init();
+	drawGame();
+}
+
 void CGame::pauseGame(HANDLE t)
 {
 	SuspendThread(t);

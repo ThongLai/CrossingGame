@@ -3,7 +3,6 @@
 #include "Alien.h"
 #include "Vans.h"
 #include "Player.h"
-
 #include "CGame.h"
 
 using namespace std;
@@ -24,16 +23,16 @@ void SubThread() {
         game.updatePosVehicle(time);
 
         //Đây là if kết thúc
-        if (game.getPeople().Y() == SIDEWALK[1]) {
+        if (game.getPeople().Y() == SIDEWALK[1])
+        {
             cout << "WIN";
-            break;
+            game.nextRound();
+            continue;
         }
 
         //If impact ở đây
         if (game.checkImpact())
-        {
             game.getPeople().drawDead();
-      	}
         
         Sleep(100);
     }
@@ -44,7 +43,8 @@ int main()
 
     thread sub(SubThread);
 
-    do {
+    do
+    {
         buf = toupper(_getch());
     } while (buf != ESC);
 

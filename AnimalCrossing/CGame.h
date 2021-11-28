@@ -42,6 +42,9 @@ public:
 	void pauseGame(HANDLE); // Tạm dừng Thread
 	void resumeGame(HANDLE); //Quay lai Thread
 
+	void Remove();
+	void nextRound();
+
 	void updatePosPeople(char); //Thực hiện điều khiển di chuyển của CPEOPLE
 	void updatePosVehicle(int); //Thực hiện cho CTRUCK & CCAR di chuyển
 	void updatePosAnimal();//Thực hiện cho CDINAUSOR & CBIRD di chuyển

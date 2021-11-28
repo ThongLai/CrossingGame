@@ -31,6 +31,8 @@ public:
 
 	void Turn(); //Function doi huong cua object
 
+
+	//Bi loi phan lu dau
 	void Move();
 	bool isImpact(int, int);
 };

@@ -160,7 +160,6 @@
     <ClInclude Include="CGame.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Source.h" />
     <ClInclude Include="Trafficlight.h" />
     <ClInclude Include="Vans.h" />
     <ClInclude Include="Vehicle.h" />
