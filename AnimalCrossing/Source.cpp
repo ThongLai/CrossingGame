@@ -33,8 +33,10 @@ void SubThread() {
         //If impact ở đây
         if (game.checkImpact())
             game.getPeople().drawDead();
+
+        game.calcPoint();
         
-        Sleep(50);
+        Sleep(100);
     }
 }
 int main()

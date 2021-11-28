@@ -22,6 +22,7 @@ private:
 	Trafficlight vansLight;
 	Trafficlight carLight;
 	int point;
+	int totalPoint;
 	bool checkPoint[4]; //Check point de tranh viec cong diem nhieu lan
 
 public:

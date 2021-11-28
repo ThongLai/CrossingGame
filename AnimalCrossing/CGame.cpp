@@ -1,12 +1,16 @@
 #include "CGame.h"
 
-CGame::CGame() : difficulty(0), objNum(2), point(0)
+CGame::CGame() : difficulty(0), point(0), totalPoint(0)
 {
 	Init();
 }
 
 void CGame::Init()
 {
+	objNum = difficulty / 2 + 2;
+	if (objNum > 4)
+		objNum = 4;
+
 	vans.resize(objNum);
 	cars.resize(objNum);
 	bird.resize(objNum);
@@ -92,12 +96,12 @@ void CGame::Remove()
 
 void CGame::nextRound()
 {
+	totalPoint += point;
+	point = 0;
 	Remove();
 
 	++difficulty;
-	if (objNum < 4)
-		objNum = difficulty + 2;
-
+	
 	Init();
 	drawGame();
 }
@@ -108,8 +112,8 @@ void CGame::resetGame()
 
 	//drawGame();
 	difficulty = 0;
-	objNum = 2;
 	point = 0;
+	totalPoint = 0;
 
 	vans.clear();
 	cars.clear();
@@ -167,7 +171,7 @@ void CGame::updatePosAnimal()
 	if (rand() % 20 == 0)
 	{
 		//Neu bien dem >=4 thi moi doi huong de tranh viec object di chuyen lac qua lac lai
-		if (bird[0].getCount() >= 4)
+		if (bird[0].getCount() >= 10)
 		{
 			//Doi huong va set lai bien dem count = 0
 			bird[0].setCount(0);
@@ -213,17 +217,29 @@ bool CGame::isFinish()
 void CGame::calcPoint()
 {
 	if (!checkPoint[0] && player.Y() == LAND[0])
+	{
 		point += 100;
+		checkPoint[0] = true;
+	}
 	else if (!checkPoint[1] && player.Y() == LAND[1])
+	{
 		point += 200;
+		checkPoint[1] = true;
+	}	
 	else if (!checkPoint[2] && player.Y() == LAND[2])
+	{
 		point += 300;
+		checkPoint[2] = true;
+	}	
 	else if (!checkPoint[3] && player.Y() == LAND[3])
+	{
 		point += 400;
+		checkPoint[3] = true;
+	}
 	else --point;
 }
 
 int CGame::getPoint()
 {
-	return point;
+	return totalPoint + point;
 }
