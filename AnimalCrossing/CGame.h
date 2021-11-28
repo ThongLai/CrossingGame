@@ -52,4 +52,5 @@ public:
 	bool checkImpact();
 	bool isFinish();
 	void calcPoint();
+	int getPoint();
 };

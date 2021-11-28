@@ -25,7 +25,7 @@ void SubThread() {
         //Đây là if kết thúc
         if (game.getPeople().Y() == SIDEWALK[1])
         {
-            cout << "WIN";
+            cout << game.getPoint() << " ";
             game.nextRound();
             continue;
         }
@@ -34,7 +34,7 @@ void SubThread() {
         if (game.checkImpact())
             game.getPeople().drawDead();
         
-        Sleep(100);
+        Sleep(50);
     }
 }
 int main()

@@ -57,11 +57,15 @@ void Alien::Move()
 	{
 		++mX;
 		++count;
+		if (mX == GAMEPLAY_W) //Neu toi bien phai, gan toa do X = 0
+			mX = 0;
 	}
 	else
 	{
 		--mX;
 		++count;
+		if (mX < 0)
+			mX = GAMEPLAY_W - 1;
 	}
 
 	Draw();

@@ -102,6 +102,24 @@ void CGame::nextRound()
 	drawGame();
 }
 
+void CGame::resetGame()
+{
+	//system("cls");
+
+	//drawGame();
+	difficulty = 0;
+	objNum = 2;
+	point = 0;
+
+	vans.clear();
+	cars.clear();
+	bird.clear();
+	alien.clear();
+
+	Init();
+	drawGame();
+}
+
 void CGame::pauseGame(HANDLE t)
 {
 	SuspendThread(t);
@@ -203,4 +221,9 @@ void CGame::calcPoint()
 	else if (!checkPoint[3] && player.Y() == LAND[3])
 		point += 400;
 	else --point;
+}
+
+int CGame::getPoint()
+{
+	return point;
 }
