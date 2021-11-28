@@ -1,0 +1,41 @@
+﻿  Alien.cpp
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Alien.cpp(11,25): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Animal.cpp
+  Bird.cpp
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Bird.cpp(11,25): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Car.cpp
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Car.h(12,3): error C2001: newline in constant
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Car.cpp(12,25): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  CGame.cpp
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Car.h(12,3): error C2001: newline in constant
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Vans.h(9,3): error C2001: newline in constant
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Vans.h(10,3): error C2001: newline in constant
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Vans.h(11,3): error C2001: newline in constant
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Vans.h(12,3): error C2001: newline in constant
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Player.h(15,3): error C2001: newline in constant
+  Menu.cpp
+  Player.cpp
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Player.h(15,3): error C2001: newline in constant
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Player.cpp(6,25): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Source.cpp
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Vans.h(9,3): error C2001: newline in constant
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Vans.h(10,3): error C2001: newline in constant
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Vans.h(11,3): error C2001: newline in constant
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Vans.h(12,3): error C2001: newline in constant
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Player.h(15,3): error C2001: newline in constant
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Car.h(12,3): error C2001: newline in constant
+  Trafficlight.cpp
+  Vans.cpp
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Vans.h(9,3): error C2001: newline in constant
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Vans.h(10,3): error C2001: newline in constant
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Vans.h(11,3): error C2001: newline in constant
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Vans.h(12,3): error C2001: newline in constant
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Vans.cpp(8,25): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Vehicle.cpp
+  Window.cpp
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Window.cpp(51,18): warning C4838: conversion from 'int' to 'SHORT' requires a narrowing conversion
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Window.cpp(51,21): warning C4838: conversion from 'int' to 'SHORT' requires a narrowing conversion
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Window.cpp(152,37): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Bird.cpp(119): warning C4715: 'Bird::isImpact': not all control paths return a value
+C:\Users\Lai Minh Thong\Documents\GitHub\CrossingGame\AnimalCrossing\Alien.cpp(105): warning C4715: 'Alien::isImpact': not all control paths return a value
