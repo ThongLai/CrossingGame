@@ -83,7 +83,7 @@ void SetUpScreenSize()
 	MID_SCREEN_HEIGHT = midHeight(SCREEN_HEIGHT, ROAD_H * 4 + SIDEWALK_H * 2);
 
 	for (int i = 0; i < 4; i++)
-		LAND[i] = MID_SCREEN_HEIGHT + SIDEWALK_H + ROAD_H * (3-i);
+		LAND[i] = MID_SCREEN_HEIGHT + SIDEWALK_H + ROAD_H * (3 - i);
 
 	SIDEWALK[1] = MID_SCREEN_HEIGHT;
 	SIDEWALK[0] = MID_SCREEN_HEIGHT + 4 * ROAD_H + SIDEWALK_H;
@@ -101,7 +101,7 @@ void setRasterFonts()
 	wcscpy_s(cf.FaceName, L"Terminal");
 	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), 0, &cf);
 }
-bool GetXY(int &x, int &y) {
+bool GetXY(int& x, int& y) {
 	CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
 	HANDLE hStd = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (!GetConsoleScreenBufferInfo(hStd, &screenBufferInfo)) {
@@ -112,7 +112,7 @@ bool GetXY(int &x, int &y) {
 	y = screenBufferInfo.dwCursorPosition.Y;
 	return true;
 }
-bool GetColor(int &color) {
+bool GetColor(int& color) {
 	CONSOLE_SCREEN_BUFFER_INFO info;
 	if (!GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info)) {
 		cout << "GetConsoleScreenBufferInfo (" << GetLastError() << ")\n";

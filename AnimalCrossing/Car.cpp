@@ -4,27 +4,37 @@
 #include "Window.h"
 using namespace std;
 
-
-
-Car::Car()
+Car::Car() : CVEHICLE()
 {
-	car_table = table;
+	vehicle_table = table;
+
 	height = sizeof(table) / sizeof(string);
 	width = table[0].size();
 }
 
-Car::Car(int _x, int _y) : Car()
+Car::Car(int x, int y) : Car()
 {
-	mX = _x;
-	mY = _y;
+	mX = x;
+	mY = y;
 }
+
+Car::Car(const Car& v) : Car()
+{
+	mX = v.mX;
+	mY = v.mY;
+}
+
+Car::~Car()
+{}
 
 void Car::Move()
 {
-	Remove();
+	RemoveMoving(true);
+
+	//Remove();
 
 	mX++;
-	if (mX = GAMEPLAY_W)
+	if (mX == GAMEPLAY_W)
 		mX = 0;
 
 	Draw();

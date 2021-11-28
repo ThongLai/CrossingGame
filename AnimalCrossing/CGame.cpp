@@ -1,13 +1,21 @@
 #include "CGame.h"
 
-CGame::CGame() : difficulty(0), objNum(2)
+CGame::CGame() : difficulty(0), objNum(2), point(0)
+{
+	Init();
+}
+
+void CGame::Init()
 {
 	vans.resize(objNum);
 	cars.resize(objNum);
 	bird.resize(objNum);
 	alien.resize(objNum);
 
-	for (int i = 0; i < objNum; i++)
+	for (int i = 0; i < 4; ++i)
+		checkPoint[i] = false;
+
+	for (int i = 0; i < objNum; ++i)
 	{
 		vans[i].setXY(i * (Distance(vans[0].getWidth(), objNum) + vans[0].getWidth()), midHeight(ROAD_H, vans[i].getHeight()) + LAND[0]);
 		cars[i].setXY(i * (Distance(cars[0].getWidth(), objNum) + cars[0].getWidth()), midHeight(ROAD_H, cars[i].getHeight()) + LAND[1]);
@@ -48,7 +56,6 @@ void CGame::drawGame()
 
 CGame::~CGame()
 {
-
 }
 
 Player CGame::getPeople()
@@ -70,6 +77,49 @@ void CGame::resumeGame(HANDLE t)
 	ResumeThread(t);
 }
 
+void CGame::Remove()
+{
+	for (int i = 0; i < objNum; i++)
+	{
+		vans[i].Remove();
+		cars[i].Remove();
+		bird[i].Remove();
+		alien[i].Remove();
+	}
+
+	player.Remove();
+}
+
+void CGame::nextRound()
+{
+	Remove();
+
+	++difficulty;
+	if (objNum < 4)
+		objNum = difficulty + 2;
+
+	Init();
+	drawGame();
+}
+
+void CGame::resetGame()
+{
+	//system("cls");
+
+	//drawGame();
+	difficulty = 0;
+	objNum = 2;
+	point = 0;
+
+	vans.clear();
+	cars.clear();
+	bird.clear();
+	alien.clear();
+
+	Init();
+	drawGame();
+}
+
 void CGame::pauseGame(HANDLE t)
 {
 	SuspendThread(t);
@@ -80,17 +130,9 @@ void CGame::exitGame(HANDLE t)
 	system("cls");
 }
 
-void CGame::startGame()
-{
-}
-
-void CGame::loadGame(istream)
-{
-}
-
 void CGame::updatePosPeople(char MOVING)
 {
-	
+
 	if (MOVING == ' ') return;
 
 	if (MOVING == 'W') player.UP();
@@ -102,12 +144,86 @@ void CGame::updatePosPeople(char MOVING)
 				if (MOVING == 'S') player.DOWN();
 }
 
-void CGame::updatePosVehicle()
+void CGame::updatePosVehicle(int time)
 {
+	//Thay doi den giao thong
+	if (time % 30 == 0) vansLight.changeLight();
+	if (time % 50 == 0)carLight.changeLight();
 
+	//Di chuyen xe
+	if (vansLight.getState())
+		for (int i = 0; i < objNum; ++i)
+			vans[i].Move();
+
+	if (carLight.getState())
+		for (int i = 0; i < objNum; ++i)
+			cars[i].Move();
 }
 
 void CGame::updatePosAnimal()
 {
+	//Di chuyen Bird
+	//Neu rand() chia het cho x => doi huong
+	if (rand() % 20 == 0)
+	{
+		//Neu bien dem >=4 thi moi doi huong de tranh viec object di chuyen lac qua lac lai
+		if (bird[0].getCount() >= 4)
+		{
+			//Doi huong va set lai bien dem count = 0
+			bird[0].setCount(0);
+			bird[0].Turn();
+		}
+	}
 
+	for (int i = 0; i < objNum; ++i)
+		bird[i].Move();
+
+	//Di chuyen Alien
+	//Neu bien count bang khoang cach thi alien quay dau
+	if (alien[0].getCount() >= (objNum * Distance(alien[0].getWidth(), objNum)))
+	{
+		alien[0].setCount(0);
+		alien[0].Turn();
+	}
+
+	for (int i = 0; i < objNum; ++i)
+		alien[i].Move();
+}
+
+bool CGame::checkImpact()
+{
+	if (player.Y() >= LAND[0])
+		return player.isImpact<Vans>(vans, objNum);
+	else if (player.Y() >= LAND[1])
+		return player.isImpact<Car>(cars, objNum);
+	else if (player.Y() >= LAND[2])
+		return player.isImpact<Bird>(bird, objNum);
+	else if (player.Y() >= LAND[3])
+		return player.isImpact<Alien>(alien, objNum);
+	else return false;
+}
+
+bool CGame::isFinish()
+{
+	if (player.Y() == SIDEWALK[1])
+		return true;
+	else return false;
+}
+
+void CGame::calcPoint()
+{
+	if (!checkPoint[0] && player.Y() == LAND[0])
+		point += 100;
+	else if (!checkPoint[1] && player.Y() == LAND[1])
+		point += 200;
+	else if (!checkPoint[2] && player.Y() == LAND[2])
+		point += 300;
+	else if (!checkPoint[3] && player.Y() == LAND[3])
+		point += 400;
+	else --point;
+}
+
+int CGame::getPoint()
+{
+	return point;
 }

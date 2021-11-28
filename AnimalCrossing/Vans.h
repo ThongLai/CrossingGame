@@ -12,16 +12,13 @@ class Vans : public CVEHICLE
 		"ллллллллллллллл",
 		"O             O"
 	};
-
 public:
-
 	Vans();
 	Vans(int,int);
+	Vans(const Vans&);
+	~Vans();
 
 	void Move();
 	
 	bool isImpact(int,int);
-
-	void moveLeft();
 };
-

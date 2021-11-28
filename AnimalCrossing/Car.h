@@ -1,6 +1,8 @@
 #pragma once
-#include "Vehicle.h"
+#include<string>
+#include"Vehicle.h"
 
+using namespace std;
 
 class Car : public CVEHICLE
 {
@@ -15,8 +17,10 @@ public:
 
 	Car();
 	Car(int, int);
-
-	void Move();
+	Car(const Car&);
+	~Car();
 
 	bool isImpact(int, int);
+
+	void Move();
 };

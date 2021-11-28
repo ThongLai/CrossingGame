@@ -1,11 +1,5 @@
 #include "Trafficlight.h"
 
-void Trafficlight::setXY(int x, int y)
-{
-	this->x = x;
-	this->y = y;
-}
-
 Trafficlight::Trafficlight()
 {
 	x = 50;
@@ -18,6 +12,17 @@ Trafficlight::Trafficlight(int _x, int _y, bool _state)
 	x = _x;
 	y = _y;
 	state = _state;
+}
+
+void Trafficlight::setXY(int x, int y)
+{
+	this->x = x;
+	this->y = y;
+}
+
+bool Trafficlight::getState()
+{
+	return state;
 }
 
 void Trafficlight::initDraw()

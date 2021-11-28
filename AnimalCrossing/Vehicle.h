@@ -8,7 +8,7 @@ protected:
 	int mX, mY;
 	int height, width;
 	int text_color, bg_color;
-	string *car_table;
+	string* vehicle_table;
 
 public:
 	CVEHICLE();
@@ -19,6 +19,7 @@ public:
 	virtual void Tell();
 	virtual void Draw();
 	virtual void Remove();
+	virtual void RemoveMoving(bool);
 
 	int X();
 	int Y();

@@ -1,7 +1,6 @@
 #include "Player.h"
-#include "Window.h"
 
-Player::Player() : mX(0), mY(0), text_color(WHITE), bg_color(BLACK), mState(1)
+Player::Player() : mX(LAND[0] + ROAD_H), mY(midWidth(GAMEPLAY_W, width)), text_color(WHITE), bg_color(BLACK), mState(1)
 {
 	height = sizeof(table) / sizeof(string);
 	width = table[0].size();
@@ -40,26 +39,18 @@ void Player::setXY(int x, int y)
 	mY = y;
 }
 
-int Player::getHeight()
-{
-	return height;
-}
-
-int Player::getWidth()
-{
-	return width;
-}
-
 void Player::Draw()
 {
 	Status SavedStatus;
 	SetTextColor(DefineColor(text_color, bg_color));
 
-	for (int i = 0, iy = mY; iy < mY + height; iy++, i++)
-	{
-		GotoXY(mX, iy);
-		cout << table[i];
-	}
+	for (int i = 0; i < height; ++i)
+		for (int j = 0; j < width; ++j)
+			if (table[i][j] != ' ')
+			{
+				GotoXY(mX + j, mY + i);
+				cout << table[i][j];
+			}
 }
 
 void Player::Remove()
@@ -67,46 +58,73 @@ void Player::Remove()
 	Status SavedStatus;
 	SetTextColor(SavedStatus.getColor());
 
-	for (int iy = mY; iy < mY + height; iy++)
-		for (int ix = mX; ix < mX + width; ix++)
-		{
-			GotoXY(ix, iy);
-			cout << " ";
-		}
+	for (int i = 0; i < height; ++i)
+		for (int j = 0; j < width; ++j)
+			if (table[i][j] != ' ')
+			{
+				GotoXY(mX + j, mY + i);
+				cout << " ";
+			}
 }
 
 
 void Player::UP()
 {
-	Remove();
-	setY(mY - 1);
-	Draw();
+	if (mY == SIDEWALK[1])
+		return;
+	else
+	{
+		Remove();
+		setY(mY - 1);
+		Draw();
+	}
+	
 }
 
 void Player::DOWN()
 {
-	Remove();
-	setY(mY + 1);
-	Draw();
+	if (mY == SIDEWALK[0])
+		return;
+	else
+	{
+		Remove();
+		setY(mY + 1);
+		Draw();
+	}
 }
 
 void Player::LEFT()
 {
-	Remove();
-	setX(mX - 1);
-	Draw();
+	if (mX == 0)
+		return;
+	else
+	{
+		Remove();
+		setX(mX - 1);
+		Draw();
+	}
 }
 
 void Player::RIGHT()
 {
-	Remove();
-	setX(mX + 1);
-	Draw();
+	if (mX + width == GAMEPLAY_W)
+		return;
+	else
+	{
+		Remove();
+		setX(mX + 1);
+		Draw();
+	}
+}
+
+bool Player::isDead()
+{
+	return !mState;
 }
 
 bool Player::drawDead()
 {
-	
+
 	string s[100] =
 	{
 
@@ -114,15 +132,15 @@ bool Player::drawDead()
 "           / ,-. \\      ",
 "      ,-. ( |a a| ) ,-.     ",
 "     :   `( : o ; )'   :       ",
-" ____|____(_.>-<._)____|____",
-"(_|        /     \\        |_)",
+" ___|____(.>-<._)____|____",
+"(|        /     \\        |)",
 " ||      :  `.|,' :       ||",
 "  |___..--|_\\_|_/_|-...___| ",
 "    ;     | /SSt\\ | :",
 "   /  ;  ;| ,'|`. |:  :  \\",
 "  /  /| /|;._____.:|\\ |\\  \\",
-" / ,' `' /  ;| |:  \\ `' `. \\",
-" `'     /  / | | \\  \\     `'",
+" / ,' ' /  ;| |:  \\ ' `. \\",
+" '     /  / | | \\  \\     '",
 "       /  /  ; :  \\  \\",
 "      /  /  /| |\\  \\  \\",
 "     /  /  / | | \\  \\  \\",
@@ -130,7 +148,7 @@ bool Player::drawDead()
 "   /  /  /  /| |\\  \\  \\  \\",
 "  (  /  /  / | | \\  \\  \\  )",
 "   `(_ /  /  ; :  \\  \\ _)'",
-"      `'.(_./___\\._).`'",
+"      '.(_./___\\._).'",
 	};
 
 

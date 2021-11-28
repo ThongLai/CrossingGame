@@ -9,6 +9,7 @@ protected:
 	int height, width;
 	int text_color, bg_color;
 	string *animal_table;
+
 public:
 	CANIMAL();
 	~CANIMAL();
@@ -18,12 +19,14 @@ public:
 	virtual void Draw();
 	virtual void Remove();
 	virtual void Tell();
+	virtual bool isImpact(int,int) = 0;
+	virtual void RemoveMoving(bool);
 
 	int X();
 	int Y();
 	int getHeight();
 	int getWidth();
-
+	
 	void setX(int);
 	void setY(int);
 	void setXY(int, int);
