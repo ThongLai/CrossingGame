@@ -12,7 +12,7 @@ int HIGHSCORE_W;
 int ROAD_H = 9;
 int SIDEWALK_H = 3;
 
-int LAND[4];
+int LANE[4];
 int SIDEWALK[2];
 
 bool PlayGameThread = false;
@@ -83,7 +83,7 @@ void SetUpScreenSize()
 	MID_SCREEN_HEIGHT = midHeight(SCREEN_HEIGHT, ROAD_H * 4 + SIDEWALK_H * 2);
 
 	for (int i = 0; i < 4; i++)
-		LAND[i] = MID_SCREEN_HEIGHT + SIDEWALK_H + ROAD_H * (3 - i);
+		LANE[i] = MID_SCREEN_HEIGHT + SIDEWALK_H + ROAD_H * (3 - i);
 
 	SIDEWALK[1] = MID_SCREEN_HEIGHT;
 	SIDEWALK[0] = MID_SCREEN_HEIGHT + 4 * ROAD_H + SIDEWALK_H;

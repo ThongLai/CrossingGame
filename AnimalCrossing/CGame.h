@@ -4,7 +4,7 @@
 #include "Vans.h"
 #include "Alien.h"
 #include "Bird.h"
-#include"Player.h" //Check lai
+#include"Player.h"
 #include "Trafficlight.h"
 #include "Menu.h"
 

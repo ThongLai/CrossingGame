@@ -15,6 +15,12 @@ void SubThread() {
 
     while (true) {
 
+        if (buf == 'R')
+        {
+            game.resetGame();
+            time = 0;
+        }
+           
         game.updatePosPeople(buf);
         buf = 0;
         ++time;

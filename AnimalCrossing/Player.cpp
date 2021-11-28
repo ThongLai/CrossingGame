@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player() : mX(LAND[0] + ROAD_H), mY(midWidth(GAMEPLAY_W, width)), text_color(WHITE), bg_color(BLACK), mState(1)
+Player::Player() : mX(LANE[0] + ROAD_H), mY(midWidth(GAMEPLAY_W, width)), text_color(WHITE), bg_color(BLACK), mState(1)
 {
 	height = sizeof(table) / sizeof(string);
 	width = table[0].size();

@@ -21,14 +21,14 @@ void CGame::Init()
 
 	for (int i = 0; i < objNum; ++i)
 	{
-		vans[i].setXY(i * (Distance(vans[0].getWidth(), objNum) + vans[0].getWidth()), midHeight(ROAD_H, vans[i].getHeight()) + LAND[0]);
-		cars[i].setXY(i * (Distance(cars[0].getWidth(), objNum) + cars[0].getWidth()), midHeight(ROAD_H, cars[i].getHeight()) + LAND[1]);
-		bird[i].setXY(i * (Distance(bird[0].getWidth(), objNum) + bird[0].getWidth()), midHeight(ROAD_H, bird[i].getHeight()) + LAND[2]);
-		alien[i].setXY(i * (Distance(alien[0].getWidth(), objNum) + alien[0].getWidth()), midHeight(ROAD_H, alien[i].getHeight()) + LAND[3]);
+		vans[i].setXY(i * (Distance(vans[0].getWidth(), objNum) + vans[0].getWidth()), midHeight(ROAD_H, vans[i].getHeight()) + LANE[0]);
+		cars[i].setXY(i * (Distance(cars[0].getWidth(), objNum) + cars[0].getWidth()), midHeight(ROAD_H, cars[i].getHeight()) + LANE[1]);
+		bird[i].setXY(i * (Distance(bird[0].getWidth(), objNum) + bird[0].getWidth()), midHeight(ROAD_H, bird[i].getHeight()) + LANE[2]);
+		alien[i].setXY(i * (Distance(alien[0].getWidth(), objNum) + alien[0].getWidth()), midHeight(ROAD_H, alien[i].getHeight()) + LANE[3]);
 	}
 
-	vansLight.setXY(GAMEPLAY_W, LAND[0]);
-	carLight.setXY(GAMEPLAY_W, LAND[1]);
+	vansLight.setXY(GAMEPLAY_W, LANE[0]);
+	carLight.setXY(GAMEPLAY_W, LANE[1]);
 
 	player.setXY(midWidth(GAMEPLAY_W, 3), SIDEWALK[0]);
 }
@@ -108,9 +108,8 @@ void CGame::nextRound()
 
 void CGame::resetGame()
 {
-	//system("cls");
+	Remove();
 
-	//drawGame();
 	difficulty = 0;
 	point = 0;
 	totalPoint = 0;
@@ -196,13 +195,13 @@ void CGame::updatePosAnimal()
 
 bool CGame::checkImpact()
 {
-	if (player.Y() >= LAND[0])
+	if (player.Y() >= LANE[0])
 		return player.isImpact<Vans>(vans, objNum);
-	else if (player.Y() >= LAND[1])
+	else if (player.Y() >= LANE[1])
 		return player.isImpact<Car>(cars, objNum);
-	else if (player.Y() >= LAND[2])
+	else if (player.Y() >= LANE[2])
 		return player.isImpact<Bird>(bird, objNum);
-	else if (player.Y() >= LAND[3])
+	else if (player.Y() >= LANE[3])
 		return player.isImpact<Alien>(alien, objNum);
 	else return false;
 }
@@ -216,22 +215,22 @@ bool CGame::isFinish()
 
 void CGame::calcPoint()
 {
-	if (!checkPoint[0] && player.Y() == LAND[0])
+	if (!checkPoint[0] && player.Y() == LANE[0])
 	{
 		point += 100;
 		checkPoint[0] = true;
 	}
-	else if (!checkPoint[1] && player.Y() == LAND[1])
+	else if (!checkPoint[1] && player.Y() == LANE[1])
 	{
 		point += 200;
 		checkPoint[1] = true;
 	}	
-	else if (!checkPoint[2] && player.Y() == LAND[2])
+	else if (!checkPoint[2] && player.Y() == LANE[2])
 	{
 		point += 300;
 		checkPoint[2] = true;
 	}	
-	else if (!checkPoint[3] && player.Y() == LAND[3])
+	else if (!checkPoint[3] && player.Y() == LANE[3])
 	{
 		point += 400;
 		checkPoint[3] = true;
