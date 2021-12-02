@@ -270,3 +270,20 @@ int MENU::inputMenu()
 		}
 	}
 }
+
+
+int DeadMenu()
+{
+	int box_width = 21;
+	int box_height = 5;
+	MENU DeadMenu("Do you want to play again?", DEADMENU_SIZE, DEADMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height) * 4 / 3, box_width, box_height, LIGHTGRAY, BLACK);
+
+	int buf = 0;
+	DeadMenu.printMenu();
+
+	do {
+		buf = DeadMenu.inputMenu();
+	} while (buf != 0 && buf != 1 && buf != -1);
+
+	return buf;
+}

@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player() : mX(LAND[0] + ROAD_H), mY(midWidth(GAMEPLAY_W, width)), text_color(WHITE), bg_color(BLACK), mState(1)
+Player::Player() : mX(LANE[0] + ROAD_H), mY(midWidth(GAMEPLAY_W, width)), text_color(WHITE), bg_color(BLACK), mState(1)
 {
 	height = sizeof(table) / sizeof(string);
 	width = table[0].size();
@@ -37,6 +37,12 @@ void Player::setXY(int x, int y)
 {
 	mX = x;
 	mY = y;
+}
+
+void Player::setColor(int _text_color, int _bg_color)
+{
+	text_color = _text_color;
+	bg_color = _bg_color;
 }
 
 void Player::Draw()
@@ -122,82 +128,11 @@ bool Player::isDead()
 	return !mState;
 }
 
-bool Player::drawDead()
+void Player::drawDead()
 {
 
-	string s[100] =
-	{
-
-"            ,-.-.       ",
-"           / ,-. \\      ",
-"      ,-. ( |a a| ) ,-.     ",
-"     :   `( : o ; )'   :       ",
-" ___|____(.>-<._)____|____",
-"(|        /     \\        |)",
-" ||      :  `.|,' :       ||",
-"  |___..--|_\\_|_/_|-...___| ",
-"    ;     | /SSt\\ | :",
-"   /  ;  ;| ,'|`. |:  :  \\",
-"  /  /| /|;._____.:|\\ |\\  \\",
-" / ,' ' /  ;| |:  \\ ' `. \\",
-" '     /  / | | \\  \\     '",
-"       /  /  ; :  \\  \\",
-"      /  /  /| |\\  \\  \\",
-"     /  /  / | | \\  \\  \\",
-"    /  /  /  ; :  \\  \\  \\",
-"   /  /  /  /| |\\  \\  \\  \\",
-"  (  /  /  / | | \\  \\  \\  )",
-"   `(_ /  /  ; :  \\  \\ _)'",
-"      '.(_./___\\._).'",
-	};
 
 
-	int box_width = 20;
-	int box_height = 5;
-	MENU DeadMenu("Do you want to play again?", DEADMENU_SIZE, DEADMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height) * 4 / 3, box_width, box_height, LIGHTGRAY, BLACK);
 
-	int buf = 0;
-	Status SavedState;
 
-	system("cls");
-	int y = 0;
-	int x = SCREEN_HEIGHT + 19;
-	for (int i = 0; i < 21; i++)
-	{
-
-		PrintString(x, y, s[i]);
-		y++;
-	}
-	DeadMenu.printMenu();
-	buf = DeadMenu.inputMenu();
-
-	switch (buf)
-	{
-	case 0:
-	{
-		system("cls");
-		printMessCenter(DEADMENU[0] + " is selected");
-		Sleep(1000);
-		SavedState.ResetToCurrent();
-		//Neu chon muon choi lai
-		return true;
-
-		break;
-	}
-	case 1:
-	{
-		system("cls");
-		printMessCenter(DEADMENU[1] + " is selected");
-		Sleep(1000);
-		SavedState.ResetToCurrent();
-		//Neu chon khong muon choi lai
-		return false;
-		break;
-	}
-	}
-	//nhan nut ESC
-	if (buf == -1 || buf == 1)
-		return false;
-	system("pause");
-	return true;
 }

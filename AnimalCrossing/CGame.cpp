@@ -1,37 +1,52 @@
 #include "CGame.h"
 
-CGame::CGame() : difficulty(0), objNum(2), point(0)
+CGame::CGame() : difficulty(0), point(0), totalPoint(0), UnDeadCMD(false)
 {
+	StartUp();
 	Init();
 }
 
 void CGame::Init()
 {
+	objNum = difficulty / 2 + 2;
+	if (objNum > 4)
+		objNum = 4;
+
 	vans.resize(objNum);
 	cars.resize(objNum);
-	bird.resize(objNum);
-	alien.resize(objNum);
+	birds.resize(objNum);
+	aliens.resize(objNum);
 
 	for (int i = 0; i < 4; ++i)
 		checkPoint[i] = false;
 
 	for (int i = 0; i < objNum; ++i)
 	{
-		vans[i].setXY(i * (Distance(vans[0].getWidth(), objNum) + vans[0].getWidth()), midHeight(ROAD_H, vans[i].getHeight()) + LAND[0]);
-		cars[i].setXY(i * (Distance(cars[0].getWidth(), objNum) + cars[0].getWidth()), midHeight(ROAD_H, cars[i].getHeight()) + LAND[1]);
-		bird[i].setXY(i * (Distance(bird[0].getWidth(), objNum) + bird[0].getWidth()), midHeight(ROAD_H, bird[i].getHeight()) + LAND[2]);
-		alien[i].setXY(i * (Distance(alien[0].getWidth(), objNum) + alien[0].getWidth()), midHeight(ROAD_H, alien[i].getHeight()) + LAND[3]);
+		vans[i].setXY(i * (Distance(vans[0].getWidth(), objNum) + vans[0].getWidth()), midHeight(ROAD_H, vans[i].getHeight()) + LANE[0]);
+		vans[i].setColor(BLUE, BLACK);
+
+		cars[i].setXY(i * (Distance(cars[0].getWidth(), objNum) + cars[0].getWidth()), midHeight(ROAD_H, cars[i].getHeight()) + LANE[1]);
+		cars[i].setColor(LIGHTCYAN, BLACK);
+
+		birds[i].setXY(i * (Distance(birds[0].getWidth(), objNum) + birds[0].getWidth()), midHeight(ROAD_H, birds[i].getHeight()) + LANE[2]);
+		birds[i].setColor(BROWN, BLACK);
+
+		aliens[i].setXY(i * (Distance(aliens[0].getWidth(), objNum) + aliens[0].getWidth()), midHeight(ROAD_H, aliens[i].getHeight()) + LANE[3]);
+		aliens[i].setColor(LIGHTGREEN, BLACK);
 	}
 
-	vansLight.setXY(GAMEPLAY_W, LAND[0]);
-	carLight.setXY(GAMEPLAY_W, LAND[1]);
+	vansLight.setXY(GAMEPLAY_W, LANE[0]);
+	carLight.setXY(GAMEPLAY_W, LANE[1]);
 
 	player.setXY(midWidth(GAMEPLAY_W, 3), SIDEWALK[0]);
+	player.setColor(LIGHTGRAY, BLACK);
 }
 
 void CGame::drawGame()
 {
-	BOX highScoreBox(GAMEPLAY_W, 0, HIGHSCORE_W, SCREEN_HEIGHT, WHITE, BLACK);
+	system("cls");
+
+	BOX highScoreBox(GAMEPLAY_W, 0, STATUS_W, SCREEN_HEIGHT, WHITE, BLACK);
 	highScoreBox.printBox();
 
 	BOX side[2];
@@ -47,11 +62,51 @@ void CGame::drawGame()
 	{
 		vans[i].Draw();
 		cars[i].Draw();
-		bird[i].Draw();
-		alien[i].Draw();
+		birds[i].Draw();
+		aliens[i].Draw();
 	}
 
 	player.Draw();
+}
+
+void CGame::drawDeadMenu()
+{
+	system("cls");
+
+	string angel[21] =
+	{
+	"            ,-.-.       ",
+	"           / ,-. \\      ",
+	"      ,-. ( |a a| ) ,-.     ",
+	"     :   `( : o ; )'   :       ",
+	" ____|____(_.>-<._)____|____",
+	"(_|        /     \\        |_)",
+	" ||      :  `.|,' :       ||",
+	"  |___..--|_\\_|_/_|-...___| ",
+	"    ;     | /SSt\\ | :",
+	"   /  ;  ;| ,'|`. |:  :  \\",
+	"  /  /| /|;._____.:|\\ |\\  \\",
+	" / ,' `' /  ;| |:  \\ `' `. \\",
+	" `'     /  / | | \\  \\     `'",
+	"       /  /  ; :  \\  \\",
+	"      /  /  /| |\\  \\  \\",
+	"     /  /  / | | \\  \\  \\",
+	"    /  /  /  ; :  \\  \\  \\",
+	"   /  /  /  /| |\\  \\  \\  \\",
+	"  (  /  /  / | | \\  \\  \\  )",
+	"   `(_ /  /  ; :  \\  \\ _)'",
+	"      `'.(_./___\\._).`'",
+	};
+
+
+	int angel_height = sizeof(angel) / sizeof(string);
+
+	for (int i = 0; i < angel_height; i++)
+	{
+
+		GotoXY(midWidth(SCREEN_WIDTH, angel[3].size()), midHeight(SCREEN_HEIGHT, angel_height) * 2 / 20 + i);
+		cout << angel[i];
+	}
 }
 
 CGame::~CGame()
@@ -83,8 +138,8 @@ void CGame::Remove()
 	{
 		vans[i].Remove();
 		cars[i].Remove();
-		bird[i].Remove();
-		alien[i].Remove();
+		birds[i].Remove();
+		aliens[i].Remove();
 	}
 
 	player.Remove();
@@ -92,29 +147,28 @@ void CGame::Remove()
 
 void CGame::nextRound()
 {
+	totalPoint += point;
+	point = 0;
 	Remove();
 
 	++difficulty;
-	if (objNum < 4)
-		objNum = difficulty + 2;
-
+	
 	Init();
 	drawGame();
 }
 
 void CGame::resetGame()
 {
-	//system("cls");
+	Remove();
 
-	//drawGame();
 	difficulty = 0;
-	objNum = 2;
 	point = 0;
+	totalPoint = 0;
 
 	vans.clear();
 	cars.clear();
-	bird.clear();
-	alien.clear();
+	birds.clear();
+	aliens.clear();
 
 	Init();
 	drawGame();
@@ -167,39 +221,42 @@ void CGame::updatePosAnimal()
 	if (rand() % 20 == 0)
 	{
 		//Neu bien dem >=4 thi moi doi huong de tranh viec object di chuyen lac qua lac lai
-		if (bird[0].getCount() >= 4)
+		if (birds[0].getCount() >= 10)
 		{
 			//Doi huong va set lai bien dem count = 0
-			bird[0].setCount(0);
-			bird[0].Turn();
+			birds[0].setCount(0);
+			birds[0].Turn();
 		}
 	}
 
 	for (int i = 0; i < objNum; ++i)
-		bird[i].Move();
+		birds[i].Move();
 
 	//Di chuyen Alien
 	//Neu bien count bang khoang cach thi alien quay dau
-	if (alien[0].getCount() >= (objNum * Distance(alien[0].getWidth(), objNum)))
+	if (aliens[0].getCount() >= (objNum * Distance(aliens[0].getWidth(), objNum)))
 	{
-		alien[0].setCount(0);
-		alien[0].Turn();
+		aliens[0].setCount(0);
+		aliens[0].Turn();
 	}
 
 	for (int i = 0; i < objNum; ++i)
-		alien[i].Move();
+		aliens[i].Move();
 }
 
 bool CGame::checkImpact()
 {
-	if (player.Y() >= LAND[0])
-		return player.isImpact<Vans>(vans, objNum);
-	else if (player.Y() >= LAND[1])
-		return player.isImpact<Car>(cars, objNum);
-	else if (player.Y() >= LAND[2])
-		return player.isImpact<Bird>(bird, objNum);
-	else if (player.Y() >= LAND[3])
-		return player.isImpact<Alien>(alien, objNum);
+	if (UnDeadCMD)
+		return false;
+
+	if (player.Y() >= LANE[0])
+		return player.isImpact<Vans>(vans);
+	else if (player.Y() >= LANE[1])
+		return player.isImpact<Car>(cars);
+	else if (player.Y() >= LANE[2])
+		return player.isImpact<Bird>(birds);
+	else if (player.Y() >= LANE[3])
+		return player.isImpact<Alien>(aliens);
 	else return false;
 }
 
@@ -212,18 +269,53 @@ bool CGame::isFinish()
 
 void CGame::calcPoint()
 {
-	if (!checkPoint[0] && player.Y() == LAND[0])
+	if (!checkPoint[0] && player.Y() == LANE[0])
+	{
 		point += 100;
-	else if (!checkPoint[1] && player.Y() == LAND[1])
+		checkPoint[0] = true;
+	}
+	else if (!checkPoint[1] && player.Y() == LANE[1])
+	{
 		point += 200;
-	else if (!checkPoint[2] && player.Y() == LAND[2])
+		checkPoint[1] = true;
+	}	
+	else if (!checkPoint[2] && player.Y() == LANE[2])
+	{
 		point += 300;
-	else if (!checkPoint[3] && player.Y() == LAND[3])
+		checkPoint[2] = true;
+	}	
+	else if (!checkPoint[3] && player.Y() == LANE[3])
+	{
 		point += 400;
+		checkPoint[3] = true;
+	}
 	else --point;
 }
 
 int CGame::getPoint()
 {
-	return point;
+	return totalPoint + point;
+}
+
+void CGame::addBuf(char key)
+{
+	if (CCODE.compare(0, buf.size() + 1, buf + key) == 0)
+	{
+		buf.push_back(key);
+		CheckUnDeadCMD();
+	}
+	else
+	{
+		buf.clear();
+		buf.push_back(key);
+	}
+}
+
+void CGame::CheckUnDeadCMD()
+{
+	if (buf == CCODE)
+	{
+		UnDeadCMD = !UnDeadCMD;
+		buf.clear();
+	}
 }

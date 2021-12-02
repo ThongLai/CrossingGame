@@ -63,3 +63,5 @@ public:
 
 	int inputMenu();
 };
+
+int DeadMenu();

@@ -4,30 +4,39 @@
 #include "Vans.h"
 #include "Alien.h"
 #include "Bird.h"
-#include"Player.h" //Check lai
+#include"Player.h"
 #include "Trafficlight.h"
 #include "Menu.h"
 
 class CGame
 {
-private:
+private:	
 	vector <Vans> vans;
 	vector <Car> cars;
-	vector <Alien> alien;
-	vector <Bird> bird;
+	vector <Alien> aliens;
+	vector <Bird> birds;
 	Player player;
+
+	Trafficlight vansLight;
+	Trafficlight carLight;
+
 	int difficulty;
 	int objNum;
 	//int speed;
-	Trafficlight vansLight;
-	Trafficlight carLight;
+
 	int point;
+	int totalPoint;
 	bool checkPoint[4]; //Check point de tranh viec cong diem nhieu lan
+
+	string buf;
+	bool UnDeadCMD;
 
 public:
 	CGame(); //Chuẩn bị dữ liệu cho tất cả các đối tượng 
 	void Init();
 	void drawGame(); //Thực hiện vẽ trò chơi ra màn hình sau khi có dữ liệu
+	void drawDeadMenu();
+	void drawStatus();
 	~CGame(); // Hủy tài nguyên đã cấp phát
 
 	Player getPeople();//Lấy thông tin người
@@ -53,4 +62,7 @@ public:
 	bool isFinish();
 	void calcPoint();
 	int getPoint();
+
+	void addBuf(char key);
+	void CheckUnDeadCMD();
 };

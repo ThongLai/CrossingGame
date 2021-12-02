@@ -29,6 +29,8 @@ public:
 	void setY(int);
 	void setXY(int x, int y);
 
+	void setColor(int _text_color, int _bg_color);
+
 	void Draw();
 	void Remove();
 	void UP();
@@ -38,12 +40,12 @@ public:
 
 	bool isDead();
 
-	bool drawDead();
+	void drawDead();
 	
 	template<class T>
-	bool isImpact(vector<T> v, int objNum)
+	bool isImpact(vector<T> v)
 	{
-		for (int i = 0; i < objNum; ++i)
+		for (int i = 0; i < v.size(); ++i)
 			if (v[i].isImpact(mX, mY))
 			{
 				mState = 0;

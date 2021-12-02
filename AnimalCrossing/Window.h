@@ -40,15 +40,15 @@ extern int SCREEN_HEIGHT;
 
 extern int MID_SCREEN_HEIGHT;
 extern int GAMEPLAY_W;
-extern int HIGHSCORE_W;
+extern int STATUS_W;
 extern int ROAD_H;
 extern int SIDEWALK_H;
 
-extern int LAND[4];
+extern int LANE[4];
 extern int SIDEWALK[2];
 
-extern bool PlayGameThread;
-extern bool MainThread;
+extern string CCODE;
+
 
 
 void FixConsoleWindow();
