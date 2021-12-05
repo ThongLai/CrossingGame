@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <iomanip>
+#include <conio.h>
 #include <thread>
 
 #pragma comment(lib, "Winmm.lib")

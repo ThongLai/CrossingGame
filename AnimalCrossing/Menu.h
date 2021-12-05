@@ -7,7 +7,10 @@ extern string MAINMENU[];
 extern int MAINMENU_SIZE;
 extern string DEADMENU[];
 extern int DEADMENU_SIZE;
-
+extern string GUIDEBUTTONS[];
+extern int GUIDEBUTTONS_SIZE;
+extern string STATUSVAR[];
+extern int STATUSVAR_SIZE;
 
 
 class BOX
@@ -63,5 +66,8 @@ public:
 
 	int inputMenu();
 };
+
+void drawStartFinishLine();
+void drawStatusBox();
 
 int DeadMenu();

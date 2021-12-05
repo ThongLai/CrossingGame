@@ -15,6 +15,6 @@ public:
 
 	void setXY(int, int);
 	
-	void initDraw();
+	void Draw();
 	void changeLight();
 };

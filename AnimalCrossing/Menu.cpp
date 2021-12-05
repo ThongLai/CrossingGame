@@ -16,7 +16,25 @@ string DEADMENU[] = {
 	"Yes",
 	"No",
 };
-extern int DEADMENU_SIZE = sizeof(DEADMENU) / sizeof(string);
+int DEADMENU_SIZE = sizeof(DEADMENU) / sizeof(string);
+
+string GUIDEBUTTONS[] =
+{
+	"P - Pause/Continue",
+	"R - Reset Game",
+	"T - Save Game",
+	"Esc - Return to Main Menu"
+
+};
+int GUIDEBUTTONS_SIZE = sizeof(GUIDEBUTTONS) / sizeof(string);
+
+string STATUSVAR[] = {
+	"Time: ",
+	"Level: ",
+	"Scores: "
+};
+int STATUSVAR_SIZE = sizeof(STATUSVAR) / sizeof(string);
+
 
 
 //BOX
@@ -269,6 +287,37 @@ int MENU::inputMenu()
 			}
 		}
 	}
+}
+
+
+void drawStartFinishLine()
+{
+	BOX side[2];
+
+	side[0].setBox(0, SIDEWALK[0], GAMEPLAY_W, SIDEWALK_H, GREEN, BLACK, "START");
+	side[0].printBox();
+
+	side[1].setBox(0, SIDEWALK[1], GAMEPLAY_W, SIDEWALK_H, GREEN, BLACK, "FINISH");
+	side[1].printBox();
+}
+
+void drawStatusBox()
+{
+	BOX StatusBox(GAMEPLAY_W, 0, STATUS_W, SCREEN_HEIGHT, LIGHTMAGENTA, BLACK);
+	StatusBox.printBox();
+
+	for (int i = 0; i < STATUSVAR_SIZE; i++)
+	{
+		GotoXY(GAMEPLAY_W + midWidth(STATUS_W, STATUSVAR[0].size() + 10), midHeight(SCREEN_HEIGHT, STATUSVAR_SIZE + GUIDEBUTTONS_SIZE + 1) * 3 / 5 + i * 2);
+		cout << STATUSVAR[i];
+	}
+
+	for (int i = 0; i < GUIDEBUTTONS_SIZE; i++)
+	{
+		GotoXY(GAMEPLAY_W + midWidth(STATUS_W, GUIDEBUTTONS[3]), midHeight(SCREEN_HEIGHT, STATUSVAR_SIZE + GUIDEBUTTONS_SIZE + 1) * 3/2 + i*2);
+		cout << GUIDEBUTTONS[i];
+	}
+
 }
 
 

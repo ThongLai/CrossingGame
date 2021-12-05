@@ -25,7 +25,7 @@ bool Trafficlight::getState()
 	return state;
 }
 
-void Trafficlight::initDraw()
+void Trafficlight::Draw()
 {
 	Status SavedStatus;
 

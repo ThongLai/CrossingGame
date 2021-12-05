@@ -24,6 +24,8 @@ public:
 
 	int X();
 	int Y();
+	int getHeight();
+	int getWidth();
 
 	void setX(int);
 	void setY(int);

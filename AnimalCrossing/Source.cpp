@@ -12,28 +12,28 @@ int buf = 0;
 
 void SubThread() {
 
-    int time = 0;
 
     while (true) {
 
         if (buf == 'R')
-        {
             game.resetGame();
-            time = 0;
-        }
 
-           
+		game.drawCommand();
+
         game.updatePosPeople(buf);
         buf = 0;
-        ++time;
 
         game.updatePosAnimal();
-        game.updatePosVehicle(time);
+        game.updatePosVehicle();
+
+		game.calcPoint();
+
+		game.updateTime();
+		game.updateGameStatus();
 
         //Đây là if kết thúc
         if (game.getPeople().Y() == SIDEWALK[1])
         {
-            cout << game.getPoint() << " ";
             game.nextRound();
             continue;
         }
@@ -44,16 +44,13 @@ void SubThread() {
 
 int main()
 {
-
     thread sub(SubThread);
-	game.pauseGame(sub.native_handle());
+	game.pauseThread(sub.native_handle());
 
 
 	int box_width = 20;
 	int box_height = 3;
 	MENU MainMenu("Main Menu", MAINMENU_SIZE, MAINMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * MAINMENU_SIZE), box_width, box_height, WHITE, BLACK);
-
-	bool isPause = false;
 
 	while (true)
 	{
@@ -75,7 +72,7 @@ int main()
 			//mciSendString(TEXT("play Gameplay_Theme from 0 repeat"), NULL, 0, NULL);
 
 			game.resetGame();
-			game.resumeGame(sub.native_handle());
+			game.resumeThread(sub.native_handle());
 
 
 
@@ -89,7 +86,7 @@ int main()
 		{
 			system("cls");
 
-			game.resumeGame(sub.native_handle());
+			game.resumeThread(sub.native_handle());
 
 			break;
 		}
@@ -159,19 +156,21 @@ int main()
 			{
 				buf = toupper(_getch());
 
-				if (!isPause && buf == 'P')
+				if (buf == 'P')
 				{
 					game.pauseGame(sub.native_handle());
-					isPause = true;
-				}
-				else if (buf == 'C')
-				{
+					game.drawPauseScreen();
+
+					do {
+						buf = toupper(_getch());
+					} while (buf != 'P');
+
+					game.drawGame();
 					game.resumeGame(sub.native_handle());
-					isPause = false;
 				}
 				else if (buf == ESC)
 				{
-					game.pauseGame(sub.native_handle());
+					game.pauseThread(sub.native_handle());
 					break;
 				}
 				else
@@ -181,7 +180,7 @@ int main()
 			}
 			else if (game.checkImpact())
 			{
-				game.pauseGame(sub.native_handle());
+				game.pauseThread(sub.native_handle());
 				system("cls");
 				game.drawDeadMenu();
 
@@ -191,7 +190,7 @@ int main()
 					system("cls");
 
 					game.resetGame();
-					game.resumeGame(sub.native_handle());
+					game.resumeThread(sub.native_handle());
 				}
 				else
 				{

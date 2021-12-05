@@ -164,8 +164,8 @@ int midHeight(int height, int content_height)
 //Set up when start up
 void StartUp()
 {
-	//FullScreenMode();
 	setRasterFonts();
+	//FullScreenMode();
 	SetWindowSize(SCREEN_WIDTH_PXL, SCREEN_HEIGHT_PXL);
 	FixConsoleWindow();
 	HideCursor();

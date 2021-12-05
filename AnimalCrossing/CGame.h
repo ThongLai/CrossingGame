@@ -20,23 +20,29 @@ private:
 	Trafficlight vansLight;
 	Trafficlight carLight;
 
-	int difficulty;
+	int level;
 	int objNum;
 	//int speed;
 
-	int point;
-	int totalPoint;
+	int scores;
 	bool checkPoint[4]; //Check point de tranh viec cong diem nhieu lan
 
+	//Check cheatcode de test game
 	string buf;
 	bool UnDeadCMD;
+
+	//Time in game
+	clock_t START_TIME;
+	clock_t TIME;
+	clock_t PAUSE_TIME;
 
 public:
 	CGame(); //Chuẩn bị dữ liệu cho tất cả các đối tượng 
 	void Init();
 	void drawGame(); //Thực hiện vẽ trò chơi ra màn hình sau khi có dữ liệu
 	void drawDeadMenu();
-	void drawStatus();
+	void drawPauseScreen();
+	void drawCommand();
 	~CGame(); // Hủy tài nguyên đã cấp phát
 
 	Player getPeople();//Lấy thông tin người
@@ -48,17 +54,22 @@ public:
 	void startGame(); // Thực hiện bắt đầu vào trò chơi
 	void loadGame(istream); // Thực hiện tải lại trò chơi đã lưu
 	void saveGame(istream); // Thực hiện lưu lại dữ liệu trò chơi
-	void pauseGame(HANDLE); // Tạm dừng Thread
+	void pauseThread(HANDLE); // Tạm dừng Thread
+	void pauseGame(HANDLE t);
+	void resumeThread(HANDLE); //Quay lai Thread
 	void resumeGame(HANDLE); //Quay lai Thread
 
 	void Remove();
 	void nextRound();
 
 	void updatePosPeople(char); //Thực hiện điều khiển di chuyển của CPEOPLE
-	void updatePosVehicle(int); //Thực hiện cho CTRUCK & CCAR di chuyển
+	void updatePosVehicle(); //Thực hiện cho CTRUCK & CCAR di chuyển
 	void updatePosAnimal();//Thực hiện cho CDINAUSOR & CBIRD di chuyển
+	void updateTime();//Thực hiện cập nhật thời gian
+	void updateGameStatus();//Thực hiện cập nhật level, điểm
 
 	bool checkImpact();
+	void checkDrawLines();
 	bool isFinish();
 	void calcPoint();
 	int getPoint();

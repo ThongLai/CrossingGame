@@ -23,6 +23,16 @@ int Player::Y()
 	return mY;
 }
 
+int Player::getHeight()
+{
+	return height;
+}
+
+int Player::getWidth()
+{
+	return width;
+}
+
 void Player::setX(int x)
 {
 	mX = x;

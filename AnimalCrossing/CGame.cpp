@@ -1,6 +1,6 @@
 #include "CGame.h"
 
-CGame::CGame() : difficulty(0), point(0), totalPoint(0), UnDeadCMD(false)
+CGame::CGame() : level(0), scores(0), UnDeadCMD(false), START_TIME(clock() / CLOCKS_PER_SEC), TIME(0), PAUSE_TIME(0)
 {
 	StartUp();
 	Init();
@@ -8,7 +8,7 @@ CGame::CGame() : difficulty(0), point(0), totalPoint(0), UnDeadCMD(false)
 
 void CGame::Init()
 {
-	objNum = difficulty / 2 + 2;
+	objNum = level / 2 + 2;
 	if (objNum > 4)
 		objNum = 4;
 
@@ -46,17 +46,13 @@ void CGame::drawGame()
 {
 	system("cls");
 
-	BOX highScoreBox(GAMEPLAY_W, 0, STATUS_W, SCREEN_HEIGHT, WHITE, BLACK);
-	highScoreBox.printBox();
+	drawStartFinishLine();
 
-	BOX side[2];
-	side[0].setBox(0, SIDEWALK[0], GAMEPLAY_W, SIDEWALK_H, LIGHTGREEN, BLACK, "START");
-	side[0].printBox();
-	side[1].setBox(0, SIDEWALK[1], GAMEPLAY_W, SIDEWALK_H, LIGHTGREEN, BLACK, "FINISH");
-	side[1].printBox();
+	drawStatusBox();
+	updateGameStatus();
 
-	vansLight.initDraw();
-	carLight.initDraw();
+	vansLight.Draw();
+	carLight.Draw();
 
 	for (int i = 0; i < objNum; i++)
 	{
@@ -109,6 +105,24 @@ void CGame::drawDeadMenu()
 	}
 }
 
+void CGame::drawPauseScreen()
+{
+	system("cls");
+	GotoXY((SCREEN_WIDTH - 5) / 2, (SCREEN_HEIGHT) / 4 - 3);
+	cout << "PAUSE";
+
+	printMessCenter("P - Back to the game");
+}
+
+void CGame::drawCommand()
+{
+	Status SavedStatus;
+	SetTextColor(DefineColor(RED, BLACK));
+
+	GotoXY(GAMEPLAY_W + midWidth(STATUS_W, 19), SCREEN_HEIGHT - 3);
+	cout << (UnDeadCMD ? "UNDEAD COMMAND - ON" : string(19, ' '));
+}
+
 CGame::~CGame()
 {
 }
@@ -127,10 +141,6 @@ vector<CANIMAL> CGame::getAnimal()
 {
 	return vector<CANIMAL>();
 }
-void CGame::resumeGame(HANDLE t)
-{
-	ResumeThread(t);
-}
 
 void CGame::Remove()
 {
@@ -147,11 +157,9 @@ void CGame::Remove()
 
 void CGame::nextRound()
 {
-	totalPoint += point;
-	point = 0;
 	Remove();
 
-	++difficulty;
+	++level;
 	
 	Init();
 	drawGame();
@@ -161,9 +169,12 @@ void CGame::resetGame()
 {
 	Remove();
 
-	difficulty = 0;
-	point = 0;
-	totalPoint = 0;
+	level = 0;
+	scores = 0;
+
+	START_TIME = clock() / CLOCKS_PER_SEC;
+	TIME = 0;
+	PAUSE_TIME = 0;
 
 	vans.clear();
 	cars.clear();
@@ -174,35 +185,72 @@ void CGame::resetGame()
 	drawGame();
 }
 
-void CGame::pauseGame(HANDLE t)
-{
-	SuspendThread(t);
-}
 void CGame::exitGame(HANDLE t)
 {
 	TerminateThread(t, 0);
 	system("cls");
 }
 
+void CGame::pauseThread(HANDLE t)
+{
+	SuspendThread(t);
+}
+
+void CGame::pauseGame(HANDLE t)
+{
+	PAUSE_TIME = clock() / CLOCKS_PER_SEC;
+	pauseThread(t);
+}
+
+void CGame::resumeThread(HANDLE t)
+{
+	ResumeThread(t);
+}
+
+void CGame::resumeGame(HANDLE t)
+{
+	START_TIME += clock() / CLOCKS_PER_SEC - PAUSE_TIME;
+	TIME = clock() / CLOCKS_PER_SEC - START_TIME;
+
+	resumeThread(t);
+}
+
 void CGame::updatePosPeople(char MOVING)
 {
 
-	if (MOVING == ' ') return;
+	switch (MOVING)
+	{
+	case 'W':
+	case KEY_UP:
+		player.UP();
+		checkDrawLines();
+		break;
 
-	if (MOVING == 'W') player.UP();
-	else
-		if (MOVING == 'A') player.LEFT();
-		else
-			if (MOVING == 'D') player.RIGHT();
-			else
-				if (MOVING == 'S') player.DOWN();
+	case 'A':
+	case KEY_LEFT:
+		player.LEFT();
+		checkDrawLines();
+		break;
+
+	case 'D':
+	case KEY_RIGHT:
+		player.RIGHT();
+		checkDrawLines();
+		break;
+
+	case 'S':
+	case KEY_DOWN:
+		player.DOWN();
+		checkDrawLines();
+		break;
+	}
 }
 
-void CGame::updatePosVehicle(int time)
+void CGame::updatePosVehicle()
 {
 	//Thay doi den giao thong
-	if (time % 30 == 0) vansLight.changeLight();
-	if (time % 50 == 0)carLight.changeLight();
+	if ((TIME % 60) % 30 == 0) vansLight.changeLight();
+	if ((TIME % 60) % 50 == 0) carLight.changeLight();
 
 	//Di chuyen xe
 	if (vansLight.getState())
@@ -244,6 +292,34 @@ void CGame::updatePosAnimal()
 		aliens[i].Move();
 }
 
+void CGame::updateTime()
+{
+	if (clock() / CLOCKS_PER_SEC - START_TIME - TIME < 1)
+		return;
+
+	TIME = clock() / CLOCKS_PER_SEC - START_TIME;
+	scores -= scores > 0 ? 1 : 0;
+
+	GotoXY(GAMEPLAY_W + midWidth(STATUS_W, STATUSVAR[0].size() + 10) + 3 +STATUSVAR[0].size(), midHeight(SCREEN_HEIGHT, STATUSVAR_SIZE + GUIDEBUTTONS_SIZE + 1) * 3 / 5);
+	cout << setfill('0') << setw(2) << TIME / 3600 << ":" << setfill('0') << setw(2) << (TIME / 60) % 60 << ":" << setfill('0') << setw(2) << TIME % 60 << endl;
+}
+
+void CGame::updateGameStatus()
+{
+	GotoXY(GAMEPLAY_W + midWidth(STATUS_W, STATUSVAR[0].size() + 10) + 3 + STATUSVAR[0].size(), midHeight(SCREEN_HEIGHT, STATUSVAR_SIZE + GUIDEBUTTONS_SIZE + 1) * 3 / 5 + 2);
+	cout << level;
+
+	GotoXY(GAMEPLAY_W + midWidth(STATUS_W, STATUSVAR[0].size() + 10) + 3 + STATUSVAR[0].size(), midHeight(SCREEN_HEIGHT, STATUSVAR_SIZE + GUIDEBUTTONS_SIZE + 1) * 3 / 5 + 4);
+	cout << string(STATUS_W - (midWidth(STATUS_W, STATUSVAR[0].size() + 10) + 3 + STATUSVAR[0].size() + 1), ' ');
+
+	GotoXY(GAMEPLAY_W + midWidth(STATUS_W, STATUSVAR[0].size() + 10) + 3 + STATUSVAR[0].size(), midHeight(SCREEN_HEIGHT, STATUSVAR_SIZE + GUIDEBUTTONS_SIZE + 1) * 3 / 5 + 4);
+	cout << scores;
+
+	drawCommand();
+}
+
+
+
 bool CGame::checkImpact()
 {
 	if (UnDeadCMD)
@@ -251,13 +327,14 @@ bool CGame::checkImpact()
 
 	if (player.Y() >= LANE[0])
 		return player.isImpact<Vans>(vans);
-	else if (player.Y() >= LANE[1])
+	if (player.Y() >= LANE[1])
 		return player.isImpact<Car>(cars);
-	else if (player.Y() >= LANE[2])
+	if (player.Y() >= LANE[2])
 		return player.isImpact<Bird>(birds);
-	else if (player.Y() >= LANE[3])
+	if (player.Y() >= LANE[3])
 		return player.isImpact<Alien>(aliens);
-	else return false;
+
+	return false;
 }
 
 bool CGame::isFinish()
@@ -271,30 +348,29 @@ void CGame::calcPoint()
 {
 	if (!checkPoint[0] && player.Y() == LANE[0])
 	{
-		point += 100;
+		scores += 100;
 		checkPoint[0] = true;
 	}
 	else if (!checkPoint[1] && player.Y() == LANE[1])
 	{
-		point += 200;
+		scores += 200;
 		checkPoint[1] = true;
 	}	
 	else if (!checkPoint[2] && player.Y() == LANE[2])
 	{
-		point += 300;
+		scores += 300;
 		checkPoint[2] = true;
 	}	
 	else if (!checkPoint[3] && player.Y() == LANE[3])
 	{
-		point += 400;
+		scores += 400;
 		checkPoint[3] = true;
 	}
-	else --point;
 }
 
 int CGame::getPoint()
 {
-	return totalPoint + point;
+	return scores;
 }
 
 void CGame::addBuf(char key)
@@ -316,6 +392,16 @@ void CGame::CheckUnDeadCMD()
 	if (buf == CCODE)
 	{
 		UnDeadCMD = !UnDeadCMD;
+
 		buf.clear();
+	}
+}
+
+void CGame::checkDrawLines()
+{
+	if (player.Y() + player.getHeight() >= SIDEWALK[0] - 1 || (player.Y() >= SIDEWALK[1] && player.Y() <= SIDEWALK[1] + SIDEWALK_H - 1))
+	{
+		drawStartFinishLine();
+		player.Draw();
 	}
 }
