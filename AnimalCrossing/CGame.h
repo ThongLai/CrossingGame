@@ -52,8 +52,8 @@ public:
 	void resetGame(); // Thực hiện thiết lập lại toàn bộ dữ liệu như lúc đầu
 	void exitGame(HANDLE); // Thực hiện thoát Thread 
 	void startGame(); // Thực hiện bắt đầu vào trò chơi
-	void loadGame(istream); // Thực hiện tải lại trò chơi đã lưu
-	void saveGame(istream); // Thực hiện lưu lại dữ liệu trò chơi
+	void loadGame(); // Thực hiện tải lại trò chơi đã lưu
+	void saveGame(); // Thực hiện lưu lại dữ liệu trò chơi
 	void pauseThread(HANDLE); // Tạm dừng Thread
 	void pauseGame(HANDLE t);
 	void resumeThread(HANDLE); //Quay lai Thread

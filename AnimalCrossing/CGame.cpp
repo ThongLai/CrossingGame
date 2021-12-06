@@ -215,6 +215,49 @@ void CGame::resumeGame(HANDLE t)
 	resumeThread(t);
 }
 
+void CGame::loadGame() {
+	string fileName = "GameData\\";
+	string playerName;
+	system("cls");
+	cout << "Nhap ten nguoi choi de load: ";
+	getline(cin, playerName);
+	fileName += playerName;
+	fileName += ".txt";
+	Remove();
+	point = 0;
+	fstream inp(fileName, ios::in);
+
+	inp >> difficulty;
+	inp >> totalPoint;
+	vans.clear();
+	cars.clear();
+	bird.clear();
+	alien.clear();
+	system("cls");
+	Init();
+	drawGame();
+	inp.close();
+	
+}
+
+void CGame::saveGame() {
+	string fileName = "GameData\\";
+	string playerName;
+	system("cls");
+	cout << "Nhap ten nguoi choi de save: ";
+	getline(cin, playerName);
+	fileName += playerName;
+	fileName += ".txt";
+	fstream out(fileName, ios::out);
+	out << difficulty;
+	out << " ";
+	out << totalPoint;
+	out.close();
+	system("cls");
+	drawGame();
+}
+
+
 void CGame::updatePosPeople(char MOVING)
 {
 
