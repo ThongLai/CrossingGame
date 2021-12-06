@@ -9,54 +9,6 @@ CVEHICLE::~CVEHICLE()
 	text_color = bg_color = 0;
 }
 
-void CVEHICLE::Tell()
-{
-	//ANIMAL CRYING SOUND HERE
-}
-
-//void CVEHICLE::RemoveMoving(bool direct)
-//{
-//	Status SavedStatus;
-//	SetTextColor(SavedStatus.getColor());
-//
-//	if (direct)
-//	{
-//		for (int i = 0; i < height; ++i)
-//		{
-//			GotoXY(mX, mY + i);
-//			cout << " ";
-//		}
-//
-//		return;
-//	}
-//	else
-//	{
-//		if (mX + width <= GAMEPLAY_W)
-//		{
-//			for (int i = 0; i < height; ++i)
-//			{
-//				GotoXY(mX + width - 1, mY + i);
-//				cout << " ";
-//			}
-//
-//			return;
-//		}
-//		else if (mX + width > GAMEPLAY_W)
-//		{
-//			int part2_length = (mX + width) - GAMEPLAY_W;
-//			int part1_length = width - part2_length;
-//
-//			for (int i = 0; i < height; ++i)
-//			{
-//				GotoXY(0 + part2_length - 1, mY + i);
-//				cout << " ";
-//			}
-//
-//			return;
-//		}
-//	}
-//}
-
 void CVEHICLE::RemoveMoving(bool direct)
 {
 	Status SavedStatus;
@@ -236,38 +188,6 @@ void CVEHICLE::Remove()
 		}
 	}
 }
-
-//void CVEHICLE::Draw()
-//{
-//	Status SavedStatus;
-//	SetTextColor(DefineColor(text_color, bg_color));
-//
-//	if (mX >= 0 && mX + width <= GAMEPLAY_W)
-//	{
-//		for (int i = 0, iy = mY; iy < mY + height; iy++, i++)
-//		{
-//			GotoXY(mX, iy);
-//			cout << vehicle_table[i];
-//		};
-//	}
-//	else if (mX + width > GAMEPLAY_W)
-//	{
-//		int part2_length = (mX + width) - GAMEPLAY_W;
-//		int part1_length = width - part2_length;
-//
-//		for (int i = 0, iy = mY; iy < mY + height; iy++, i++)
-//		{
-//			GotoXY(mX, iy);
-//			cout << vehicle_table[i].substr(0, part1_length);
-//		}
-//
-//		for (int i = 0, iy = mY; iy < mY + height; iy++, i++)
-//		{
-//			GotoXY(0, iy);
-//			cout << vehicle_table[i].substr(part1_length, part2_length);
-//		}
-//	}
-//}
 
 void CVEHICLE::Draw()
 {

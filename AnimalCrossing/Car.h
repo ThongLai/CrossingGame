@@ -23,4 +23,7 @@ public:
 	bool isImpact(int, int);
 
 	void Move();
+
+	void Tell();
+	void SurroundingSound();
 };

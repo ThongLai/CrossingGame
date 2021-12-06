@@ -22,7 +22,6 @@ private:
 
 	int level;
 	int objNum;
-	//int speed;
 
 	int scores;
 	bool checkPoint[4]; //Check point de tranh viec cong diem nhieu lan
@@ -36,12 +35,15 @@ private:
 	clock_t TIME;
 	clock_t PAUSE_TIME;
 
+	//
+	int curSound;
+
 public:
 	CGame(); //Chuẩn bị dữ liệu cho tất cả các đối tượng 
 	void Init();
 	void drawGame(); //Thực hiện vẽ trò chơi ra màn hình sau khi có dữ liệu
-	void drawDeadMenu();
-	void drawPauseScreen();
+	void drawDeadMenu(); //Thực hiện vẽ trò chơi ra màn hình sau người chơi thua
+	void drawPauseScreen(); //Thực hiện vẽ màn hình tạm dừng
 	void drawCommand();
 	~CGame(); // Hủy tài nguyên đã cấp phát
 
@@ -51,7 +53,6 @@ public:
 
 	void resetGame(); // Thực hiện thiết lập lại toàn bộ dữ liệu như lúc đầu
 	void exitGame(HANDLE); // Thực hiện thoát Thread 
-	void startGame(); // Thực hiện bắt đầu vào trò chơi
 	void loadGame(); // Thực hiện tải lại trò chơi đã lưu
 	void saveGame(); // Thực hiện lưu lại dữ liệu trò chơi
 	void pauseThread(HANDLE); // Tạm dừng Thread
@@ -63,7 +64,7 @@ public:
 	void nextRound();
 
 	void updatePosPeople(char); //Thực hiện điều khiển di chuyển của CPEOPLE
-	void updatePosVehicle(); //Thực hiện cho CTRUCK & CCAR di chuyển
+	void updatePosVehicle(int); //Thực hiện cho CTRUCK & CCAR di chuyển
 	void updatePosAnimal();//Thực hiện cho CDINAUSOR & CBIRD di chuyển
 	void updateTime();//Thực hiện cập nhật thời gian
 	void updateGameStatus();//Thực hiện cập nhật level, điểm
@@ -73,6 +74,8 @@ public:
 	bool isFinish();
 	void calcPoint();
 	int getPoint();
+
+	void soundEffects();
 
 	void addBuf(char key);
 	void CheckUnDeadCMD();

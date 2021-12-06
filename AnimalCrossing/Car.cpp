@@ -40,6 +40,16 @@ void Car::Move()
 	Draw();
 }
 
+void Car::Tell()
+{
+	mciSendString(TEXT("play Car_Crash from 0"), NULL, 0, NULL);
+}
+
+void Car::SurroundingSound()
+{
+	mciSendString(TEXT("play Car_SD from 0"), NULL, 0, NULL);
+}
+
 bool Car::isImpact(int x, int y)
 {
 	if ((y == Y() + 1) && (x + 1 == X() - 1)) {

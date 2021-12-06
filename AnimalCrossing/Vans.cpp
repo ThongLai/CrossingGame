@@ -139,3 +139,12 @@ bool Vans::isImpact(int x, int y)
 	return true;
 }
 
+void Vans::Tell()
+{
+	mciSendString(TEXT("play Vans_Crash from 0"), NULL, 0, NULL);
+}
+
+void Vans::SurroundingSound()
+{
+	mciSendString(TEXT("play Vans_SD from 0"), NULL, 0, NULL);
+}

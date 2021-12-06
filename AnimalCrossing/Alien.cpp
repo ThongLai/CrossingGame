@@ -108,6 +108,16 @@ bool Alien::isImpact(int x, int y)
 	}
 }
 
+void Alien::Tell()
+{
+	mciSendString(TEXT("play Alien_Crash from 0"), NULL, 0, NULL);
+}
+
+void Alien::SurroundingSound()
+{
+	mciSendString(TEXT("play Alien_SD from 0"), NULL, 0, NULL);
+}
+
 bool Alien::getDirect()
 {
 	return direct;

@@ -9,27 +9,29 @@ using namespace std;
 
 CGame game;
 int buf = 0;
+bool isPause = false;
 
 void SubThread() {
 
-
+	int time = 0;
     while (true) {
-
-        if (buf == 'R')
-            game.resetGame();
+		
 
 		game.drawCommand();
 
-        game.updatePosPeople(buf);
-        buf = 0;
+		game.updatePosPeople(buf);
+		buf = 0;
+		time++;
 
-        game.updatePosAnimal();
-        game.updatePosVehicle();
+		game.updatePosAnimal();
+		game.updatePosVehicle(time);
 
 		game.calcPoint();
 
 		game.updateTime();
 		game.updateGameStatus();
+
+		game.soundEffects();
 
         //Đây là if kết thúc
         if (game.getPeople().Y() == SIDEWALK[1])
@@ -37,6 +39,11 @@ void SubThread() {
             game.nextRound();
             continue;
         }
+		else if (game.checkImpact())
+		{
+			isPause = true;
+			while (isPause) {}
+		}
 
         Sleep(100);
     }
@@ -56,9 +63,9 @@ int main()
 	{
 		system("cls");
 		MainMenu.printMenu();
+		mciSendString(TEXT("play Menu_Theme from 0 repeat"), NULL, 0, NULL);
 
 		buf = MainMenu.inputMenu();
-		//mciSendString(TEXT("play Menu_Theme repeat"), NULL, 0, NULL);
 
 
 
@@ -67,9 +74,12 @@ int main()
 		{
 		case 0:
 		{
-			//mciSendString(TEXT("stop Menu_Theme"), NULL, 0, NULL);
+			system("cls");
+			printMessCenter("LOADING GAME...");
+			Sleep(1000);
 
-			//mciSendString(TEXT("play Gameplay_Theme from 0 repeat"), NULL, 0, NULL);
+			mciSendString(TEXT("stop Menu_Theme"), NULL, 0, NULL);
+			mciSendString(TEXT("play Gameplay_Theme from 0 repeat"), NULL, 0, NULL);
 
 			game.resetGame();
 			game.resumeThread(sub.native_handle());
@@ -77,8 +87,6 @@ int main()
 
 
 
-			//mciSendString(TEXT("stop Gameplay_Theme"), NULL, 0, NULL);
-			//mciSendString(TEXT("play Menu_Theme from 0 repeat"), NULL, 0, NULL);
 
 			break;
 		}
@@ -168,19 +176,35 @@ int main()
 					game.drawGame();
 					game.resumeGame(sub.native_handle());
 				}
+				else if (buf == 'M')
+				{
+					game.pauseGame(sub.native_handle());
+					game.saveGame();
+					game.resumeGame(sub.native_handle());
+				}
+				else if (buf == 'L')
+				{
+					game.pauseGame(sub.native_handle());
+					game.loadGame();
+					game.resumeGame(sub.native_handle());
+				}
+				else if (buf == 'R')
+					game.resetGame();
 				else if (buf == ESC)
 				{
+					mciSendString(TEXT("stop Gameplay_Theme"), NULL, 0, NULL);
 					game.pauseThread(sub.native_handle());
+
 					break;
 				}
 				else
-				{
 					game.addBuf(buf);
-				}
 			}
 			else if (game.checkImpact())
 			{
-				game.pauseThread(sub.native_handle());
+				mciSendString(TEXT("stop Gameplay_Theme"), NULL, 0, NULL);
+				while (!isPause) {}
+
 				system("cls");
 				game.drawDeadMenu();
 
@@ -188,14 +212,16 @@ int main()
 				{
 					//Neu chon muon choi lai
 					system("cls");
+					mciSendString(TEXT("play Gameplay_Theme from 0 repeat"), NULL, 0, NULL);
 
 					game.resetGame();
-					game.resumeThread(sub.native_handle());
+					isPause = false;
 				}
 				else
 				{
 					//Neu chon khong muon choi lai
-
+					isPause = false;
+					game.pauseGame(sub.native_handle());
 					break;
 				}
 			}

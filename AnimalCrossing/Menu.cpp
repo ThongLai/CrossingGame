@@ -22,7 +22,8 @@ string GUIDEBUTTONS[] =
 {
 	"P - Pause/Continue",
 	"R - Reset Game",
-	"T - Save Game",
+	"M - Save Game",
+	"L - Load Game",
 	"Esc - Return to Main Menu"
 
 };
@@ -314,7 +315,7 @@ void drawStatusBox()
 
 	for (int i = 0; i < GUIDEBUTTONS_SIZE; i++)
 	{
-		GotoXY(GAMEPLAY_W + midWidth(STATUS_W, GUIDEBUTTONS[3]), midHeight(SCREEN_HEIGHT, STATUSVAR_SIZE + GUIDEBUTTONS_SIZE + 1) * 3/2 + i*2);
+		GotoXY(GAMEPLAY_W + midWidth(STATUS_W, GUIDEBUTTONS[GUIDEBUTTONS_SIZE - 1]), midHeight(SCREEN_HEIGHT, STATUSVAR_SIZE + GUIDEBUTTONS_SIZE + 1) * 3 / 2 + i * 2);
 		cout << GUIDEBUTTONS[i];
 	}
 

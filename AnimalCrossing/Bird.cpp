@@ -118,6 +118,16 @@ bool Bird::isImpact(int x, int y)
 	}
 }
 
+void Bird::Tell()
+{
+	mciSendString(TEXT("play Bird_Crash from 0"), NULL, 0, NULL);
+}
+
+void Bird::SurroundingSound()
+{
+	mciSendString(TEXT("play Bird_SD from 0"), NULL, 0, NULL);
+}
+
 //void Bird::moveLeft()
 //{
 //	Status SavedStatus;

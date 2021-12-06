@@ -51,6 +51,7 @@ public:
 			if (v[i].isImpact(mX, mY))
 			{
 				mState = 0;
+				v[i].Tell();
 				return true;
 			}
 		return false;

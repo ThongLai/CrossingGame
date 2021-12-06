@@ -124,6 +124,17 @@ void OpenSoundFiles()
 {
 	mciSendString(TEXT("open \"MenuTheme.mp3\" type mpegvideo alias Menu_Theme"), NULL, 0, NULL);
 	mciSendString(TEXT("open \"GamePlayTheme.mp3\" type mpegvideo alias Gameplay_Theme"), NULL, 0, NULL);
+
+	mciSendString(TEXT("open \"Vans_Crash.mp3\" type mpegvideo alias Vans_Crash"), NULL, 0, NULL);
+
+	mciSendString(TEXT("open \"Car_SD.mp3\" type mpegvideo alias Car_SD"), NULL, 0, NULL);
+	mciSendString(TEXT("open \"Car_Crash.mp3\" type mpegvideo alias Car_Crash"), NULL, 0, NULL);
+
+	mciSendString(TEXT("open \"Alien_SD.mp3\" type mpegvideo alias Alien_SD"), NULL, 0, NULL);
+	mciSendString(TEXT("open \"Alien_Crash.mp3\" type mpegvideo alias Alien_Crash"), NULL, 0, NULL);
+
+	mciSendString(TEXT("open \"Bird_SD.mp3\" type mpegvideo alias Bird_SD"), NULL, 0, NULL);
+	mciSendString(TEXT("open \"Bird_Crash.mp3\" type mpegvideo alias Bird_Crash"), NULL, 0, NULL);
 }
 int Distance(int objWidth, int objNum)
 {

@@ -18,9 +18,11 @@ public:
 	virtual void Move() = 0;
 	virtual void Draw();
 	virtual void Remove();
-	virtual void Tell();
+	virtual void Tell() = 0;
 	virtual bool isImpact(int,int) = 0;
 	virtual void RemoveMoving(bool);
+	virtual void SurroundingSound() = 0;
+
 
 	int X();
 	int Y();

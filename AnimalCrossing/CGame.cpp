@@ -1,6 +1,6 @@
 #include "CGame.h"
 
-CGame::CGame() : level(0), scores(0), UnDeadCMD(false), START_TIME(clock() / CLOCKS_PER_SEC), TIME(0), PAUSE_TIME(0)
+CGame::CGame() : level(0), scores(0), curSound(0), UnDeadCMD(false), START_TIME(clock() / CLOCKS_PER_SEC), TIME(0), PAUSE_TIME(0)
 {
 	StartUp();
 	Init();
@@ -171,6 +171,7 @@ void CGame::resetGame()
 
 	level = 0;
 	scores = 0;
+	curSound = 0;
 
 	START_TIME = clock() / CLOCKS_PER_SEC;
 	TIME = 0;
@@ -215,7 +216,8 @@ void CGame::resumeGame(HANDLE t)
 	resumeThread(t);
 }
 
-void CGame::loadGame() {
+void CGame::loadGame() 
+{
 	string fileName = "GameData\\";
 	string playerName;
 	system("cls");
@@ -224,34 +226,36 @@ void CGame::loadGame() {
 	fileName += playerName;
 	fileName += ".txt";
 	Remove();
-	point = 0;
+	scores = 0;
 	fstream inp(fileName, ios::in);
 
-	inp >> difficulty;
-	inp >> totalPoint;
+	inp >> level >> scores >> TIME >> START_TIME;
+
 	vans.clear();
 	cars.clear();
-	bird.clear();
-	alien.clear();
+	birds.clear();
+	aliens.clear();
+
 	system("cls");
 	Init();
 	drawGame();
 	inp.close();
-	
 }
 
-void CGame::saveGame() {
+void CGame::saveGame() 
+{
 	string fileName = "GameData\\";
 	string playerName;
 	system("cls");
+
 	cout << "Nhap ten nguoi choi de save: ";
 	getline(cin, playerName);
 	fileName += playerName;
 	fileName += ".txt";
 	fstream out(fileName, ios::out);
-	out << difficulty;
-	out << " ";
-	out << totalPoint;
+
+	out << level << " " << scores << " " << TIME << " " << START_TIME;
+
 	out.close();
 	system("cls");
 	drawGame();
@@ -289,11 +293,11 @@ void CGame::updatePosPeople(char MOVING)
 	}
 }
 
-void CGame::updatePosVehicle()
+void CGame::updatePosVehicle(int time)
 {
 	//Thay doi den giao thong
-	if ((TIME % 60) % 30 == 0) vansLight.changeLight();
-	if ((TIME % 60) % 50 == 0) carLight.changeLight();
+	if (time % 30 == 0) vansLight.changeLight();
+	if (time % 50 == 0) carLight.changeLight();
 
 	//Di chuyen xe
 	if (vansLight.getState())
@@ -437,6 +441,28 @@ void CGame::CheckUnDeadCMD()
 		UnDeadCMD = !UnDeadCMD;
 
 		buf.clear();
+	}
+}
+
+void CGame::soundEffects()
+{
+	if (player.Y() >= LANE[0] && curSound == 0)
+	{
+		vans[0].SurroundingSound();
+		curSound = 1;
+	}
+	else if (player.Y() >= LANE[1])
+	{ 
+		cars[0].SurroundingSound();
+		//xiu lam tiep
+	}
+	else if (player.Y() >= LANE[2])
+	{
+		birds[0].SurroundingSound();
+	}
+	else if (player.Y() >= LANE[3])
+	{
+		aliens[0].SurroundingSound();
 	}
 }
 

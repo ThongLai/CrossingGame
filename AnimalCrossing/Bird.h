@@ -32,4 +32,7 @@ public:
 
 	void Move(); //Function di chuyen cua object
 	bool isImpact(int, int); //Function tra ve gia tri bool true neu nguoi va cham voi object
+
+	void Tell();
+	void SurroundingSound();
 };

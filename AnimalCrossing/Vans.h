@@ -21,4 +21,7 @@ public:
 	void Move();
 	
 	bool isImpact(int,int);
+
+	void Tell();
+	void SurroundingSound();
 };

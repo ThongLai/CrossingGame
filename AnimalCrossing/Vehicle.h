@@ -16,10 +16,11 @@ public:
 
 	//Moving pattern for each vehicle
 	virtual void Move() = 0;
-	virtual void Tell();
+	virtual void Tell() = 0;
 	virtual void Draw();
 	virtual void Remove();
 	virtual void RemoveMoving(bool);
+	virtual void SurroundingSound() = 0;
 
 	int X();
 	int Y();
