@@ -8,8 +8,10 @@
 #include "Trafficlight.h"
 #include "Menu.h"
 
+
 class CGame
 {
+	bool isExit;
 private:	
 	vector <Vans> vans;
 	vector <Car> cars;
@@ -52,7 +54,7 @@ public:
 	vector <CANIMAL> getAnimal(); //Lấy danh sách các thú
 
 	void resetGame(); // Thực hiện thiết lập lại toàn bộ dữ liệu như lúc đầu
-	void exitGame(HANDLE); // Thực hiện thoát Thread 
+	void exitGame(bool&); // Thực hiện thoát Thread 
 	void loadGame(); // Thực hiện tải lại trò chơi đã lưu
 	void saveGame(); // Thực hiện lưu lại dữ liệu trò chơi
 	void pauseThread(HANDLE); // Tạm dừng Thread
