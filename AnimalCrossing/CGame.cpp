@@ -186,9 +186,9 @@ void CGame::resetGame()
 	drawGame();
 }
 
-void CGame::exitGame(HANDLE t)
+void CGame::exitGame(bool& isExit)
 {
-	TerminateThread(t, 0);
+	isExit = true;
 	system("cls");
 }
 

@@ -10,7 +10,7 @@ using namespace std;
 CGame game;
 int buf = 0;
 bool isPause = false;
-
+bool isExit = false;
 void SubThread() {
 
 	int time = 0;
@@ -44,7 +44,8 @@ void SubThread() {
 			isPause = true;
 			while (isPause) {}
 		}
-
+		
+		if (isExit) break;
         Sleep(100);
     }
 }
@@ -149,12 +150,9 @@ int main()
 		}
 		if (buf == -1 || buf == 7)
 		{
-			//game.exitGame(sub.native_handle());
+			game.exitGame(isExit);
 			break;
 		}
-
-
-
 
 
 
