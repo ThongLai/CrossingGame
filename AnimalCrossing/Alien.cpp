@@ -43,9 +43,7 @@ Alien::~Alien()
 
 void Alien::Turn()
 {
-	if (direct == true)
-		direct = false;
-	else direct = true;
+	direct = !direct;
 }
 
 void Alien::Move()

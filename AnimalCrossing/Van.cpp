@@ -1,6 +1,6 @@
-#include "Vans.h"
+#include "Van.h"
 
-Vans::Vans() : CVEHICLE()
+Van::Van() : CVEHICLE()
 {
 	vehicle_table = table;
 
@@ -8,22 +8,22 @@ Vans::Vans() : CVEHICLE()
 	width = table[0].size();
 }
 
-Vans::Vans(int x, int y) : Vans()
+Van::Van(int x, int y) : Van()
 {
 	mX = x;
 	mY = y;
 }
 
-Vans::Vans(const Vans& v) :Vans()
+Van::Van(const Van& v) :Van()
 {
 	mX = v.mX;
 	mY = v.mY;
 }
 
-Vans::~Vans()
+Van::~Van()
 {}
 
-void Vans::Move()
+void Van::Move()
 {
 	RemoveMoving(false);
 
@@ -105,7 +105,7 @@ void Vans::Move()
 //	}
 //}
 
-bool Vans::isImpact(int x, int y)
+bool Van::isImpact(int x, int y)
 {
 	//xet ngoai hcn
 	if (x <= X() - 3 || x >= X() + 15 || y <= Y() - 3 || y >= Y() + 5) return false;
@@ -139,12 +139,12 @@ bool Vans::isImpact(int x, int y)
 	return true;
 }
 
-void Vans::Tell()
+void Van::Tell()
 {
-	mciSendString(TEXT("play Vans_Crash from 0"), NULL, 0, NULL);
+	mciSendString(TEXT("play Van_Crash from 0"), NULL, 0, NULL);
 }
 
-void Vans::SurroundingSound()
+void Van::SurroundingSound()
 {
-	mciSendString(TEXT("play Vans_SD from 0"), NULL, 0, NULL);
+	mciSendString(TEXT("play Van_SD from 0"), NULL, 0, NULL);
 }

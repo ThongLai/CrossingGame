@@ -1,42 +1,49 @@
 #include "CGame.h"
 
-CGame::CGame() : level(0), scores(0), curSound(0), UnDeadCMD(false), START_TIME(clock() / CLOCKS_PER_SEC), TIME(0), PAUSE_TIME(0)
+CGame::CGame() : level(0), score(0), curSound(0), START_TIME(clock() / CLOCKS_PER_SEC), TIME(0), PAUSE_TIME(0), pause(true), UnDeadCMD(false)
 {
 	StartUp();
+
+	vansLight.setXY(GAMEPLAY_W, LANE[0]);
+	carLight.setXY(GAMEPLAY_W, LANE[1]);
+
 	Init();
+}
+
+CGame::~CGame()
+{
+	resetData();
 }
 
 void CGame::Init()
 {
-	objNum = level / 2 + 2;
-	if (objNum > 4)
-		objNum = 4;
+	if (objNum < 4)
+	{
+		objNum = level / 2 + 2;
 
-	vans.resize(objNum);
-	cars.resize(objNum);
-	birds.resize(objNum);
-	aliens.resize(objNum);
+		vans.resize(objNum);
+		cars.resize(objNum);
+		birds.resize(objNum);
+		aliens.resize(objNum);
+
+		for (int i = 0; i < objNum; ++i)
+		{
+			vans[i].setXY(i * (Distance(vans[i].getWidth(), objNum) + vans[i].getWidth()), midHeight(ROAD_H, vans[i].getHeight()) + LANE[0]);
+			vans[i].setColor(BLUE, BLACK);
+
+			cars[i].setXY(i * (Distance(cars[i].getWidth(), objNum) + cars[i].getWidth()), midHeight(ROAD_H, cars[i].getHeight()) + LANE[1]);
+			cars[i].setColor(LIGHTCYAN, BLACK);
+
+			birds[i].setXY(i * (Distance(birds[i].getWidth(), objNum) + birds[i].getWidth()), midHeight(ROAD_H, birds[i].getHeight()) + LANE[2]);
+			birds[i].setColor(BROWN, BLACK);
+
+			aliens[i].setXY(i * (Distance(aliens[i].getWidth(), objNum) + aliens[i].getWidth()), midHeight(ROAD_H, aliens[i].getHeight()) + LANE[3]);
+			aliens[i].setColor(LIGHTGREEN, BLACK);
+		}
+	}
 
 	for (int i = 0; i < 4; ++i)
 		checkPoint[i] = false;
-
-	for (int i = 0; i < objNum; ++i)
-	{
-		vans[i].setXY(i * (Distance(vans[0].getWidth(), objNum) + vans[0].getWidth()), midHeight(ROAD_H, vans[i].getHeight()) + LANE[0]);
-		vans[i].setColor(BLUE, BLACK);
-
-		cars[i].setXY(i * (Distance(cars[0].getWidth(), objNum) + cars[0].getWidth()), midHeight(ROAD_H, cars[i].getHeight()) + LANE[1]);
-		cars[i].setColor(LIGHTCYAN, BLACK);
-
-		birds[i].setXY(i * (Distance(birds[0].getWidth(), objNum) + birds[0].getWidth()), midHeight(ROAD_H, birds[i].getHeight()) + LANE[2]);
-		birds[i].setColor(BROWN, BLACK);
-
-		aliens[i].setXY(i * (Distance(aliens[0].getWidth(), objNum) + aliens[0].getWidth()), midHeight(ROAD_H, aliens[i].getHeight()) + LANE[3]);
-		aliens[i].setColor(LIGHTGREEN, BLACK);
-	}
-
-	vansLight.setXY(GAMEPLAY_W, LANE[0]);
-	carLight.setXY(GAMEPLAY_W, LANE[1]);
 
 	player.setXY(midWidth(GAMEPLAY_W, 3), SIDEWALK[0]);
 	player.setColor(LIGHTGRAY, BLACK);
@@ -123,10 +130,6 @@ void CGame::drawCommand()
 	cout << (UnDeadCMD ? "UNDEAD COMMAND - ON" : string(19, ' '));
 }
 
-CGame::~CGame()
-{
-}
-
 Player CGame::getPeople()
 {
 	return player;
@@ -167,130 +170,182 @@ void CGame::nextRound()
 
 void CGame::resetGame()
 {
-	Remove();
-
-	level = 0;
-	scores = 0;
-	curSound = 0;
-
-	START_TIME = clock() / CLOCKS_PER_SEC;
-	TIME = 0;
-	PAUSE_TIME = 0;
-
-	vans.clear();
-	cars.clear();
-	birds.clear();
-	aliens.clear();
+	resetData();
 
 	Init();
 	drawGame();
 }
 
-void CGame::exitGame(bool& isExit)
+void CGame::exitGame()
 {
-	isExit = true;
+	// AUTO SAVE here
+
 	system("cls");
 }
 
-void CGame::pauseThread(HANDLE t)
+void CGame::pauseThread()
 {
-	SuspendThread(t);
+	pause = true;
 }
 
-void CGame::pauseGame(HANDLE t)
+void CGame::pauseGame()
 {
 	PAUSE_TIME = clock() / CLOCKS_PER_SEC;
-	pauseThread(t);
+	pauseThread();
 }
 
-void CGame::resumeThread(HANDLE t)
+void CGame::resumeThread()
 {
-	ResumeThread(t);
+	pause = false;
 }
 
-void CGame::resumeGame(HANDLE t)
+void CGame::resumeGame()
 {
 	START_TIME += clock() / CLOCKS_PER_SEC - PAUSE_TIME;
 	TIME = clock() / CLOCKS_PER_SEC - START_TIME;
 
-	resumeThread(t);
+	resumeThread();
 }
 
-void CGame::loadGame() 
+int CGame::loadGame() 
 {
-	string fileName = "GameData\\";
-	string playerName;
 	system("cls");
-	cout << "Nhap ten nguoi choi de load: ";
-	getline(cin, playerName);
-	fileName += playerName;
-	fileName += ".txt";
-	Remove();
-	scores = 0;
-	fstream inp(fileName, ios::in);
 
-	inp >> level >> scores >> TIME >> START_TIME;
+	int buf = Load_Menu();
 
-	vans.clear();
-	cars.clear();
-	birds.clear();
-	aliens.clear();
+	if (buf == -2)
+	{
+		return -2;
+	}
+	else if (buf < SavedPlayers.size())
+	{
+		resetData();
 
-	system("cls");
-	Init();
+		level = SavedPlayers[buf].getLevel();
+		score = SavedPlayers[buf].getScore();
+		TIME = SavedPlayers[buf].getTime();
+		START_TIME = clock() / CLOCKS_PER_SEC - TIME;
+
+		Init();
+		player.setXY(SavedPlayers[buf].getX(), SavedPlayers[buf].getY());
+
+		int j = 2;
+		while (checkImpact())
+		{
+			for (int i = 0; i < objNum; ++i)
+			{
+				vans[i].setXY(i * (Distance(vans[0].getWidth(), objNum) + vans[0].getWidth()) + player.getWidth()*j, midHeight(ROAD_H, vans[i].getHeight()) + LANE[0]);
+				cars[i].setXY(i * (Distance(cars[0].getWidth(), objNum) + cars[0].getWidth()) + player.getWidth() * j, midHeight(ROAD_H, cars[i].getHeight()) + LANE[1]);
+				birds[i].setXY(i * (Distance(birds[0].getWidth(), objNum) + birds[0].getWidth()) + player.getWidth() * j, midHeight(ROAD_H, birds[i].getHeight()) + LANE[2]);
+				aliens[i].setXY(i * (Distance(aliens[0].getWidth(), objNum) + aliens[0].getWidth()) + player.getWidth() * j, midHeight(ROAD_H, aliens[i].getHeight()) + LANE[3]);
+			}
+
+			birds[0].Turn();
+			aliens[0].Turn();
+			
+			j++;
+		}
+	}
+	else if (buf == SavedPlayers.size())
+	{
+		system("cls");
+		buf = Remove_Menu();
+
+		while (buf >= 0 && buf < SavedPlayers.size())
+		{
+			RemovePlayer(buf);
+			
+			system("cls");
+			printMessCenter("DELETED!");
+			Sleep(1000);
+			system("cls");
+
+			buf = Remove_Menu();
+		}
+
+		return -2;
+	}
+	else
+		return -2;
+
 	drawGame();
-	inp.close();
+	return buf;
 }
 
 void CGame::saveGame() 
 {
-	string fileName = "GameData\\";
-	string playerName;
 	system("cls");
 
-	cout << "Nhap ten nguoi choi de save: ";
-	getline(cin, playerName);
-	fileName += playerName;
-	fileName += ".txt";
-	fstream out(fileName, ios::out);
+	int buf = Save_Menu();
+	
+	if (buf < SavedPlayers.size())
+	{
+		Data playerData(SavedPlayers[buf].getName(), level, score, TIME, player.X(), player.Y());
+		SavePlayer(playerData, buf);
+	}
+	else if (buf == SavedPlayers.size())
+	{
+		system("cls");
 
-	out << level << " " << scores << " " << TIME << " " << START_TIME;
+		Data playerData("", level, score, TIME, player.X(), player.Y());
+		string name;
 
-	out.close();
-	system("cls");
+		GotoXY(midWidth(SCREEN_WIDTH, "Enter Your Name: "), midHeight(SCREEN_HEIGHT, 1));
+		cout << "Enter Your Name: ";
+
+		getline(cin, name);
+		playerData.setName(name);
+
+		AddPlayer(playerData);
+	}
+	else if (buf == SavedPlayers.size() + 1)
+	{
+		system("cls");
+		buf = Remove_Menu();
+
+		while (buf >= 0 && buf < SavedPlayers.size())
+		{
+			RemovePlayer(buf);
+
+			system("cls");
+			printMessCenter("DELETED!");
+			Sleep(1000);
+			system("cls");
+
+			buf = Remove_Menu();
+		}
+	}
+
 	drawGame();
 }
 
 
-void CGame::updatePosPeople(char MOVING)
+bool CGame::updatePosPeople(char MOVING)
 {
-
 	switch (MOVING)
 	{
 	case 'W':
-	case KEY_UP:
 		player.UP();
 		checkDrawLines();
-		break;
+		return true;
 
 	case 'A':
-	case KEY_LEFT:
 		player.LEFT();
 		checkDrawLines();
-		break;
+		return true;
 
 	case 'D':
-	case KEY_RIGHT:
 		player.RIGHT();
 		checkDrawLines();
-		break;
+		return true;
 
 	case 'S':
-	case KEY_DOWN:
 		player.DOWN();
 		checkDrawLines();
-		break;
+		return true;
 	}
+
+	return false;
 }
 
 void CGame::updatePosVehicle(int time)
@@ -345,7 +400,7 @@ void CGame::updateTime()
 		return;
 
 	TIME = clock() / CLOCKS_PER_SEC - START_TIME;
-	scores -= scores > 0 ? 1 : 0;
+	score -= score > 0 ? 1 : 0;
 
 	GotoXY(GAMEPLAY_W + midWidth(STATUS_W, STATUSVAR[0].size() + 10) + 3 +STATUSVAR[0].size(), midHeight(SCREEN_HEIGHT, STATUSVAR_SIZE + GUIDEBUTTONS_SIZE + 1) * 3 / 5);
 	cout << setfill('0') << setw(2) << TIME / 3600 << ":" << setfill('0') << setw(2) << (TIME / 60) % 60 << ":" << setfill('0') << setw(2) << TIME % 60 << endl;
@@ -360,7 +415,7 @@ void CGame::updateGameStatus()
 	cout << string(STATUS_W - (midWidth(STATUS_W, STATUSVAR[0].size() + 10) + 3 + STATUSVAR[0].size() + 1), ' ');
 
 	GotoXY(GAMEPLAY_W + midWidth(STATUS_W, STATUSVAR[0].size() + 10) + 3 + STATUSVAR[0].size(), midHeight(SCREEN_HEIGHT, STATUSVAR_SIZE + GUIDEBUTTONS_SIZE + 1) * 3 / 5 + 4);
-	cout << scores;
+	cout << score;
 
 	drawCommand();
 }
@@ -373,7 +428,7 @@ bool CGame::checkImpact()
 		return false;
 
 	if (player.Y() >= LANE[0])
-		return player.isImpact<Vans>(vans);
+		return player.isImpact<Van>(vans);
 	if (player.Y() >= LANE[1])
 		return player.isImpact<Car>(cars);
 	if (player.Y() >= LANE[2])
@@ -386,38 +441,39 @@ bool CGame::checkImpact()
 
 bool CGame::isFinish()
 {
-	if (player.Y() == SIDEWALK[1])
+	if (player.Y() <= SIDEWALK[1])
 		return true;
-	else return false;
+	
+	return false;
 }
 
 void CGame::calcPoint()
 {
 	if (!checkPoint[0] && player.Y() == LANE[0])
 	{
-		scores += 100;
+		score += 100;
 		checkPoint[0] = true;
 	}
 	else if (!checkPoint[1] && player.Y() == LANE[1])
 	{
-		scores += 200;
+		score += 200;
 		checkPoint[1] = true;
 	}	
 	else if (!checkPoint[2] && player.Y() == LANE[2])
 	{
-		scores += 300;
+		score += 300;
 		checkPoint[2] = true;
 	}	
 	else if (!checkPoint[3] && player.Y() == LANE[3])
 	{
-		scores += 400;
+		score += 400;
 		checkPoint[3] = true;
 	}
 }
 
 int CGame::getPoint()
 {
-	return scores;
+	return score;
 }
 
 void CGame::addBuf(char key)
@@ -434,6 +490,18 @@ void CGame::addBuf(char key)
 	}
 }
 
+void CGame::autoSaveGame()
+{
+	ofstream out(string(SavePath) + "SAVE AUTO.txt", ios::out);
+
+	out << level << " " << score << " " << TIME << " " << player.X() << " " << player.Y();
+
+	out.close();
+
+	system("cls");
+	drawGame();
+}
+
 void CGame::CheckUnDeadCMD()
 {
 	if (buf == CCODE)
@@ -442,6 +510,24 @@ void CGame::CheckUnDeadCMD()
 
 		buf.clear();
 	}
+}
+
+void CGame::resetData()
+{
+	Remove();
+
+	level = 0;
+	score = 0;
+	curSound = 0;
+
+	START_TIME = clock() / CLOCKS_PER_SEC;
+	TIME = 0;
+	PAUSE_TIME = 0;
+
+	vans.clear();
+	cars.clear();
+	birds.clear();
+	aliens.clear();
 }
 
 void CGame::soundEffects()
@@ -464,6 +550,11 @@ void CGame::soundEffects()
 	{
 		aliens[0].SurroundingSound();
 	}
+}
+
+bool CGame::isPause()
+{
+	return pause;
 }
 
 void CGame::checkDrawLines()

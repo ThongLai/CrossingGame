@@ -1,17 +1,13 @@
 #include "Trafficlight.h"
 
-Trafficlight::Trafficlight()
+Trafficlight::Trafficlight() : Trafficlight(0, 0, 1)
 {
-	x = 50;
-	y = 50;
-	state = 1;
+
 }
 
-Trafficlight::Trafficlight(int _x, int _y, bool _state)
+Trafficlight::Trafficlight(int _x, int _y, bool _state) : x(_x), y(_y), state(_state)
 {
-	x = _x;
-	y = _y;
-	state = _state;
+
 }
 
 void Trafficlight::setXY(int x, int y)

@@ -1,12 +1,14 @@
 #pragma once
-#include <Windows.h>
+#include <windows.h>
 #include <iostream>
 #include <string>
 #include <vector>
 #include <iomanip>
 #include <conio.h>
+#include <algorithm>
 #include <fstream>
 #include <thread>
+#include "Data.h"
 
 #pragma comment(lib, "Winmm.lib")
 using namespace std;
@@ -51,8 +53,9 @@ extern int LANE[4];
 extern int SIDEWALK[2];
 
 extern string CCODE;
+extern string SavePath;
 
-
+extern vector <Data> SavedPlayers;
 
 void FixConsoleWindow();
 void HideCursor();
@@ -67,7 +70,12 @@ void setRasterFonts();
 bool GetXY(int& x, int& y);
 bool GetColor(int& color);
 void OpenSoundFiles();
-int Distance(int objWidth, int objNum);
+void SavePlayer(const Data& playerData, int index);
+void AddPlayer(const Data& Player);
+void RemovePlayer(int index);
+string* ExtractPlayerName();
+void LoadPlayerList();
+void SavePlayerList();
 
 void PrintChar(int x, int y, char ch);
 void PrintString(int x, int y, string S);
@@ -75,6 +83,7 @@ void printMessCenter(string message);
 int midWidth(int width, string content);
 int midWidth(int width, int content_width);
 int midHeight(int height, int content_height);
+int Distance(int objWidth, int objNum);
 
 void StartUp();
 

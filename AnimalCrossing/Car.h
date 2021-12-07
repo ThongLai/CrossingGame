@@ -1,8 +1,6 @@
 #pragma once
-#include<string>
-#include"Vehicle.h"
 
-using namespace std;
+#include "Vehicle.h"
 
 class Car : public CVEHICLE
 {

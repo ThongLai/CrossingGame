@@ -2,7 +2,7 @@
 
 #include "Vehicle.h"
 
-class Vans : public CVEHICLE
+class Van : public CVEHICLE
 {
 	string table[5] =
 	{
@@ -13,10 +13,10 @@ class Vans : public CVEHICLE
 		"O             O"
 	};
 public:
-	Vans();
-	Vans(int,int);
-	Vans(const Vans&);
-	~Vans();
+	Van();
+	Van(int,int);
+	Van(const Van&);
+	~Van();
 
 	void Move();
 	

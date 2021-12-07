@@ -49,9 +49,7 @@ void Bird::setCount(int i)
 
 void Bird::Turn() 
 {
-	if (direct == true)
-		direct = false;
-	else direct = true;
+	direct = !direct;
 }
 
 void Bird::Move() 

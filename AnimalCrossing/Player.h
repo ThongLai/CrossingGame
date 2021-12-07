@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Window.h"
-#include"Menu.h"
 
 class Player
 {
+private:
 	int mX, mY;
 	int height, width;
 	int text_color, bg_color;
@@ -15,7 +15,6 @@ class Player
 	 "ÄÛÄ",
 	 "/ \\"
 	};
-
 
 public:
 

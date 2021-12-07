@@ -16,6 +16,9 @@ int LANE[4];
 int SIDEWALK[2];
 
 string CCODE = "THONG";
+string SavePath = "GameData/";
+
+vector <Data> SavedPlayers;
 
 int Status::getX()
 {
@@ -129,8 +132,8 @@ void OpenSoundFiles()
 	mciSendString(TEXT("setaudio Gameplay_Theme volume to 50"), NULL, 0, NULL);
 
 
-	mciSendString(TEXT("open \"Vans_Crash.mp3\" type mpegvideo alias Vans_Crash"), NULL, 0, NULL);
-	mciSendString(TEXT("setaudio Vans_Crash volume to 50"), NULL, 0, NULL);
+	mciSendString(TEXT("open \"Van_Crash.mp3\" type mpegvideo alias Van_Crash"), NULL, 0, NULL);
+	mciSendString(TEXT("setaudio Van_Crash volume to 50"), NULL, 0, NULL);
 
 	mciSendString(TEXT("open \"Car_SD.mp3\" type mpegvideo alias Car_SD"), NULL, 0, NULL);
 	mciSendString(TEXT("open \"Car_Crash.mp3\" type mpegvideo alias Car_Crash"), NULL, 0, NULL);
@@ -144,10 +147,53 @@ void OpenSoundFiles()
 	mciSendString(TEXT("open \"Bird_Crash.mp3\" type mpegvideo alias Bird_Crash"), NULL, 0, NULL);
 	mciSendString(TEXT("setaudio Bird_Crash volume to 50"), NULL, 0, NULL);
 }
-int Distance(int objWidth, int objNum)
+void SavePlayer(const Data& playerData, int index)
 {
-	return (GAMEPLAY_W - objWidth * objNum) / objNum;
+	SavedPlayers[index] = playerData;
+	sort(SavedPlayers.begin(), SavedPlayers.end());
 }
+void AddPlayer(const Data& playerData)
+{
+	SavedPlayers.push_back(playerData);
+	sort(SavedPlayers.begin(), SavedPlayers.end());
+}
+void RemovePlayer(int index)
+{
+	SavedPlayers.erase(SavedPlayers.begin() + index);
+	sort(SavedPlayers.begin(), SavedPlayers.end());
+}
+string* ExtractPlayerName()
+{
+	string* NameList = new string[SavedPlayers.size()];
+
+	for (int i = 0; i < SavedPlayers.size(); i++)
+		NameList[i] = SavedPlayers[i].getName();
+
+	return NameList;
+}
+void LoadPlayerList()
+{
+	ifstream inList(SavePath + "Saved_Players_Data.txt", ios::in);
+
+	Data playerData;
+
+	while (inList >> playerData)
+		SavedPlayers.push_back(playerData);
+
+	sort(SavedPlayers.begin(), SavedPlayers.end());
+
+	inList.close();
+}
+void SavePlayerList()
+{
+	ofstream outList(SavePath + "Saved_Players_Data.txt", ios::out);
+
+	for (int i = 0; i < SavedPlayers.size(); i++)
+		outList << SavedPlayers[i] << endl;
+
+	outList.close();
+}
+
 
 
 void PrintChar(int x, int y, char ch)
@@ -179,13 +225,17 @@ int midHeight(int height, int content_height)
 {
 	return (height - content_height) / 2;
 }
+int Distance(int objWidth, int objNum)
+{
+	return (GAMEPLAY_W - objWidth * objNum) / objNum;
+}
 
 //Set up when start up
 void StartUp()
 {
 	srand(time(NULL));
 	setRasterFonts();
-	//FullScreenMode();
+	FullScreenMode();
 	SetWindowSize(SCREEN_WIDTH_PXL, SCREEN_HEIGHT_PXL);
 	FixConsoleWindow();
 	HideCursor();

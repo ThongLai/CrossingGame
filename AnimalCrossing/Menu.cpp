@@ -2,8 +2,8 @@
 
 string MAINMENU[] = {
 	"Play",
-	"Leader Board",
 	"Load Games",
+	"Leader Board",
 	"Instructions",
 	"Settings",
 	"Credits",
@@ -81,6 +81,21 @@ void BOX::printBox()
 {
 	printBorder();
 	printContent();
+}
+
+int BOX::getX() const
+{
+	return x;
+}
+
+int BOX::getY() const
+{
+	return y;
+}
+
+string BOX::getContent() const
+{
+	return content;
 }
 
 void BOX::printBorder()
@@ -320,21 +335,136 @@ void drawStatusBox()
 
 }
 
+int Save_Menu()
+{
+	string* NameList = ExtractPlayerName();
+	string* SAVEMENU = new string[SavedPlayers.size() + 3];
 
-int DeadMenu()
+	for (int i = 0; i < SavedPlayers.size(); i++)
+		SAVEMENU[i] = NameList[i];
+	SAVEMENU[SavedPlayers.size()] = "< New Player >";
+	SAVEMENU[SavedPlayers.size() + 1] = "< Delete Player >";
+	SAVEMENU[SavedPlayers.size() + 2] = "Return";
+
+	delete[]NameList;
+
+	int box_width = 21;
+	int box_height = 5;
+	MENU saveMenu("Save Game Menu", SavedPlayers.size() + 3, SAVEMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * SavedPlayers.size()), box_width, box_height, LIGHTGRAY, BLACK);
+
+	saveMenu.printMenu();
+	int buf = saveMenu.inputMenu();
+
+	delete[]SAVEMENU;
+
+	return buf;
+}
+
+int Load_Menu()
+{
+	if (SavedPlayers.size() <= 0)
+	{
+		printMessCenter("EMPTY!");
+		Sleep(1000);
+		return -2;
+	}
+
+	string* NameList = ExtractPlayerName();
+	string* LOADMENU = new string[SavedPlayers.size() + 2];
+
+	for (int i = 0; i < SavedPlayers.size(); i++)
+		LOADMENU[i] = NameList[i];
+	LOADMENU[SavedPlayers.size()] = "< Delete Player >";
+	LOADMENU[SavedPlayers.size() + 1] = "Return";
+
+	delete[]NameList;
+
+	int box_width = 21;
+	int box_height = 5;
+	MENU loadMenu("Load Game Menu", SavedPlayers.size() + 2, LOADMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * SavedPlayers.size()), box_width, box_height, LIGHTGRAY, BLACK);
+
+	loadMenu.printMenu();
+	int buf = loadMenu.inputMenu();
+
+	delete[]LOADMENU;
+
+	return buf;
+}
+
+int Remove_Menu()
+{
+	if (SavedPlayers.size() <= 0)
+	{
+		printMessCenter("EMPTY!");
+		Sleep(1000);
+		return -2;
+	}
+
+	string* NameList = ExtractPlayerName();
+	string* REMOVEMENU = new string[SavedPlayers.size() + 1];
+
+	for (int i = 0; i < SavedPlayers.size(); i++)
+		REMOVEMENU[i] = NameList[i];
+	REMOVEMENU[SavedPlayers.size()] = "Cancel";
+
+	delete[]NameList;
+
+	int box_width = 21;
+	int box_height = 5;
+	MENU removeMenu("Choose the Player want to delete: ", SavedPlayers.size() + 1, REMOVEMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * SavedPlayers.size()), box_width, box_height, LIGHTGRAY, BLACK);
+
+	removeMenu.printMenu();
+	int buf = removeMenu.inputMenu();
+
+	delete[]REMOVEMENU;
+
+	return buf;
+}
+
+void Score_Board(const Data& data)
+{
+	int box_width = SCREEN_HEIGHT;
+	int box_height = SCREEN_HEIGHT - 2 * 5;
+
+	BOX scoreBoard[5];
+	scoreBoard[0].setBox(midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height), box_width, box_height, LIGHTGREEN, BLACK, "");
+
+	scoreBoard[1].setContent("Score: " + to_string(data.getScore()));
+	scoreBoard[2].setContent("Level: " + to_string(data.getScore()));
+	scoreBoard[3].setContent("Time: " + to_string(data.getTime()));
+
+
+	for (int i = 1; i < 4; i++)
+	{
+		scoreBoard[i].setFormat(scoreBoard[i].getContent().size(), 3, LIGHTGREEN, BLACK);
+		scoreBoard[i].setPosition(scoreBoard[0].getX() + midWidth(box_width, scoreBoard[i].getContent()), scoreBoard[0].getY() + box_height * (1 + i) / 6);
+	}
+
+	scoreBoard[0].printBorder();
+	for (int i = 1; i < 4; i++)
+		scoreBoard[i].printContent();
+}
+
+int Ask_SaveGame()
 {
 	int box_width = 21;
 	int box_height = 5;
-	MENU DeadMenu("Do you want to play again?", DEADMENU_SIZE, DEADMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height) * 4 / 3, box_width, box_height, LIGHTGRAY, BLACK);
+	MENU askSave("Do you want to save your progress?", DEADMENU_SIZE, DEADMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height) * 4 / 3, box_width, box_height, LIGHTGRAY, BLACK);
 
-	int buf = 0;
-	DeadMenu.printMenu();
+	askSave.printMenu();
 
-	do {
-		buf = DeadMenu.inputMenu();
-	} while (buf != 0 && buf != 1 && buf != -1);
+	return askSave.inputMenu();
+}
 
-	return buf;
+int Ask_PlayAgain()
+{
+	int box_width = 21;
+	int box_height = 5;
+	MENU askPlayAgain("Do you want to play again?", DEADMENU_SIZE, DEADMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height) * 4 / 3, box_width, box_height, LIGHTGRAY, BLACK);
+
+	askPlayAgain.printMenu();
+
+	return askPlayAgain.inputMenu();
 }
 
 void Title()

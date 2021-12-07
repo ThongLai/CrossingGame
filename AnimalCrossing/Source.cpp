@@ -1,26 +1,32 @@
-﻿#include "Menu.h"
+﻿#include "Window.h"
+#include "Menu.h"
 #include "Bird.h"
 #include "Alien.h"
-#include "Vans.h"
+#include "Van.h"
 #include "Player.h"
 #include "CGame.h"
+
 
 using namespace std;
 
 CGame game;
 int buf = 0;
-bool isPause = false;
-bool isExit = false;
+
 void SubThread() {
 
 	int time = 0;
     while (true) {
+
+		if (game.checkImpact() || game.isFinish() || buf == 'P' || buf == 'R' || buf == 'M' || buf == 'L' || buf == ESC)
+			game.pauseGame();
 		
+
+		while (game.isPause()) {}
 
 		game.drawCommand();
 
-		game.updatePosPeople(buf);
-		buf = 0;
+		if (game.updatePosPeople(buf))
+			buf = 0;
 
 		game.updatePosAnimal();
 		game.updatePosVehicle((++time)%=51);
@@ -32,28 +38,15 @@ void SubThread() {
 
 		game.soundEffects();
 
-        //Đây là if kết thúc
-        if (game.getPeople().Y() == SIDEWALK[1])
-        {
-            game.nextRound();
-            continue;
-        }
-		else if (game.checkImpact())
-		{
-			isPause = true;
-			while (isPause) {}
-		}
-		
-		if (isExit) break;
         Sleep(100);
     }
 }
 
+
 int main()
 {
     thread sub(SubThread);
-	game.pauseThread(sub.native_handle());
-
+	LoadPlayerList();
 
 	int box_width = 20;
 	int box_height = 3;
@@ -64,13 +57,9 @@ int main()
 		system("cls");
 		Title();
 		MainMenu.printMenu();
-		mciSendString(TEXT("play Menu_Theme from 0 repeat"), NULL, 0, NULL);
+		mciSendString(TEXT("play Menu_Theme repeat"), NULL, 0, NULL);
 
 		buf = MainMenu.inputMenu();
-
-
-
-
 		switch (buf)
 		{
 		case 0:
@@ -79,23 +68,24 @@ int main()
 			printMessCenter("LOADING GAME...");
 			Sleep(1000);
 
+			game.resetGame();
+
 			mciSendString(TEXT("stop Menu_Theme"), NULL, 0, NULL);
 			mciSendString(TEXT("play Gameplay_Theme from 0 repeat"), NULL, 0, NULL);
 
-			game.resetGame();
-			game.resumeThread(sub.native_handle());
-
-
-
-
+			game.resumeThread();
 
 			break;
 		}
 		case 1:
 		{
-			system("cls");
+			if (game.loadGame() <= -1)
+				continue;
 
-			game.resumeThread(sub.native_handle());
+			mciSendString(TEXT("stop Menu_Theme"), NULL, 0, NULL);
+			mciSendString(TEXT("play Gameplay_Theme from 0 repeat"), NULL, 0, NULL);
+
+			game.resumeThread();
 
 			break;
 		}
@@ -150,9 +140,15 @@ int main()
 		}
 		if (buf == -1 || buf == 6)
 		{
-			game.exitGame(isExit);
+			system("cls");
+
+			sub.detach();
+			SavePlayerList();			
 			break;
 		}
+
+
+
 
 
 
@@ -164,7 +160,8 @@ int main()
 
 				if (buf == 'P')
 				{
-					game.pauseGame(sub.native_handle());
+					while (!game.isPause()) {}
+
 					game.drawPauseScreen();
 
 					do {
@@ -172,26 +169,42 @@ int main()
 					} while (buf != 'P');
 
 					game.drawGame();
-					game.resumeGame(sub.native_handle());
+					
+					buf = 0;
+					game.resumeGame();
+				}
+				else if (buf == 'R')
+				{
+					while (!game.isPause()) {}
+
+					game.resetGame();
+
+					buf = 0;
+					game.resumeThread();
 				}
 				else if (buf == 'M')
 				{
-					game.pauseGame(sub.native_handle());
+					while (!game.isPause()) {}
+
 					game.saveGame();
-					game.resumeGame(sub.native_handle());
+
+					buf = 0;
+					game.resumeGame();
 				}
 				else if (buf == 'L')
 				{
-					game.pauseGame(sub.native_handle());
-					game.loadGame();
-					game.resumeGame(sub.native_handle());
+					while (!game.isPause()) {}
+
+					if (game.loadGame() <= -1)
+						game.drawGame();
+
+					buf = 0;
+					game.resumeThread();
 				}
-				else if (buf == 'R')
-					game.resetGame();
 				else if (buf == ESC)
 				{
-					mciSendString(TEXT("stop Gameplay_Theme"), NULL, 0, NULL);
-					game.pauseThread(sub.native_handle());
+					while (!game.isPause()) {}
+					mciSendString(TEXT("pause Gameplay_Theme"), NULL, 0, NULL);
 
 					break;
 				}
@@ -200,34 +213,38 @@ int main()
 			}
 			else if (game.checkImpact())
 			{
+				while (!game.isPause()) {}
 				mciSendString(TEXT("stop Gameplay_Theme"), NULL, 0, NULL);
-				while (!isPause) {}
-
 				system("cls");
 				game.drawDeadMenu();
 
-				if (DeadMenu() == 0)
+				if (Ask_PlayAgain() == 0)
 				{
 					//Neu chon muon choi lai
 					system("cls");
 					mciSendString(TEXT("play Gameplay_Theme from 0 repeat"), NULL, 0, NULL);
 
 					game.resetGame();
-					isPause = false;
+					game.resumeThread();
 				}
 				else
 				{
 					//Neu chon khong muon choi lai
-					isPause = false;
-					game.pauseGame(sub.native_handle());
 					break;
 				}
+			}        
+			else if (game.isFinish()) //Đây là if kết thúc
+			{
+				while (!game.isPause()) {}
+
+				game.nextRound();
+				game.resumeThread();
 			}
 
 		} while (true);
 
 	}
 
-    sub.detach();
+
     return 0;
 }

@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "Window.h"
-#include <conio.h>
 
 extern string MAINMENU[];
 extern int MAINMENU_SIZE;
@@ -31,6 +30,9 @@ public:
 	void setFormat(int _w, int _h, int _text_color, int _bg_color);
 	void setContent(string _content);
 
+	int getX() const;
+	int getY() const;
+	string getContent() const;
 
 	void printBox();
 	void printBorder();
@@ -59,7 +61,6 @@ public:
 	void setBoxContent(string* content);
 	void setTitle(string _title);
 
-
 	void printMenu();
 	void printTitle();
 	void selectedBox(int index);
@@ -70,6 +71,11 @@ public:
 void drawStartFinishLine();
 void drawStatusBox();
 
-int DeadMenu();
+int Save_Menu();
+int Load_Menu();
+int Remove_Menu();
+void Score_Board(const Data&);
+int Ask_SaveGame();
+int Ask_PlayAgain();
 
 void Title();
