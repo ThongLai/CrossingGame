@@ -123,18 +123,26 @@ bool GetColor(int& color) {
 void OpenSoundFiles()
 {
 	mciSendString(TEXT("open \"MenuTheme.mp3\" type mpegvideo alias Menu_Theme"), NULL, 0, NULL);
+	mciSendString(TEXT("setaudio Menu_Theme volume to 50"), NULL, 0, NULL);
+
 	mciSendString(TEXT("open \"GamePlayTheme.mp3\" type mpegvideo alias Gameplay_Theme"), NULL, 0, NULL);
+	mciSendString(TEXT("setaudio Gameplay_Theme volume to 50"), NULL, 0, NULL);
+
 
 	mciSendString(TEXT("open \"Vans_Crash.mp3\" type mpegvideo alias Vans_Crash"), NULL, 0, NULL);
+	mciSendString(TEXT("setaudio Vans_Crash volume to 50"), NULL, 0, NULL);
 
 	mciSendString(TEXT("open \"Car_SD.mp3\" type mpegvideo alias Car_SD"), NULL, 0, NULL);
 	mciSendString(TEXT("open \"Car_Crash.mp3\" type mpegvideo alias Car_Crash"), NULL, 0, NULL);
+	mciSendString(TEXT("setaudio Car_Crash volume to 50"), NULL, 0, NULL);
 
 	mciSendString(TEXT("open \"Alien_SD.mp3\" type mpegvideo alias Alien_SD"), NULL, 0, NULL);
 	mciSendString(TEXT("open \"Alien_Crash.mp3\" type mpegvideo alias Alien_Crash"), NULL, 0, NULL);
+	mciSendString(TEXT("setaudio Alien_Crash volume to 50"), NULL, 0, NULL);
 
 	mciSendString(TEXT("open \"Bird_SD.mp3\" type mpegvideo alias Bird_SD"), NULL, 0, NULL);
 	mciSendString(TEXT("open \"Bird_Crash.mp3\" type mpegvideo alias Bird_Crash"), NULL, 0, NULL);
+	mciSendString(TEXT("setaudio Bird_Crash volume to 50"), NULL, 0, NULL);
 }
 int Distance(int objWidth, int objNum)
 {
@@ -175,6 +183,7 @@ int midHeight(int height, int content_height)
 //Set up when start up
 void StartUp()
 {
+	srand(time(NULL));
 	setRasterFonts();
 	//FullScreenMode();
 	SetWindowSize(SCREEN_WIDTH_PXL, SCREEN_HEIGHT_PXL);

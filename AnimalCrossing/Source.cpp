@@ -21,10 +21,9 @@ void SubThread() {
 
 		game.updatePosPeople(buf);
 		buf = 0;
-		time++;
 
 		game.updatePosAnimal();
-		game.updatePosVehicle(time);
+		game.updatePosVehicle((++time)%=51);
 
 		game.calcPoint();
 
@@ -57,11 +56,12 @@ int main()
 
 	int box_width = 20;
 	int box_height = 3;
-	MENU MainMenu("Main Menu", MAINMENU_SIZE, MAINMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * MAINMENU_SIZE), box_width, box_height, WHITE, BLACK);
+	MENU MainMenu("Main Menu", MAINMENU_SIZE, MAINMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT*3/2, box_height * MAINMENU_SIZE), box_width, box_height, WHITE, BLACK);
 
 	while (true)
 	{
 		system("cls");
+		Title();
 		MainMenu.printMenu();
 		mciSendString(TEXT("play Menu_Theme from 0 repeat"), NULL, 0, NULL);
 
@@ -147,7 +147,7 @@ int main()
 			break;
 		}
 		}
-		if (buf == -1 || buf == 7)
+		if (buf == -1 || buf == 6)
 		{
 			//game.exitGame(sub.native_handle());
 			break;

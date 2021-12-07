@@ -71,3 +71,5 @@ void drawStartFinishLine();
 void drawStatusBox();
 
 int DeadMenu();
+
+void Title();

@@ -2,7 +2,6 @@
 
 string MAINMENU[] = {
 	"Play",
-	"Continue",
 	"Leader Board",
 	"Load Games",
 	"Instructions",
@@ -336,4 +335,28 @@ int DeadMenu()
 	} while (buf != 0 && buf != 1 && buf != -1);
 
 	return buf;
+}
+
+void Title()
+{
+	string title[] =
+	{
+		"    .,-::::: :::::::..       ...      .::::::.  .::::::.     :::::::::::: ::   .: .,::::::      :::::::..       ...       :::.   :::::::-.  ",
+		"  ,;;;'````' ;;;;``;;;;   .;;;;;;;.  ;;;`    ` ;;;`    `     ;;;;;;;;'''',;;   ;;,;;;;''''      ;;;;``;;;;   .;;;;;;;.    ;;`;;   ;;,   `';,",
+		"  [[[         [[[,/[[['  ,[[     \\[[,'[==/[[[[,'[==/[[[[,         [[    ,[[[,,,[[[ [[cccc        [[[,/[[['  ,[[     \\[[, ,[[ '[[, `[[     [[",
+		"  $$$         $$$$$$c    $$$,     $$$  '''    $  '''    $         $$    \"$$$\"\"\"$$$ $$\"\"\"\"        $$$$$$c    $$$,     $$$c$$$cc$$$c $$,    $$",
+		"  `88bo,__,o, 888b \"88bo,\"888,_ _,88P 88b    dP 88b    dP         88,    888   \"88o888oo,_       888b \"88bo,\"888,_ _,88P 888   888,888_,o8P'",
+		"    \"YUMMMMMP\"MMMM   \"W\"   \"YMMMMMP\"   \"YMmMY\"   \"YMmMY\"          MMM    MMM    YMM\"\"YUMMM       MMMM   \"W\"   \"YMMMMMP\"  YMM   \"\"` MMMMP\"`"
+	};
+
+	int height = sizeof(title) / sizeof(string);
+
+	Status SavedStatus;
+	SetTextColor(DefineColor(rand() % (15) + 1, BLACK));
+	
+	for (int i = 0; i < height; i++)
+	{
+		GotoXY(midWidth(SCREEN_WIDTH, title[0].size()), midHeight(SCREEN_HEIGHT / 2, height) + i);
+		cout << title[i] << endl;
+	}
 }

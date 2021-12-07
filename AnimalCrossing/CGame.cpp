@@ -69,7 +69,7 @@ void CGame::drawDeadMenu()
 {
 	system("cls");
 
-	string angel[21] =
+	string angel[] =
 	{
 	"            ,-.-.       ",
 	"           / ,-. \\      ",
