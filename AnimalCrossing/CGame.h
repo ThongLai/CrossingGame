@@ -38,8 +38,9 @@ private:
 	//chua lam xong
 	int curSound;
 
-	//Bien tam dung game
+	//Biến tạm dừng game
 	bool pause;
+	bool running;
 
 public:
 	CGame(); //Chuẩn bị dữ liệu cho tất cả các đối tượng 
@@ -47,17 +48,16 @@ public:
 
 	void Init();
 	void drawGame(); //Thực hiện vẽ trò chơi ra màn hình sau khi có dữ liệu
-	void drawDeadMenu(); //Thực hiện vẽ trò chơi ra màn hình sau người chơi thua
 	void drawPauseScreen(); //Thực hiện vẽ màn hình tạm dừng
 	void drawCommand();
 
 	Player getPeople();//Lấy thông tin người
-	vector <CVEHICLE> getVehicle();//Lấy danh sách các xe
-	vector <CANIMAL> getAnimal(); //Lấy danh sách các thú
+	vector <CVEHICLE*> getVehicle();//Lấy danh sách các xe
+	vector <CANIMAL*> getAnimal(); //Lấy danh sách các thú
 
 	void resetGame(); // Thực hiện chơi lại từ đầu
 	void exitGame(); // Thực hiện thoát game
-	int loadGame(); // Thực hiện tải lại trò chơi đã lưu
+	void loadGame(); // Thực hiện tải lại trò chơi đã lưu
 	void saveGame(); // Thực hiện lưu lại dữ liệu trò chơi
 	void pauseThread(); // Tạm dừng Thread
 	void pauseGame();
@@ -74,11 +74,13 @@ public:
 	void updateTime();//Thực hiện cập nhật thời gian
 	void updateGameStatus();//Thực hiện cập nhật level, điểm
 	void resetData(); // Thực hiện thiết lập lại toàn bộ dữ liệu như lúc đầu
+	void processAfterGame(); //Xử lý sau khi người chơi thua
 
 	bool checkImpact();
 	void checkDrawLines();
 	bool isFinish();
 	bool isPause();
+	bool isPlaying();
 	void calcPoint();
 	int getPoint();
 

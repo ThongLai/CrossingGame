@@ -1,6 +1,6 @@
 #include "CGame.h"
 
-CGame::CGame() : level(0), score(0), curSound(0), START_TIME(clock() / CLOCKS_PER_SEC), TIME(0), PAUSE_TIME(0), pause(true), UnDeadCMD(false)
+CGame::CGame() : level(0), objNum(2), score(0), curSound(0), START_TIME(clock() / CLOCKS_PER_SEC), TIME(0), PAUSE_TIME(0), pause(true), running(false), UnDeadCMD(false)
 {
 	StartUp();
 
@@ -72,44 +72,60 @@ void CGame::drawGame()
 	player.Draw();
 }
 
-void CGame::drawDeadMenu()
+void CGame::processAfterGame()
 {
+	drawArt(game_over, game_over_height, midWidth(SCREEN_WIDTH, game_over_width), midHeight(SCREEN_HEIGHT, game_over_height), LIGHTRED);
+	Sleep(2000);
+
 	system("cls");
 
-	string angel[] =
+	drawScoreBoard(Data(level, score, TIME, player.X(), player.Y()));
+
+	if (Ask_PlayerName() == 0)
 	{
-	"            ,-.-.       ",
-	"           / ,-. \\      ",
-	"      ,-. ( |a a| ) ,-.     ",
-	"     :   `( : o ; )'   :       ",
-	" ____|____(_.>-<._)____|____",
-	"(_|        /     \\        |_)",
-	" ||      :  `.|,' :       ||",
-	"  |___..--|_\\_|_/_|-...___| ",
-	"    ;     | /SSt\\ | :",
-	"   /  ;  ;| ,'|`. |:  :  \\",
-	"  /  /| /|;._____.:|\\ |\\  \\",
-	" / ,' `' /  ;| |:  \\ `' `. \\",
-	" `'     /  / | | \\  \\     `'",
-	"       /  /  ; :  \\  \\",
-	"      /  /  /| |\\  \\  \\",
-	"     /  /  / | | \\  \\  \\",
-	"    /  /  /  ; :  \\  \\  \\",
-	"   /  /  /  /| |\\  \\  \\  \\",
-	"  (  /  /  / | | \\  \\  \\  )",
-	"   `(_ /  /  ; :  \\  \\ _)'",
-	"      `'.(_./___\\._).`'",
-	};
+		system("cls");
+
+		Data playerData(level, score, TIME);
+		string name;
+
+		GotoXY(midWidth(SCREEN_WIDTH, "Enter Your Name: "), midHeight(SCREEN_HEIGHT, 1));
+		cout << "Enter Your Name: ";
+
+		getline(cin, name);
+		playerData.setName(name);
+
+		AddDataToLeaderBoard(playerData);
 
 
-	int angel_height = sizeof(angel) / sizeof(string);
+		system("cls");
 
-	for (int i = 0; i < angel_height; i++)
-	{
+		drawLeaderBoard();
 
-		GotoXY(midWidth(SCREEN_WIDTH, angel[3].size()), midHeight(SCREEN_HEIGHT, angel_height) * 2 / 20 + i);
-		cout << angel[i];
+		toupper(_getch());
 	}
+
+
+	system("cls");
+
+	drawArt(angel, angel_height, midWidth(SCREEN_WIDTH, angel_width), midHeight(SCREEN_HEIGHT, angel_height) * 2 / 20);
+
+	if (Ask_PlayAgain() == 0)
+	{
+		//Neu chon muon choi lai
+		system("cls");
+		mciSendString(TEXT("play Gameplay_Theme from 0 repeat"), NULL, 0, NULL);
+
+		resetGame();
+		resumeThread();
+	}
+	else
+	{
+		pause = true;
+		running = false;
+	}
+
+	SavePlayerSaves();
+	SaveLeaderBoard();
 }
 
 void CGame::drawPauseScreen()
@@ -135,14 +151,28 @@ Player CGame::getPeople()
 	return player;
 }
 
-vector<CVEHICLE> CGame::getVehicle()
+vector<CVEHICLE*> CGame::getVehicle()
 {
-	return vector<CVEHICLE>();
+	vector <CVEHICLE*> vehicle;
+
+	for (int i = 0; i < vans.size(); i++)
+		vehicle.push_back(&vans[i]);
+	for (int i = 0; i < cars.size(); i++)
+		vehicle.push_back(&cars[i]);
+
+	return vehicle;
 }
 
-vector<CANIMAL> CGame::getAnimal()
+vector<CANIMAL*> CGame::getAnimal()
 {
-	return vector<CANIMAL>();
+	vector <CANIMAL*> animal;
+
+	for (int i = 0; i < birds.size(); i++)
+		animal.push_back(&birds[i]);
+	for (int i = 0; i < aliens.size(); i++)
+		animal.push_back(&aliens[i]);
+
+	return animal;
 }
 
 void CGame::Remove()
@@ -165,7 +195,6 @@ void CGame::nextRound()
 	++level;
 	
 	Init();
-	drawGame();
 }
 
 void CGame::resetGame()
@@ -173,14 +202,22 @@ void CGame::resetGame()
 	resetData();
 
 	Init();
-	drawGame();
 }
 
 void CGame::exitGame()
 {
-	// AUTO SAVE here
+	resetData();
+	Init();
 
 	system("cls");
+
+	if (running && Ask_SaveGame() == 0)
+		saveGame();		
+
+	SavePlayerSaves();
+	SaveLeaderBoard();
+
+	running = false;
 }
 
 void CGame::pauseThread()
@@ -196,7 +233,10 @@ void CGame::pauseGame()
 
 void CGame::resumeThread()
 {
+	drawGame();
+
 	pause = false;
+	running = true;
 }
 
 void CGame::resumeGame()
@@ -207,17 +247,13 @@ void CGame::resumeGame()
 	resumeThread();
 }
 
-int CGame::loadGame() 
+void CGame::loadGame() 
 {
 	system("cls");
 
 	int buf = Load_Menu();
 
-	if (buf == -2)
-	{
-		return -2;
-	}
-	else if (buf < SavedPlayers.size())
+	if (buf < SavedPlayers.size())
 	{
 		resetData();
 
@@ -245,6 +281,8 @@ int CGame::loadGame()
 			
 			j++;
 		}
+
+		running = true;
 	}
 	else if (buf == SavedPlayers.size())
 	{
@@ -262,14 +300,7 @@ int CGame::loadGame()
 
 			buf = Remove_Menu();
 		}
-
-		return -2;
 	}
-	else
-		return -2;
-
-	drawGame();
-	return buf;
 }
 
 void CGame::saveGame() 
@@ -280,14 +311,14 @@ void CGame::saveGame()
 	
 	if (buf < SavedPlayers.size())
 	{
-		Data playerData(SavedPlayers[buf].getName(), level, score, TIME, player.X(), player.Y());
+		Data playerData(level, score, TIME, player.X(), player.Y(), SavedPlayers[buf].getName());
 		SavePlayer(playerData, buf);
 	}
 	else if (buf == SavedPlayers.size())
 	{
 		system("cls");
 
-		Data playerData("", level, score, TIME, player.X(), player.Y());
+		Data playerData(level, score, TIME, player.X(), player.Y());
 		string name;
 
 		GotoXY(midWidth(SCREEN_WIDTH, "Enter Your Name: "), midHeight(SCREEN_HEIGHT, 1));
@@ -297,6 +328,8 @@ void CGame::saveGame()
 		playerData.setName(name);
 
 		AddPlayer(playerData);
+
+		SavePlayerSaves();
 	}
 	else if (buf == SavedPlayers.size() + 1)
 	{
@@ -315,8 +348,6 @@ void CGame::saveGame()
 			buf = Remove_Menu();
 		}
 	}
-
-	drawGame();
 }
 
 
@@ -516,6 +547,7 @@ void CGame::resetData()
 {
 	Remove();
 
+	objNum = 2;
 	level = 0;
 	score = 0;
 	curSound = 0;
@@ -555,6 +587,11 @@ void CGame::soundEffects()
 bool CGame::isPause()
 {
 	return pause;
+}
+
+bool CGame::isPlaying()
+{
+	return running;
 }
 
 void CGame::checkDrawLines()

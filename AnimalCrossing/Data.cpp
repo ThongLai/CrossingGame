@@ -1,6 +1,6 @@
 #include "Data.h"
 
-Data::Data(string n, int l, int s, clock_t T, int _x, int _y) : name(n), level(l), score(s), TIME(T), x(_x), y(_y)
+Data::Data(int l, int s, clock_t T, int _x, int _y, string n) : level(l), score(s), TIME(T), x(_x), y(_y), name(n)
 {
 
 }
@@ -42,12 +42,9 @@ int Data::getY() const
 
 void Data::input(istream& inDev)
 {
-	inDev >> name;
-	inDev >> level;
-	inDev >> score;
-	inDev >> TIME;
-	inDev >> x;
-	inDev >> y;
+	getline(inDev, name);
+	inDev >> level >> score >> TIME >> x >> y; 
+	inDev.ignore();
 }
 
 void Data::output(ostream& outDev) const

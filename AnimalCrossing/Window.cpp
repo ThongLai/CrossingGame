@@ -15,10 +15,13 @@ int SIDEWALK_H = 3;
 int LANE[4];
 int SIDEWALK[2];
 
+int LEADERBOARD_SIZE = 11;
+
 string CCODE = "THONG";
 string SavePath = "GameData/";
 
 vector <Data> SavedPlayers;
+vector <Data> LeaderBoard;
 
 int Status::getX()
 {
@@ -150,17 +153,26 @@ void OpenSoundFiles()
 void SavePlayer(const Data& playerData, int index)
 {
 	SavedPlayers[index] = playerData;
-	sort(SavedPlayers.begin(), SavedPlayers.end());
 }
 void AddPlayer(const Data& playerData)
 {
 	SavedPlayers.push_back(playerData);
-	sort(SavedPlayers.begin(), SavedPlayers.end());
 }
 void RemovePlayer(int index)
 {
 	SavedPlayers.erase(SavedPlayers.begin() + index);
-	sort(SavedPlayers.begin(), SavedPlayers.end());
+}
+void AddDataToLeaderBoard(const Data& playerData)
+{
+	LeaderBoard.push_back(playerData);
+	sort(LeaderBoard.begin(), LeaderBoard.end(), greater<Data&>());
+	if (LeaderBoard.size() > LEADERBOARD_SIZE)
+		LeaderBoard.resize(LEADERBOARD_SIZE);
+}
+void RemoveDataToLeaderBoard(int index)
+{
+	LeaderBoard.erase(LeaderBoard.begin() + index);
+	sort(LeaderBoard.begin(), LeaderBoard.end(), greater<Data&>());
 }
 string* ExtractPlayerName()
 {
@@ -171,7 +183,7 @@ string* ExtractPlayerName()
 
 	return NameList;
 }
-void LoadPlayerList()
+void LoadPlayerSaves()
 {
 	ifstream inList(SavePath + "Saved_Players_Data.txt", ios::in);
 
@@ -180,11 +192,9 @@ void LoadPlayerList()
 	while (inList >> playerData)
 		SavedPlayers.push_back(playerData);
 
-	sort(SavedPlayers.begin(), SavedPlayers.end());
-
 	inList.close();
 }
-void SavePlayerList()
+void SavePlayerSaves()
 {
 	ofstream outList(SavePath + "Saved_Players_Data.txt", ios::out);
 
@@ -193,18 +203,42 @@ void SavePlayerList()
 
 	outList.close();
 }
-
-
-
-void PrintChar(int x, int y, char ch)
+void LoadLeaderBoard()
 {
-	GotoXY(x, y);
-	cout << ch;
+	ifstream inList(SavePath + "Leader_Board.txt", ios::in);
+
+	Data playerData;
+
+	int count = 0;
+	while (count < LEADERBOARD_SIZE && inList >> playerData)
+	{
+		LeaderBoard.push_back(playerData);
+		count++;
+	}
+
+	sort(LeaderBoard.begin(), LeaderBoard.end(), greater<Data&>());
+
+	inList.close();
 }
-void PrintString(int x, int y, string S)
+void SaveLeaderBoard()
 {
-	GotoXY(x, y);
-	cout << S;
+	ofstream outList(SavePath + "Leader_Board.txt", ios::out);
+
+	for (int i = 0; i < LeaderBoard.size(); i++)
+		outList << LeaderBoard[i] << endl;
+
+	outList.close();
+}
+
+
+int artWidth(string *art, int height)
+{
+	int width = art[0].size();
+	for (int i = 0; i < height; i++)
+		if (width < art[i].size())
+			width = art[i].size();
+
+	return width;
 }
 void printMessCenter(string message)
 {

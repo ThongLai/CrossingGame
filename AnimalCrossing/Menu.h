@@ -2,10 +2,20 @@
 
 #include "Window.h"
 
+extern string title[];
+extern int title_height;
+extern int title_width;
+extern string angel[];
+extern int angel_height;
+extern int angel_width;
+extern string game_over[];
+extern int game_over_height;
+extern int game_over_width;
+
 extern string MAINMENU[];
 extern int MAINMENU_SIZE;
-extern string DEADMENU[];
-extern int DEADMENU_SIZE;
+extern string YES_NO_SELECTION[];
+extern int YES_NO_SELECTION_SIZE;
 extern string GUIDEBUTTONS[];
 extern int GUIDEBUTTONS_SIZE;
 extern string STATUSVAR[];
@@ -32,6 +42,8 @@ public:
 
 	int getX() const;
 	int getY() const;
+	int getWidth() const;
+	int getHeight() const;
 	string getContent() const;
 
 	void printBox();
@@ -70,12 +82,14 @@ public:
 
 void drawStartFinishLine();
 void drawStatusBox();
+void drawScoreBoard(const Data&);
+void drawLeaderBoard();
+void drawArt(string* art, int height, int x, int y, int text_color = WHITE, int bg_color = BLACK);
 
 int Save_Menu();
 int Load_Menu();
 int Remove_Menu();
-void Score_Board(const Data&);
 int Ask_SaveGame();
 int Ask_PlayAgain();
+int Ask_PlayerName();
 
-void Title();

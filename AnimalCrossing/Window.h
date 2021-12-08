@@ -52,10 +52,13 @@ extern int SIDEWALK_H;
 extern int LANE[4];
 extern int SIDEWALK[2];
 
+extern int LEADERBOARD_SIZE;
+
 extern string CCODE;
 extern string SavePath;
 
 extern vector <Data> SavedPlayers;
+extern vector <Data> LeaderBoard;
 
 void FixConsoleWindow();
 void HideCursor();
@@ -73,12 +76,15 @@ void OpenSoundFiles();
 void SavePlayer(const Data& playerData, int index);
 void AddPlayer(const Data& Player);
 void RemovePlayer(int index);
+void AddDataToLeaderBoard(const Data& playerData);
+void RemoveDataToLeaderBoard(int index);
 string* ExtractPlayerName();
-void LoadPlayerList();
-void SavePlayerList();
+void LoadPlayerSaves();
+void SavePlayerSaves();
+void LoadLeaderBoard();
+void SaveLeaderBoard();
 
-void PrintChar(int x, int y, char ch);
-void PrintString(int x, int y, string S);
+int artWidth(string *art, int height);
 void printMessCenter(string message);
 int midWidth(int width, string content);
 int midWidth(int width, int content_width);

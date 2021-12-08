@@ -3,6 +3,7 @@
 #include <time.h>
 #include <iostream>
 #include <vector>
+#include <string>
 using namespace std;
 
 
@@ -19,7 +20,7 @@ private:
 	//vector <Alien> aliens;
 	//vector <Bird> birds;
 public:
-	Data(string name = "<Empty>", int level = 0, int score = 0, clock_t TIME = 0, int x = 0, int y = 0);
+	Data(int level = 0, int score = 0, clock_t TIME = 0, int x = 0, int y = 0, string name = "<Empty>");
 
 	void setName(string);
 
