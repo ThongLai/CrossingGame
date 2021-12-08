@@ -18,6 +18,7 @@ int SIDEWALK[2];
 int LEADERBOARD_SIZE = 11;
 
 string CCODE = "THONG";
+string SoundPath = "SoundEffects/";
 string SavePath = "GameData/";
 
 vector <Data> SavedPlayers;
@@ -128,26 +129,26 @@ bool GetColor(int& color) {
 }
 void OpenSoundFiles()
 {
-	mciSendString(TEXT("open \"MenuTheme.mp3\" type mpegvideo alias Menu_Theme"), NULL, 0, NULL);
+	mciSendStringA(string("open \"" + SoundPath + "MenuTheme.mp3\" type mpegvideo alias Menu_Theme").c_str(), NULL, 0, NULL);
 	mciSendString(TEXT("setaudio Menu_Theme volume to 50"), NULL, 0, NULL);
 
-	mciSendString(TEXT("open \"GamePlayTheme.mp3\" type mpegvideo alias Gameplay_Theme"), NULL, 0, NULL);
+	mciSendStringA(string("open \"" + SoundPath + "GamePlayTheme.mp3\" type mpegvideo alias Gameplay_Theme").c_str(), NULL, 0, NULL);
 	mciSendString(TEXT("setaudio Gameplay_Theme volume to 50"), NULL, 0, NULL);
 
 
-	mciSendString(TEXT("open \"Van_Crash.mp3\" type mpegvideo alias Van_Crash"), NULL, 0, NULL);
+	mciSendStringA(string("open \"" + SoundPath + "Van_Crash.mp3\" type mpegvideo alias Van_Crash").c_str(), NULL, 0, NULL);
 	mciSendString(TEXT("setaudio Van_Crash volume to 50"), NULL, 0, NULL);
 
-	mciSendString(TEXT("open \"Car_SD.mp3\" type mpegvideo alias Car_SD"), NULL, 0, NULL);
-	mciSendString(TEXT("open \"Car_Crash.mp3\" type mpegvideo alias Car_Crash"), NULL, 0, NULL);
+	mciSendStringA(string("open \"" + SoundPath + "Car_SD.mp3\" type mpegvideo alias Car_SD").c_str(), NULL, 0, NULL);
+	mciSendStringA(string("open \"" + SoundPath + "Car_Crash.mp3\" type mpegvideo alias Car_Crash").c_str(), NULL, 0, NULL);
 	mciSendString(TEXT("setaudio Car_Crash volume to 50"), NULL, 0, NULL);
 
-	mciSendString(TEXT("open \"Alien_SD.mp3\" type mpegvideo alias Alien_SD"), NULL, 0, NULL);
-	mciSendString(TEXT("open \"Alien_Crash.mp3\" type mpegvideo alias Alien_Crash"), NULL, 0, NULL);
+	mciSendStringA(string("open \"" + SoundPath + "Alien_SD.mp3\" type mpegvideo alias Alien_SD").c_str(), NULL, 0, NULL);
+	mciSendStringA(string("open \"" + SoundPath + "Alien_Crash.mp3\" type mpegvideo alias Alien_Crash").c_str(), NULL, 0, NULL);
 	mciSendString(TEXT("setaudio Alien_Crash volume to 50"), NULL, 0, NULL);
 
-	mciSendString(TEXT("open \"Bird_SD.mp3\" type mpegvideo alias Bird_SD"), NULL, 0, NULL);
-	mciSendString(TEXT("open \"Bird_Crash.mp3\" type mpegvideo alias Bird_Crash"), NULL, 0, NULL);
+	mciSendStringA(string("open \"" + SoundPath + "Bird_SD.mp3\" type mpegvideo alias Bird_SD").c_str(), NULL, 0, NULL);
+	mciSendStringA(string("open \"" + SoundPath + "Bird_Crash.mp3\" type mpegvideo alias Bird_Crash").c_str(), NULL, 0, NULL);
 	mciSendString(TEXT("setaudio Bird_Crash volume to 50"), NULL, 0, NULL);
 }
 void SavePlayer(const Data& playerData, int index)
@@ -274,5 +275,4 @@ void StartUp()
 	FixConsoleWindow();
 	HideCursor();
 	SetUpScreenSize();
-	OpenSoundFiles();
 }

@@ -55,6 +55,7 @@ extern int SIDEWALK[2];
 extern int LEADERBOARD_SIZE;
 
 extern string CCODE;
+extern string SoundPath;
 extern string SavePath;
 
 extern vector <Data> SavedPlayers;

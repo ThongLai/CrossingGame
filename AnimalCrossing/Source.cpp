@@ -47,6 +47,7 @@ int main()
     thread sub(SubThread);
 	LoadPlayerSaves();
 	LoadLeaderBoard();
+	OpenSoundFiles();
 
 	int box_width = 20;
 	int box_height = 3;
