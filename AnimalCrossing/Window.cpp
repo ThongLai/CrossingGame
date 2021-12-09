@@ -6,8 +6,7 @@ int SCREEN_HEIGHT_PXL = 900;
 int SCREEN_WIDTH;
 int SCREEN_HEIGHT;
 
-int MID_SCREEN_HEIGHT;
-int GAMEPLAY_W = 120;
+int GAMEPLAY_W;
 int STATUS_W;
 int ROAD_H = 9;
 int SIDEWALK_H = 3;
@@ -15,7 +14,9 @@ int SIDEWALK_H = 3;
 int LANE[4];
 int SIDEWALK[2];
 
-int LEADERBOARD_SIZE = 11;
+int MAX_DISTANCE = 10;
+
+int LEADERBOARD_SIZE = SCREEN_HEIGHT * 0.8 / 3 - 1;
 
 string CCODE = "THONG";
 string SoundPath = "SoundEffects/";
@@ -85,18 +86,26 @@ void SetWindowSize(int width, int height)
 void SetUpScreenSize()
 {
 	GetWindowSize();
+	GAMEPLAY_W = 0.75 * SCREEN_WIDTH;
 	STATUS_W = SCREEN_WIDTH - GAMEPLAY_W;
-	MID_SCREEN_HEIGHT = midHeight(SCREEN_HEIGHT, ROAD_H * 4 + SIDEWALK_H * 2);
-
-	for (int i = 0; i < 4; i++)
-		LANE[i] = MID_SCREEN_HEIGHT + SIDEWALK_H + ROAD_H * (3 - i);
+	int GAP = (SCREEN_HEIGHT - (ROAD_H * 4 + SIDEWALK_H * 2)) / 5;
+	int MID_SCREEN_HEIGHT = midHeight(SCREEN_HEIGHT, ROAD_H * 4 + SIDEWALK_H * 2 + GAP * 5);
 
 	SIDEWALK[1] = MID_SCREEN_HEIGHT;
-	SIDEWALK[0] = MID_SCREEN_HEIGHT + 4 * ROAD_H + SIDEWALK_H;
+	LANE[3] = SIDEWALK[1] + SIDEWALK_H + GAP;
+
+	for (int i = 2; i >= 0; i--)
+		LANE[i] = LANE[i + 1] + ROAD_H + GAP;
+
+	SIDEWALK[0] = LANE[0] + ROAD_H + GAP;
 }
 void FullScreenMode()
 {
 	SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
+}
+void WindowedMode()
+{
+	SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_WINDOWED_MODE, 0);
 }
 void setRasterFonts()
 {
@@ -130,26 +139,28 @@ bool GetColor(int& color) {
 void OpenSoundFiles()
 {
 	mciSendStringA(string("open \"" + SoundPath + "MenuTheme.mp3\" type mpegvideo alias Menu_Theme").c_str(), NULL, 0, NULL);
-	mciSendString(TEXT("setaudio Menu_Theme volume to 50"), NULL, 0, NULL);
-
 	mciSendStringA(string("open \"" + SoundPath + "GamePlayTheme.mp3\" type mpegvideo alias Gameplay_Theme").c_str(), NULL, 0, NULL);
-	mciSendString(TEXT("setaudio Gameplay_Theme volume to 50"), NULL, 0, NULL);
-
-
 	mciSendStringA(string("open \"" + SoundPath + "Van_Crash.mp3\" type mpegvideo alias Van_Crash").c_str(), NULL, 0, NULL);
-	mciSendString(TEXT("setaudio Van_Crash volume to 50"), NULL, 0, NULL);
-
-	mciSendStringA(string("open \"" + SoundPath + "Car_SD.mp3\" type mpegvideo alias Car_SD").c_str(), NULL, 0, NULL);
 	mciSendStringA(string("open \"" + SoundPath + "Car_Crash.mp3\" type mpegvideo alias Car_Crash").c_str(), NULL, 0, NULL);
-	mciSendString(TEXT("setaudio Car_Crash volume to 50"), NULL, 0, NULL);
-
-	mciSendStringA(string("open \"" + SoundPath + "Alien_SD.mp3\" type mpegvideo alias Alien_SD").c_str(), NULL, 0, NULL);
 	mciSendStringA(string("open \"" + SoundPath + "Alien_Crash.mp3\" type mpegvideo alias Alien_Crash").c_str(), NULL, 0, NULL);
-	mciSendString(TEXT("setaudio Alien_Crash volume to 50"), NULL, 0, NULL);
-
-	mciSendStringA(string("open \"" + SoundPath + "Bird_SD.mp3\" type mpegvideo alias Bird_SD").c_str(), NULL, 0, NULL);
 	mciSendStringA(string("open \"" + SoundPath + "Bird_Crash.mp3\" type mpegvideo alias Bird_Crash").c_str(), NULL, 0, NULL);
-	mciSendString(TEXT("setaudio Bird_Crash volume to 50"), NULL, 0, NULL);
+	mciSendStringA(string("open \"" + SoundPath + "Menu_Select.mp3\" type mpegvideo alias Menu_Select").c_str(), NULL, 0, NULL);
+	mciSendStringA(string("open \"" + SoundPath + "Plus_Point.mp3\" type mpegvideo alias Plus_Point").c_str(), NULL, 0, NULL);
+	mciSendStringA(string("open \"" + SoundPath + "Next_Level.mp3\" type mpegvideo alias Next_Level").c_str(), NULL, 0, NULL);
+	mciSendStringA(string("open \"" + SoundPath + "Finish_Game.mp3\" type mpegvideo alias Finish_Game").c_str(), NULL, 0, NULL);
+}
+void SetAllVolumes(int volume)
+{
+	mciSendStringA(string("setaudio Menu_Theme volume to " + to_string(volume)).c_str(), NULL, 0, NULL);
+	mciSendStringA(string("setaudio Gameplay_Theme volume to " + to_string(volume)).c_str(), NULL, 0, NULL);
+	mciSendStringA(string("setaudio Van_Crash volume to " + to_string(volume)).c_str(), NULL, 0, NULL);
+	mciSendStringA(string("setaudio Car_Crash volume to " + to_string(volume)).c_str(), NULL, 0, NULL);
+	mciSendStringA(string("setaudio Alien_Crash volume to " + to_string(volume)).c_str(), NULL, 0, NULL);
+	mciSendStringA(string("setaudio Bird_Crash volume to " + to_string(volume)).c_str(), NULL, 0, NULL);
+	mciSendStringA(string("setaudio Menu_Select volume to " + to_string(volume)).c_str(), NULL, 0, NULL);
+	mciSendStringA(string("setaudio Plus_Point volume to " + to_string(volume)).c_str(), NULL, 0, NULL);
+	mciSendStringA(string("setaudio Next_Level volume to " + to_string(volume)).c_str(), NULL, 0, NULL);
+	mciSendStringA(string("setaudio Finish_Game volume to " + to_string(volume)).c_str(), NULL, 0, NULL);
 }
 void SavePlayer(const Data& playerData, int index)
 {
@@ -270,7 +281,7 @@ void StartUp()
 {
 	srand(time(NULL));
 	setRasterFonts();
-	FullScreenMode();
+	//FullScreenMode();
 	SetWindowSize(SCREEN_WIDTH_PXL, SCREEN_HEIGHT_PXL);
 	FixConsoleWindow();
 	HideCursor();

@@ -61,16 +61,51 @@ string game_over[] =
 int game_over_height = sizeof(game_over) / sizeof(string);
 int game_over_width = artWidth(game_over, game_over_height);
 
-string MAINMENU[] = {
+string MAINMENU[] = 
+{
 	"Play",
-	"Load Games",
+	"Load Game",
 	"Leader Board",
-	"Instructions",
+	"Instruction",
 	"Settings",
 	"Credits",
-	"Exit",
+	"Quit",
 };
 int MAINMENU_SIZE = sizeof(MAINMENU) / sizeof(string);
+
+string INSTRUCTION[] =
+{
+	"Use <W / A / S / D> to move the PLAYER UP / LEFT / DOWN / RIGHT around the map.",
+	"Press <P> to PAUSE the game.",
+	"Press <R> to RESET the game",
+	"Press <M> to SAVE the process.",
+	"Press <L> to LOAD a game",
+};
+int INSTRUCTION_SIZE = sizeof(INSTRUCTION) / sizeof(string);
+
+string SETTINGS[] =
+{
+	"Window",
+	"Audio",
+	"Return"
+};
+int SETTINGS_SIZE = sizeof(SETTINGS) / sizeof(string);
+
+string CREDITS[] =
+{
+	"CROSS THE ROAD",
+	"-----A Game Project made by HCMUS students-----",
+	"Lai Minh Thong - 20127635",
+	"Tran Nguyen Anh Tai - 20127319",
+	"Nguyen Le Hoang Thong - 20127078",
+	"Dao Dai Hai - 20127016",
+	"--Instructors--",
+	"Mr. Truong Toan Thinh",
+	"Mr. Nguyen Hai Dang",
+	"Mr. Do Trong Le",
+	"Mr. Nguyen Thanh An"
+};
+int CREDITS_SIZE = sizeof(CREDITS) / sizeof(string);
 
 string YES_NO_SELECTION[] = {
 	"Yes",
@@ -80,11 +115,11 @@ int YES_NO_SELECTION_SIZE = sizeof(YES_NO_SELECTION) / sizeof(string);
 
 string GUIDEBUTTONS[] =
 {
-	"P - Pause/Continue",
-	"R - Reset Game",
-	"M - Save Game",
-	"L - Load Game",
-	"Esc - Return to Main Menu"
+	"<P> - Pause/Continue",
+	"<R> - Reset Game",
+	"<M> - Save Game",
+	"<L> - Load Game",
+	"<Esc> - Return to Main Menu"
 
 };
 int GUIDEBUTTONS_SIZE = sizeof(GUIDEBUTTONS) / sizeof(string);
@@ -256,14 +291,14 @@ void BOX::removeBox()
 
 
 //MENU
-MENU::MENU() : n(1), trench(0), title("") {
+MENU::MENU() : n(1), title("") {
 	nBox = new BOX[n];
 }
 
-MENU::MENU(string _title, int _n, string* content, int _x, int _y, int _width, int _height, int _text_color, int _bg_color) : n(_n), trench(0)
+MENU::MENU(string _title, string* content, int _n, int _x, int _y, int _width, int _height, int _text_color, int _bg_color) : n(_n)
 {
 	nBox = new BOX[n];
-	setMenu(_title, content, _x, _y, _width, _height, _text_color, _bg_color);
+	setMenu(_title, content, _n, _x, _y, _width, _height, _text_color, _bg_color);
 }
 
 MENU::~MENU()
@@ -271,10 +306,11 @@ MENU::~MENU()
 	delete[]nBox;
 }
 
-void MENU::setMenu(string _title, string* content, int _x, int _y, int _width, int _height, int _text_color, int _bg_color)
+void MENU::setMenu(string _title, string* _content, int _n, int _x, int _y, int _width, int _height, int _text_color, int _bg_color)
 {
+	n = _n;
 	setBox(_x, _y, _width, _height, _text_color, _bg_color);
-	setBoxContent(content);
+	setBoxContent(_content);
 	setTitle(_title);
 }
 
@@ -347,6 +383,8 @@ int MENU::inputMenu()
 
 		if (_kbhit())
 		{
+			mciSendString(TEXT("play Menu_Select from 0"), NULL, 0, NULL);
+
 			isPress = true;
 			input = toupper(_getch());
 
@@ -441,6 +479,13 @@ void drawScoreBoard(const Data& data)
 
 void drawLeaderBoard()
 {
+	string leaderBoard_title = "LEADER BOARD";
+	string continue_title = "<PRESS ANY KEY TO CONTINUE>";
+
+	BOX Title[2];
+	Title[0].setBox(midWidth(SCREEN_WIDTH, leaderBoard_title.size() + 10), SCREEN_HEIGHT / 20, leaderBoard_title.size() + 10, 3, YELLOW, BLACK, leaderBoard_title);
+	Title[1].setBox(midWidth(SCREEN_WIDTH, continue_title.size()), SCREEN_HEIGHT * 18 / 20, continue_title.size(), 3, LIGHTGREEN, BLACK, continue_title);
+
 	int box_width = SCREEN_WIDTH / 2;
 	int box_height = SCREEN_HEIGHT * 0.8;
 
@@ -450,8 +495,8 @@ void drawLeaderBoard()
 	border[2].setBox(border[1].getX() + border[1].getWidth(), midHeight(SCREEN_HEIGHT, box_height), box_width * 1 / 5, box_height, YELLOW, BLACK, "");
 	border[3].setBox(border[2].getX() + border[2].getWidth(), midHeight(SCREEN_HEIGHT, box_height), box_width * 1 / 5, box_height, YELLOW, BLACK, "");
 
-	vector <BOX> leaderBoard;
-	leaderBoard.resize(LeaderBoard.size() + 1);
+	vector <BOX> content;
+	content.resize(LeaderBoard.size() + 1);
 
 	string name, score, level, time;
 	string sp1, sp2, sp3, sp4;
@@ -467,9 +512,9 @@ void drawLeaderBoard()
 		sp3 = string((border[2].getWidth() - level.size()) / 2, ' ');
 		sp4 = string((border[3].getWidth() - time.size()) / 2, ' ');
 
-		leaderBoard[i].setPosition(border[0].getX(), border[0].getY() + (1+i)*3);
-		leaderBoard[i].setFormat(box_width, 3, i < 3 ? LIGHTRED : (i > (LeaderBoard.size() - 3) / 2 ? LIGHTBLUE : LIGHTMAGENTA), BLACK);
-		leaderBoard[i].setContent(sp1 + name + sp1 + sp2 + score + sp2 + sp3 + level + sp3 + sp4 + time + sp4);
+		content[i].setContent(sp1 + name + sp1 + sp2 + score + sp2 + sp3 + level + sp3 + sp4 + time + sp4);
+		content[i].setPosition(border[0].getX(), border[0].getY() + (1 + i) * 3);
+		content[i].setFormat(box_width, 3, i < 3 ? LIGHTRED : (i > (LeaderBoard.size() - 3) / 2 ? LIGHTBLUE : LIGHTMAGENTA), BLACK);
 	}
 
 	name = "NAME";
@@ -482,17 +527,75 @@ void drawLeaderBoard()
 	sp3 = string((border[2].getWidth() - level.size()) / 2, ' ');
 	sp4 = string((border[3].getWidth() - time.size()) / 2, ' ');
 
-	leaderBoard[LeaderBoard.size()].setPosition(border[0].getX(), border[0].getY());
-	leaderBoard[LeaderBoard.size()].setFormat(box_width, 3, YELLOW, BLACK);
-	leaderBoard[LeaderBoard.size()].setContent(sp1 + name + sp1 + sp2 + score + sp2 + sp3 + level + sp3 + sp4 + time + sp4);
+	content[LeaderBoard.size()].setContent(sp1 + name + sp1 + sp2 + score + sp2 + sp3 + level + sp3 + sp4 + time + sp4);
+	content[LeaderBoard.size()].setPosition(border[0].getX(), border[0].getY());
+	content[LeaderBoard.size()].setFormat(box_width, 3, YELLOW, BLACK);
 
 	
-
+	Title[0].printBox();
+	Title[1].printContent();
 	for (int i = 0; i < LeaderBoard.size(); i++)
-		leaderBoard[i].printBox();
+		content[i].printBox();
 	for (int i = 0; i < 4; i++)
 		border[i].printBorder();
-	leaderBoard[LeaderBoard.size()].printBox();
+	content[LeaderBoard.size()].printBox();
+}
+
+void drawInstruction()
+{
+	int content_height = 3 * INSTRUCTION_SIZE;
+
+	string instruction_title = "HOW TO PLAY";
+	string return_title = "ESC/ENTER - Back";
+	BOX Title[2];
+	Title[0].setBox(midWidth(SCREEN_WIDTH, instruction_title.size() + 10), SCREEN_HEIGHT / 20, instruction_title.size() + 10, 3, YELLOW, BLACK, instruction_title);
+	Title[1].setBox(midWidth(SCREEN_WIDTH, return_title.size()), SCREEN_HEIGHT * 18 / 20, return_title.size(), 3, WHITE, BLACK, return_title);
+
+
+
+	vector <BOX> content;
+	content.resize(INSTRUCTION_SIZE);
+	
+	for (int i = 0; i < content.size(); i++)
+		content[i].setBox(midWidth(SCREEN_WIDTH, INSTRUCTION[i].size()), midHeight(SCREEN_HEIGHT, content_height) + i * 3, INSTRUCTION[i].size(), 3, LIGHTCYAN, BLACK, INSTRUCTION[i]);
+	
+
+
+	Title[0].printBox();
+	Title[1].printContent();
+	for (int i = 0; i < content.size(); i++)
+		content[i].printContent();
+}
+
+void drawCredits()
+{
+	int content_height = 2 * (CREDITS_SIZE + 2);
+
+	string credits_title = "CREDITS";
+	string return_title = "ESC/ENTER - Back";
+	BOX Title[2];
+	Title[0].setBox(midWidth(SCREEN_WIDTH, credits_title.size() + 10), SCREEN_HEIGHT / 20, credits_title.size() + 10, 3, YELLOW, BLACK, credits_title);
+	Title[1].setBox(midWidth(SCREEN_WIDTH, return_title.size()), SCREEN_HEIGHT * 18 / 20, return_title.size(), 3, WHITE, BLACK, return_title);
+
+
+	vector <BOX> content;
+	content.resize(CREDITS_SIZE);
+
+	content[0].setBox(midWidth(SCREEN_WIDTH, CREDITS[0].size()), midHeight(SCREEN_HEIGHT, content_height), CREDITS[0].size(), 3, rand() % (15) + 1, BLACK, CREDITS[0]);
+	content[1].setBox(midWidth(SCREEN_WIDTH, CREDITS[1].size()), midHeight(SCREEN_HEIGHT, content_height) + 2 * 2, CREDITS[1].size(), 3, LIGHTBLUE, BLACK, CREDITS[1]);
+	content[6].setBox(midWidth(SCREEN_WIDTH, CREDITS[6].size()), midHeight(SCREEN_HEIGHT, content_height) + 8 * 2, CREDITS[6].size(), 3, LIGHTBLUE, BLACK, CREDITS[6]);
+
+	for (int i = 2; i < 6; i++)
+		content[i].setBox(midWidth(SCREEN_WIDTH, CREDITS[i].size()), midHeight(SCREEN_HEIGHT, content_height) + (1+i) * 2, CREDITS[i].size(), 3, LIGHTCYAN, BLACK, CREDITS[i]);
+
+	for (int i = 7; i < content.size(); i++)
+		content[i].setBox(midWidth(SCREEN_WIDTH, CREDITS[i].size()), midHeight(SCREEN_HEIGHT, content_height) + (2+i) * 2, CREDITS[i].size(), 3, LIGHTCYAN, BLACK, CREDITS[i]);
+
+
+	Title[0].printBox();
+	Title[1].printContent();
+	for (int i = 0; i < content.size(); i++)
+		content[i].printContent();
 }
 
 void drawArt(string* art, int height, int x, int y, int text_color, int bg_color)
@@ -507,6 +610,57 @@ void drawArt(string* art, int height, int x, int y, int text_color, int bg_color
 	}
 }
 
+
+void Settings_Menu()
+{
+	int box_width = 21;
+	int box_height = 5;
+	MENU settingsMenu("SETTINGS", SETTINGS, SETTINGS_SIZE, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * SETTINGS_SIZE), box_width, box_height, WHITE, BLACK);
+
+	while (true)
+	{
+		system("cls");
+		settingsMenu.printMenu();
+		int buf = settingsMenu.inputMenu();
+
+		switch (buf)
+		{
+		case 0:
+		{
+			// MENU SETTINGS
+			buf = Ask_ChangeWindowMode();
+			if (buf == 0)
+				FullScreenMode();
+			else if (buf == 1)
+			{
+				WindowedMode();
+				SetWindowSize(SCREEN_WIDTH_PXL, SCREEN_HEIGHT_PXL);
+			}
+			else
+				break;
+
+			FixConsoleWindow();
+			HideCursor();
+			SetUpScreenSize();
+			settingsMenu.setMenu("SETTINGS", SETTINGS, SETTINGS_SIZE, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * SETTINGS_SIZE), box_width, box_height, WHITE, BLACK);
+
+			break;
+		}
+		case 1:
+		{
+			// AUDIO SETTINGS
+			buf = Ask_NumberVolumes();
+
+			SetAllVolumes(buf);
+
+			break;
+		}
+		case 2:
+		case -1:
+			return;
+		}
+	}
+}
 
 int Save_Menu()
 {
@@ -523,7 +677,7 @@ int Save_Menu()
 
 	int box_width = 21;
 	int box_height = 5;
-	MENU saveMenu("Save Game Menu", SavedPlayers.size() + 3, SAVEMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * SavedPlayers.size()), box_width, box_height, LIGHTGRAY, BLACK);
+	MENU saveMenu("SAVE GAME", SAVEMENU, SavedPlayers.size() + 3, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * (SavedPlayers.size() + 3)), box_width, box_height, WHITE, BLACK);
 
 	saveMenu.printMenu();
 	int buf = saveMenu.inputMenu();
@@ -554,7 +708,7 @@ int Load_Menu()
 
 	int box_width = 21;
 	int box_height = 5;
-	MENU loadMenu("Load Game Menu", SavedPlayers.size() + 2, LOADMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * SavedPlayers.size()), box_width, box_height, LIGHTGRAY, BLACK);
+	MENU loadMenu("LOAD GAME", LOADMENU, SavedPlayers.size() + 2, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * (SavedPlayers.size() + 2)), box_width, box_height, WHITE, BLACK);
 
 	loadMenu.printMenu();
 	int buf = loadMenu.inputMenu();
@@ -584,7 +738,7 @@ int Remove_Menu()
 
 	int box_width = 21;
 	int box_height = 5;
-	MENU removeMenu("Choose the Player want to delete: ", SavedPlayers.size() + 1, REMOVEMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * SavedPlayers.size()), box_width, box_height, LIGHTGRAY, BLACK);
+	MENU removeMenu("Choose the Player want to delete: ", REMOVEMENU, SavedPlayers.size() + 1, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * SavedPlayers.size()), box_width, box_height, LIGHTGRAY, BLACK);
 
 	removeMenu.printMenu();
 	int buf = removeMenu.inputMenu();
@@ -595,11 +749,43 @@ int Remove_Menu()
 }
 
 
+
+int Ask_ChangeWindowMode()
+{
+	int box_width = 21;
+	int box_height = 5;
+	string windowModes[] =
+	{
+		"FullScreen Mode",
+		"Windowed Mode",
+		"Cancel"
+	};
+	int size = sizeof(windowModes) / sizeof(string);
+
+	MENU askWindow("Select Mode", windowModes, size, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * size), box_width, box_height, WHITE, BLACK);
+
+	askWindow.printMenu();
+
+	return askWindow.inputMenu();
+}
+int Ask_NumberVolumes()
+{
+	system("cls");
+
+	int volume = 0;
+
+	GotoXY(midWidth(SCREEN_WIDTH, "Enter Volume Number: "), midHeight(SCREEN_HEIGHT, 1));
+	cout << "Enter Volume Number: ";
+
+	cin >> volume; cin.ignore();
+
+	return volume;
+}
 int Ask_SaveGame()
 {
 	int box_width = 21;
 	int box_height = 5;
-	MENU askSave("Do you want to save your progress?", YES_NO_SELECTION_SIZE, YES_NO_SELECTION, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height), box_width, box_height, LIGHTGRAY, BLACK);
+	MENU askSave("Do you want to save your progress?", YES_NO_SELECTION, YES_NO_SELECTION_SIZE, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height), box_width, box_height, LIGHTGRAY, BLACK);
 
 	askSave.printMenu();
 
@@ -610,7 +796,7 @@ int Ask_PlayAgain()
 {
 	int box_width = 21;
 	int box_height = 5;
-	MENU askPlayAgain("Do you want to play again?", YES_NO_SELECTION_SIZE, YES_NO_SELECTION, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT * 4 / 3, box_height), box_width, box_height, LIGHTGRAY, BLACK);
+	MENU askPlayAgain("Do you want to play again?", YES_NO_SELECTION, YES_NO_SELECTION_SIZE, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT * 4 / 3, box_height), box_width, box_height, LIGHTGRAY, BLACK);
 
 	askPlayAgain.printMenu();
 
@@ -621,10 +807,9 @@ int Ask_PlayerName()
 {
 	int box_width = 21;
 	int box_height = 5;
-	MENU askPlayAgain("Do you want to save your score?", YES_NO_SELECTION_SIZE, YES_NO_SELECTION, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT * 4 / 3, box_height) , box_width, box_height, LIGHTGRAY, BLACK);
+	MENU askPlayAgain("Do you want to save your score?", YES_NO_SELECTION, YES_NO_SELECTION_SIZE, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT * 4 / 3, box_height) , box_width, box_height, LIGHTGRAY, BLACK);
 
 	askPlayAgain.printMenu();
 
 	return askPlayAgain.inputMenu();
 }
-

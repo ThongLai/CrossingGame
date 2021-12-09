@@ -95,7 +95,7 @@ bool Data::operator>(const Data& data)
 				else
 					return false;
 			}
-			else if (TIME > data.TIME)
+			else if (TIME < data.TIME)
 				return true;
 			else
 				return false;
@@ -124,7 +124,7 @@ bool Data::operator<(const Data& data)
 				else
 					return false;
 			}
-			else if (TIME < data.TIME)
+			else if (TIME > data.TIME)
 				return true;
 			else
 				return false;

@@ -6,9 +6,6 @@
 #include "Player.h"
 #include "CGame.h"
 
-
-using namespace std;
-
 CGame game;
 int buf = 0;
 
@@ -30,12 +27,9 @@ void SubThread() {
 		game.updatePosAnimal();
 		game.updatePosVehicle((++time)%=51);
 
-		game.calcPoint();
 
 		game.updateTime();
 		game.updateGameStatus();
-
-		game.soundEffects();
 
         Sleep(100);
     }
@@ -44,6 +38,10 @@ void SubThread() {
 
 int main()
 {
+
+
+	printMessCenter("LOADING ...");
+
     thread sub(SubThread);
 	LoadPlayerSaves();
 	LoadLeaderBoard();
@@ -51,7 +49,7 @@ int main()
 
 	int box_width = 20;
 	int box_height = 3;
-	MENU MainMenu("Main Menu", MAINMENU_SIZE, MAINMENU, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT*3/2, box_height * MAINMENU_SIZE), box_width, box_height, WHITE, BLACK);
+	MENU MainMenu("MAIN MENU", MAINMENU, MAINMENU_SIZE, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT * 3 / 2, box_height * MAINMENU_SIZE), box_width, box_height, WHITE, BLACK);
 
 	while (true)
 	{
@@ -66,10 +64,10 @@ int main()
 		case 0:
 		{
 			system("cls");
-			printMessCenter("LOADING GAME...");
-			Sleep(1000);
+			printMessCenter("LOADING ...");
 
 			game.resetGame();
+			system("cls");
 
 			mciSendString(TEXT("stop Menu_Theme"), NULL, 0, NULL);
 			mciSendString(TEXT("play Gameplay_Theme from 0 repeat"), NULL, 0, NULL);
@@ -80,7 +78,11 @@ int main()
 		}
 		case 1:
 		{
+			system("cls");
+
 			game.loadGame();
+			system("cls");
+
 			if (!game.isPlaying())
 				continue;
 
@@ -97,49 +99,42 @@ int main()
 
 			drawLeaderBoard();
 
-			do {
-				buf = toupper(_getch());
-			} while (buf != ESC);
+			toupper(_getch());
 
 			break;
 		}
 		case 3:
 		{
 			system("cls");
-			printMessCenter(MAINMENU[3] + " is selected");
-			Sleep(1000);
+
+			drawInstruction();
+
+			do {
+				buf = toupper(_getch());
+			} while (buf != ESC && buf != ENTER);
 
 			break;
 		}
 		case 4:
 		{
 			system("cls");
-			printMessCenter(MAINMENU[4] + " is selected");
-			Sleep(1000);
 
+			Settings_Menu();
+			
+			MainMenu.setMenu("MAIN MENU", MAINMENU, MAINMENU_SIZE, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT * 3 / 2, box_height * MAINMENU_SIZE), box_width, box_height, WHITE, BLACK);
 			break;
 		}
 		case 5:
 		{
 			system("cls");
-			printMessCenter(MAINMENU[5] + " is selected");
-			Sleep(1000);
+
+			drawCredits();
+
+			do {
+				buf = toupper(_getch());
+			} while (buf != ESC && buf != ENTER);
 
 			break;
-		}
-		case 6:
-		{
-			system("cls");
-			printMessCenter(MAINMENU[6] + " is selected");
-			Sleep(1000);
-
-			break;
-		}
-		case 7:
-		{
-			system("cls");
-			printMessCenter(MAINMENU[7] + " is selected");
-			Sleep(1000);
 
 			break;
 		}
@@ -147,6 +142,8 @@ int main()
 		if (buf == -1 || buf == 6)
 		{
 			system("cls");
+			printMessCenter("GOOD BYE! :-)");
+			Sleep(1000);
 
 			sub.detach();
 			break;
@@ -159,6 +156,8 @@ int main()
 
 		while (game.isPlaying())
 		{
+			game.calcPoint();
+
 			if (_kbhit())
 			{
 				buf = toupper(_getch());
@@ -167,11 +166,15 @@ int main()
 				{
 					while (!game.isPause()) {}
 
+					mciSendString(TEXT("pause Gameplay_Theme"), NULL, 0, NULL);
+
 					game.drawPauseScreen();
 
 					do {
 						buf = toupper(_getch());
 					} while (buf != 'P');
+
+					mciSendString(TEXT("resume Gameplay_Theme"), NULL, 0, NULL);
 
 					buf = 0;
 					game.resumeGame();
@@ -182,6 +185,8 @@ int main()
 
 					game.resetGame();
 
+					mciSendString(TEXT("play Gameplay_Theme from 0"), NULL, 0, NULL);
+
 					buf = 0;
 					game.resumeThread();
 				}
@@ -189,7 +194,11 @@ int main()
 				{
 					while (!game.isPause()) {}
 
+					mciSendString(TEXT("pause Gameplay_Theme"), NULL, 0, NULL);
+
 					game.saveGame();
+
+					mciSendString(TEXT("resume Gameplay_Theme"), NULL, 0, NULL);
 
 					buf = 0;
 					game.resumeGame();
@@ -198,7 +207,11 @@ int main()
 				{
 					while (!game.isPause()) {}
 
+					mciSendString(TEXT("pause Gameplay_Theme"), NULL, 0, NULL);
+
 					game.loadGame();
+
+					mciSendString(TEXT("resume Gameplay_Theme"), NULL, 0, NULL);
 
 					buf = 0;
 					game.resumeThread();
@@ -207,9 +220,11 @@ int main()
 				{
 					while (!game.isPause()) {}
 
-					mciSendString(TEXT("pause Gameplay_Theme"), NULL, 0, NULL);
+					mciSendString(TEXT("stop Gameplay_Theme"), NULL, 0, NULL);
 
 					game.exitGame();
+
+					mciSendString(TEXT("play Menu_Theme from 0 repeat"), NULL, 0, NULL);
 
 					break;
 				}
@@ -226,13 +241,16 @@ int main()
 				game.processAfterGame();
 
 				if (!game.isPlaying()) //Neu chon khong muon choi lai
+				{
+					mciSendString(TEXT("play Menu_Theme from 0 repeat"), NULL, 0, NULL);
 					break;
+				}
 			}
 			else if (game.isFinish()) //Đây là if kết thúc
 			{
 				while (!game.isPause()) {}
 
-				game.nextRound();
+				game.nextLevel();
 				game.resumeThread();
 			}
 		}

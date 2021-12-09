@@ -1,11 +1,8 @@
 #include "CGame.h"
 
-CGame::CGame() : level(0), objNum(2), score(0), curSound(0), START_TIME(clock() / CLOCKS_PER_SEC), TIME(0), PAUSE_TIME(0), pause(true), running(false), UnDeadCMD(false)
+CGame::CGame() : level(0), objNum(0), score(0), START_TIME(clock() / CLOCKS_PER_SEC), TIME(0), PAUSE_TIME(0), pause(true), running(false), UnDeadCMD(false)
 {
 	StartUp();
-
-	vansLight.setXY(GAMEPLAY_W, LANE[0]);
-	carLight.setXY(GAMEPLAY_W, LANE[1]);
 
 	Init();
 }
@@ -17,36 +14,40 @@ CGame::~CGame()
 
 void CGame::Init()
 {
-	if (objNum < 4)
-	{
-		objNum = level / 2 + 2;
-
-		vans.resize(objNum);
-		cars.resize(objNum);
-		birds.resize(objNum);
-		aliens.resize(objNum);
-
-		for (int i = 0; i < objNum; ++i)
-		{
-			vans[i].setXY(i * (Distance(vans[i].getWidth(), objNum) + vans[i].getWidth()), midHeight(ROAD_H, vans[i].getHeight()) + LANE[0]);
-			vans[i].setColor(BLUE, BLACK);
-
-			cars[i].setXY(i * (Distance(cars[i].getWidth(), objNum) + cars[i].getWidth()), midHeight(ROAD_H, cars[i].getHeight()) + LANE[1]);
-			cars[i].setColor(LIGHTCYAN, BLACK);
-
-			birds[i].setXY(i * (Distance(birds[i].getWidth(), objNum) + birds[i].getWidth()), midHeight(ROAD_H, birds[i].getHeight()) + LANE[2]);
-			birds[i].setColor(BROWN, BLACK);
-
-			aliens[i].setXY(i * (Distance(aliens[i].getWidth(), objNum) + aliens[i].getWidth()), midHeight(ROAD_H, aliens[i].getHeight()) + LANE[3]);
-			aliens[i].setColor(LIGHTGREEN, BLACK);
-		}
-	}
-
 	for (int i = 0; i < 4; ++i)
 		checkPoint[i] = false;
 
 	player.setXY(midWidth(GAMEPLAY_W, 3), SIDEWALK[0]);
 	player.setColor(LIGHTGRAY, BLACK);
+
+	vansLight.setXY(GAMEPLAY_W, LANE[0]);
+	carLight.setXY(GAMEPLAY_W, LANE[1]);
+
+	if (Distance(Van().getWidth(), objNum + 1) < MAX_DISTANCE)
+		return;
+
+
+	objNum = level / 2 + 2;
+
+	vans.resize(objNum);
+	cars.resize(objNum);
+	birds.resize(objNum);
+	aliens.resize(objNum);
+
+	for (int i = 0; i < objNum; ++i)
+	{
+		vans[i].setXY(i * (Distance(vans[i].getWidth(), objNum) + vans[i].getWidth()), midHeight(ROAD_H, vans[i].getHeight()) + LANE[0]);
+		vans[i].setColor(BLUE, BLACK);
+
+		cars[i].setXY(i * (Distance(cars[i].getWidth(), objNum) + cars[i].getWidth()), midHeight(ROAD_H, cars[i].getHeight()) + LANE[1]);
+		cars[i].setColor(LIGHTCYAN, BLACK);
+
+		birds[i].setXY(i * (Distance(birds[i].getWidth(), objNum) + birds[i].getWidth()), midHeight(ROAD_H, birds[i].getHeight()) + LANE[2]);
+		birds[i].setColor(BROWN, BLACK);
+
+		aliens[i].setXY(i * (Distance(aliens[i].getWidth(), objNum) + aliens[i].getWidth()), midHeight(ROAD_H, aliens[i].getHeight()) + LANE[3]);
+		aliens[i].setColor(LIGHTGREEN, BLACK);
+	}
 }
 
 void CGame::drawGame()
@@ -79,6 +80,7 @@ void CGame::processAfterGame()
 
 	system("cls");
 
+	mciSendString(TEXT("play Finish_Game from 0"), NULL, 0, NULL);
 	drawScoreBoard(Data(level, score, TIME, player.X(), player.Y()));
 
 	if (Ask_PlayerName() == 0)
@@ -188,8 +190,10 @@ void CGame::Remove()
 	player.Remove();
 }
 
-void CGame::nextRound()
+void CGame::nextLevel()
 {
+	mciSendString(TEXT("play Next_Level from 0"), NULL, 0, NULL);
+
 	Remove();
 
 	++level;
@@ -482,21 +486,25 @@ void CGame::calcPoint()
 {
 	if (!checkPoint[0] && player.Y() == LANE[0])
 	{
+		mciSendString(TEXT("play Plus_Point from 0"), NULL, 0, NULL);
 		score += 100;
 		checkPoint[0] = true;
 	}
 	else if (!checkPoint[1] && player.Y() == LANE[1])
 	{
+		mciSendString(TEXT("play Plus_Point from 0"), NULL, 0, NULL);
 		score += 200;
 		checkPoint[1] = true;
 	}	
 	else if (!checkPoint[2] && player.Y() == LANE[2])
 	{
+		mciSendString(TEXT("play Plus_Point from 0"), NULL, 0, NULL);
 		score += 300;
 		checkPoint[2] = true;
 	}	
 	else if (!checkPoint[3] && player.Y() == LANE[3])
 	{
+		mciSendString(TEXT("play Plus_Point from 0"), NULL, 0, NULL);
 		score += 400;
 		checkPoint[3] = true;
 	}
@@ -521,18 +529,6 @@ void CGame::addBuf(char key)
 	}
 }
 
-void CGame::autoSaveGame()
-{
-	ofstream out(string(SavePath) + "SAVE AUTO.txt", ios::out);
-
-	out << level << " " << score << " " << TIME << " " << player.X() << " " << player.Y();
-
-	out.close();
-
-	system("cls");
-	drawGame();
-}
-
 void CGame::CheckUnDeadCMD()
 {
 	if (buf == CCODE)
@@ -550,7 +546,6 @@ void CGame::resetData()
 	objNum = 2;
 	level = 0;
 	score = 0;
-	curSound = 0;
 
 	START_TIME = clock() / CLOCKS_PER_SEC;
 	TIME = 0;
@@ -560,28 +555,6 @@ void CGame::resetData()
 	cars.clear();
 	birds.clear();
 	aliens.clear();
-}
-
-void CGame::soundEffects()
-{
-	if (player.Y() >= LANE[0] && curSound == 0)
-	{
-		vans[0].SurroundingSound();
-		curSound = 1;
-	}
-	else if (player.Y() >= LANE[1])
-	{ 
-		cars[0].SurroundingSound();
-		//xiu lam tiep
-	}
-	else if (player.Y() >= LANE[2])
-	{
-		birds[0].SurroundingSound();
-	}
-	else if (player.Y() >= LANE[3])
-	{
-		aliens[0].SurroundingSound();
-	}
 }
 
 bool CGame::isPause()

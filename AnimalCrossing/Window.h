@@ -43,7 +43,6 @@ extern int SCREEN_HEIGHT_PXL;
 extern int SCREEN_WIDTH;
 extern int SCREEN_HEIGHT;
 
-extern int MID_SCREEN_HEIGHT;
 extern int GAMEPLAY_W;
 extern int STATUS_W;
 extern int ROAD_H;
@@ -51,6 +50,7 @@ extern int SIDEWALK_H;
 
 extern int LANE[4];
 extern int SIDEWALK[2];
+extern int MAX_DISTANCE;
 
 extern int LEADERBOARD_SIZE;
 
@@ -70,10 +70,12 @@ void GetWindowSize();
 void SetWindowSize(int width, int height);
 void SetUpScreenSize();
 void FullScreenMode();
+void WindowedMode();
 void setRasterFonts();
 bool GetXY(int& x, int& y);
 bool GetColor(int& color);
 void OpenSoundFiles();
+void SetAllVolumes(int volume);
 void SavePlayer(const Data& playerData, int index);
 void AddPlayer(const Data& Player);
 void RemovePlayer(int index);

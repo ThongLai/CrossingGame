@@ -35,9 +35,6 @@ private:
 	clock_t TIME;
 	clock_t PAUSE_TIME;
 
-	//chua lam xong
-	int curSound;
-
 	//Biến tạm dừng game
 	bool pause;
 	bool running;
@@ -65,8 +62,7 @@ public:
 	void resumeGame(); //Quay lai Thread
 
 	void Remove();
-	void nextRound();
-	void autoSaveGame();
+	void nextLevel();
 
 	bool updatePosPeople(char); //Thực hiện điều khiển di chuyển của CPEOPLE
 	void updatePosVehicle(int); //Thực hiện cho CTRUCK & CCAR di chuyển
