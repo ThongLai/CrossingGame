@@ -80,8 +80,6 @@ public:
 	void calcPoint();
 	int getPoint();
 
-	void soundEffects();
-
 	void addBuf(char key);
 	void CheckUnDeadCMD();
 };

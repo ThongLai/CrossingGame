@@ -550,6 +550,7 @@ void CGame::resetData()
 	START_TIME = clock() / CLOCKS_PER_SEC;
 	TIME = 0;
 	PAUSE_TIME = 0;
+	UnDeadCMD = false;
 
 	vans.clear();
 	cars.clear();
