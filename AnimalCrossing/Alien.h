@@ -19,7 +19,7 @@ private:
 
 public:
 	Alien();
-	Alien(int x, int y);
+	Alien(int x, int y, int text_color = LIGHTGREEN, int bg_color = BLACK);
 	Alien(const Alien&);
 	~Alien();
 

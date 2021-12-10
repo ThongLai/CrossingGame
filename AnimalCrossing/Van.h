@@ -14,7 +14,7 @@ class Van : public CVEHICLE
 	};
 public:
 	Van();
-	Van(int,int);
+	Van(int,int, int text_color = BLUE, int bg_color = BLACK);
 	Van(const Van&);
 	~Van();
 

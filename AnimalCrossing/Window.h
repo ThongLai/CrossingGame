@@ -68,7 +68,7 @@ void SetTextColor(WORD wColor);
 WORD DefineColor(int t_color, int t_background);
 void GetWindowSize();
 void SetWindowSize(int width, int height);
-void SetUpScreenSize();
+void SetUpParameters();
 void FullScreenMode();
 void WindowedMode();
 void setRasterFonts();
@@ -89,6 +89,7 @@ void SaveLeaderBoard();
 
 int artWidth(string *art, int height);
 void printMessCenter(string message);
+void printMessCenter(string message, int text_color, int bg_color);
 int midWidth(int width, string content);
 int midWidth(int width, int content_width);
 int midHeight(int height, int content_height);

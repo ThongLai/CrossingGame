@@ -6,12 +6,18 @@ Van::Van() : CVEHICLE()
 
 	height = sizeof(table) / sizeof(string);
 	width = table[0].size();
+
+	text_color = BLUE;
+	bg_color = BLACK;
 }
 
-Van::Van(int x, int y) : Van()
+Van::Van(int x, int y, int text_color, int bg_color) : Van()
 {
 	mX = x;
 	mY = y;
+
+	this->text_color = text_color;
+	this->bg_color = bg_color;
 }
 
 Van::Van(const Van& v) :Van()

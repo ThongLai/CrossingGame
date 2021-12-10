@@ -6,6 +6,15 @@ Player::Player() : mX(LANE[0] + ROAD_H), mY(midWidth(GAMEPLAY_W, width)), text_c
 	width = table[0].size();
 }
 
+Player::Player(int x, int y, int text_color, int bg_color) : Player()
+{
+	mX = x;
+	mY = y;
+
+	this->text_color = text_color;
+	this->bg_color = bg_color;
+}
+
 Player::~Player()
 {
 	height = width = 0;

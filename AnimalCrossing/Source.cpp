@@ -142,7 +142,7 @@ int main()
 		if (buf == -1 || buf == 6)
 		{
 			system("cls");
-			printMessCenter("GOOD BYE! :-)");
+			printMessCenter("GOOD BYE! :-)", rand() % 15 + 1, BLACK);
 			Sleep(1000);
 
 			sub.detach();

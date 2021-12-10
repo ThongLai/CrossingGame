@@ -19,6 +19,7 @@ private:
 public:
 
 	Player();
+	Player(int x, int y, int text_color = WHITE, int bg_color = BLACK);
 	~Player();
 
 	int X();

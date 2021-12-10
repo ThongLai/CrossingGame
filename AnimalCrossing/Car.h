@@ -14,7 +14,7 @@ class Car : public CVEHICLE
 public:
 
 	Car();
-	Car(int, int);
+	Car(int, int, int text_color = LIGHTCYAN,int bg_color = BLACK);
 	Car(const Car&);
 	~Car();
 
