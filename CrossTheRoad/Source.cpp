@@ -2,7 +2,7 @@
 #include "Menu.h"
 #include "Bird.h"
 #include "Alien.h"
-#include "Vans.h"
+#include "Van.h"
 #include "Player.h"
 #include "CGame.h"
 
@@ -142,7 +142,7 @@ int main()
 		if (buf == -1 || buf == 6)
 		{
 			system("cls");
-			printMessCenter("GOOD BYE! :-)");
+			printMessCenter("GOOD BYE! :-)", rand() % 15 + 1, BLACK);
 			Sleep(1000);
 
 			sub.detach();

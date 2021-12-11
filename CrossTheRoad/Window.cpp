@@ -16,7 +16,7 @@ int SIDEWALK[2];
 
 int MAX_DISTANCE = 10;
 
-int LEADERBOARD_SIZE = SCREEN_HEIGHT * 0.8 / 3 - 1;
+int LEADERBOARD_SIZE;
 
 string CCODE = "THONG";
 string SoundPath = "SoundEffects/";
@@ -83,11 +83,13 @@ void SetWindowSize(int width, int height)
 	//MoveWindow(window_handle, x, y, width, height, redraw_window);
 	MoveWindow(console, r.left, r.top, width, height, TRUE);
 }
-void SetUpScreenSize()
+void SetUpParameters()
 {
 	GetWindowSize();
 	GAMEPLAY_W = 0.75 * SCREEN_WIDTH;
 	STATUS_W = SCREEN_WIDTH - GAMEPLAY_W;
+	LEADERBOARD_SIZE = SCREEN_HEIGHT * 0.8 / 3 - 1;
+
 	int GAP = (SCREEN_HEIGHT - (ROAD_H * 4 + SIDEWALK_H * 2)) / 5;
 	int MID_SCREEN_HEIGHT = midHeight(SCREEN_HEIGHT, ROAD_H * 4 + SIDEWALK_H * 2 + GAP * 5);
 
@@ -259,6 +261,14 @@ void printMessCenter(string message)
 	GotoXY(midWidth(SCREEN_WIDTH, message), midHeight(SCREEN_HEIGHT, 1));
 	cout << message;
 }
+void printMessCenter(string message, int text_color, int bg_color)
+{
+	Status SavedStatus;
+	SetTextColor(DefineColor(text_color, bg_color));
+
+	GotoXY(midWidth(SCREEN_WIDTH, message), midHeight(SCREEN_HEIGHT, 1));
+	cout << message;
+}
 int midWidth(int width, string message)
 {
 	return (width - message.size()) / 2;
@@ -285,5 +295,5 @@ void StartUp()
 	SetWindowSize(SCREEN_WIDTH_PXL, SCREEN_HEIGHT_PXL);
 	FixConsoleWindow();
 	HideCursor();
-	SetUpScreenSize();
+	SetUpParameters();
 }

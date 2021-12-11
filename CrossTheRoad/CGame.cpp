@@ -37,16 +37,9 @@ void CGame::Init()
 	for (int i = 0; i < objNum; ++i)
 	{
 		vans[i].setXY(i * (Distance(vans[i].getWidth(), objNum) + vans[i].getWidth()), midHeight(ROAD_H, vans[i].getHeight()) + LANE[0]);
-		vans[i].setColor(BLUE, BLACK);
-
 		cars[i].setXY(i * (Distance(cars[i].getWidth(), objNum) + cars[i].getWidth()), midHeight(ROAD_H, cars[i].getHeight()) + LANE[1]);
-		cars[i].setColor(LIGHTCYAN, BLACK);
-
 		birds[i].setXY(i * (Distance(birds[i].getWidth(), objNum) + birds[i].getWidth()), midHeight(ROAD_H, birds[i].getHeight()) + LANE[2]);
-		birds[i].setColor(BROWN, BLACK);
-
 		aliens[i].setXY(i * (Distance(aliens[i].getWidth(), objNum) + aliens[i].getWidth()), midHeight(ROAD_H, aliens[i].getHeight()) + LANE[3]);
-		aliens[i].setColor(LIGHTGREEN, BLACK);
 	}
 }
 
@@ -85,6 +78,7 @@ void CGame::processAfterGame()
 
 	if (Ask_PlayerName() == 0)
 	{
+		Status SavedStatus;
 		system("cls");
 
 		Data playerData(level, score, TIME);
@@ -92,6 +86,7 @@ void CGame::processAfterGame()
 
 		GotoXY(midWidth(SCREEN_WIDTH, "Enter Your Name: "), midHeight(SCREEN_HEIGHT, 1));
 		cout << "Enter Your Name: ";
+		SetTextColor(DefineColor(LIGHTCYAN, BLACK));
 
 		getline(cin, name);
 		playerData.setName(name);
@@ -320,6 +315,7 @@ void CGame::saveGame()
 	}
 	else if (buf == SavedPlayers.size())
 	{
+		Status SavedStatus;
 		system("cls");
 
 		Data playerData(level, score, TIME, player.X(), player.Y());
@@ -327,6 +323,7 @@ void CGame::saveGame()
 
 		GotoXY(midWidth(SCREEN_WIDTH, "Enter Your Name: "), midHeight(SCREEN_HEIGHT, 1));
 		cout << "Enter Your Name: ";
+		SetTextColor(DefineColor(LIGHTCYAN, BLACK));
 
 		getline(cin, name);
 		playerData.setName(name);

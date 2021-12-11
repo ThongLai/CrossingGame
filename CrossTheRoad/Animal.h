@@ -28,7 +28,8 @@ public:
 	int Y();
 	int getHeight();
 	int getWidth();
-	
+	string* getFigure();
+
 	void setX(int);
 	void setY(int);
 	void setXY(int, int);

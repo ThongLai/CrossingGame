@@ -75,7 +75,7 @@ int MAINMENU_SIZE = sizeof(MAINMENU) / sizeof(string);
 
 string INSTRUCTION[] =
 {
-	"Use <W / A / S / D> to move the PLAYER UP / LEFT / DOWN / RIGHT around the map.",
+	"Use <W / A / S / D> to move the PLAYER UP / LEFT / DOWN / RIGHT around the map to dodge the obstacles.",
 	"Press <P> to PAUSE the game.",
 	"Press <R> to RESET the game",
 	"Press <M> to SAVE the process.",
@@ -543,7 +543,7 @@ void drawLeaderBoard()
 
 void drawInstruction()
 {
-	int content_height = 3 * INSTRUCTION_SIZE;
+	int content_height = 3 * (INSTRUCTION_SIZE + 5);
 
 	string instruction_title = "HOW TO PLAY";
 	string return_title = "ESC/ENTER - Back";
@@ -556,10 +556,27 @@ void drawInstruction()
 	vector <BOX> content;
 	content.resize(INSTRUCTION_SIZE);
 	
-	for (int i = 0; i < content.size(); i++)
-		content[i].setBox(midWidth(SCREEN_WIDTH, INSTRUCTION[i].size()), midHeight(SCREEN_HEIGHT, content_height) + i * 3, INSTRUCTION[i].size(), 3, LIGHTCYAN, BLACK, INSTRUCTION[i]);
+	content[0].setBox(midWidth(SCREEN_WIDTH, INSTRUCTION[0].size()), midHeight(SCREEN_HEIGHT, content_height), INSTRUCTION[0].size(), 3, LIGHTCYAN, BLACK, INSTRUCTION[0]);
+	for (int i = 1; i < content.size(); i++)
+		content[i].setBox(midWidth(SCREEN_WIDTH, INSTRUCTION[i].size()), midHeight(SCREEN_HEIGHT, content_height) + (i + 5) * 3, INSTRUCTION[i].size(), 3, LIGHTCYAN, BLACK, INSTRUCTION[i]);
 	
 
+
+	Player player(midWidth(SCREEN_WIDTH, Player().getWidth()), midHeight(SCREEN_HEIGHT, content_height) + 4);
+
+	int total_width_objects = Van().getWidth() + Car().getWidth() + Bird().getWidth() + Alien().getWidth();
+	int gap = (SCREEN_WIDTH / 2 - total_width_objects) / 3;
+
+	Van van(midWidth(SCREEN_WIDTH, total_width_objects + gap * 3), midHeight(SCREEN_HEIGHT, content_height) + 10);
+	Car car(van.X() + Van().getWidth() + gap, midHeight(SCREEN_HEIGHT, content_height) + 10);
+	Bird bird(car.X() + Car().getWidth() + gap, midHeight(SCREEN_HEIGHT, content_height) + 10);
+	Alien alien(bird.X() + Bird().getWidth() + gap, midHeight(SCREEN_HEIGHT, content_height) + 10);
+
+	player.Draw();
+	van.Draw();
+	car.Draw();
+	bird.Draw();
+	alien.Draw();
 
 	Title[0].printBox();
 	Title[1].printContent();
@@ -641,7 +658,7 @@ void Settings_Menu()
 
 			FixConsoleWindow();
 			HideCursor();
-			SetUpScreenSize();
+			SetUpParameters();
 			settingsMenu.setMenu("SETTINGS", SETTINGS, SETTINGS_SIZE, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * SETTINGS_SIZE), box_width, box_height, WHITE, BLACK);
 
 			break;
@@ -752,6 +769,10 @@ int Remove_Menu()
 
 int Ask_ChangeWindowMode()
 {
+	string window_title = "WINDOW SETTINGS";
+	BOX Title;
+	Title.setBox(midWidth(SCREEN_WIDTH, window_title.size() + 10), SCREEN_HEIGHT / 20, window_title.size() + 10, 3, YELLOW, BLACK, window_title);
+
 	int box_width = 21;
 	int box_height = 5;
 	string windowModes[] =
@@ -763,21 +784,51 @@ int Ask_ChangeWindowMode()
 	int size = sizeof(windowModes) / sizeof(string);
 
 	MENU askWindow("Select Mode", windowModes, size, midWidth(SCREEN_WIDTH, box_width), midHeight(SCREEN_HEIGHT, box_height * size), box_width, box_height, WHITE, BLACK);
+	askWindow.setBoxFormat(0, box_width, box_height, LIGHTGREEN, BLACK);
+	askWindow.setBoxFormat(1, box_width, box_height, LIGHTBLUE, BLACK);
 
+	Title.printBox();
 	askWindow.printMenu();
 
 	return askWindow.inputMenu();
 }
 int Ask_NumberVolumes()
 {
-	system("cls");
+	string audio_title = "AUDIO SETTINGS";
+	string guide1 = "-----Volume Range: [1 - 1000]-----";
+	string guide2 = "--Type [-1] to Cancel--";
+	BOX Title[3];
+	Title[0].setBox(midWidth(SCREEN_WIDTH, audio_title.size() + 10), SCREEN_HEIGHT / 20, audio_title.size() + 10, 3, YELLOW, BLACK, audio_title);
+	Title[1].setBox(midWidth(SCREEN_WIDTH, guide1.size()), SCREEN_HEIGHT * 4 / 20, guide1.size(), 3, LIGHTCYAN, BLACK, guide1);
+	Title[2].setBox(midWidth(SCREEN_WIDTH, guide2.size()), SCREEN_HEIGHT * 6 / 20, guide2.size(), 3, LIGHTCYAN, BLACK, guide2);
 
 	int volume = 0;
+	
+	string input;
+	while(true) {
+		system("cls");
 
-	GotoXY(midWidth(SCREEN_WIDTH, "Enter Volume Number: "), midHeight(SCREEN_HEIGHT, 1));
-	cout << "Enter Volume Number: ";
+		Title[0].printBox();
+		Title[1].printContent();
+		Title[2].printContent();
 
-	cin >> volume; cin.ignore();
+		GotoXY(midWidth(SCREEN_WIDTH, "Enter Volume Number: "), midHeight(SCREEN_HEIGHT, 1));
+		cout << "Enter Volume Number: ";
+
+		getline(cin, input);
+		char* flag = NULL;
+		volume = strtol(input.c_str(), &flag, 10);
+		
+		if (*flag != NULL)
+		{
+			system("cls");
+			printMessCenter("Wrong format! Please type in a number", WHITE, RED);
+			toupper(_getch());
+		}
+		else
+			break;
+	}
+
 
 	return volume;
 }

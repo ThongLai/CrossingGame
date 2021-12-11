@@ -1,6 +1,11 @@
 ﻿#pragma once
 
 #include "Window.h"
+#include "Alien.h"
+#include "Bird.h"
+#include "Car.h"
+#include "Van.h"
+#include "Player.h"
 
 extern string title[];
 extern int title_height;
@@ -103,4 +108,3 @@ int Ask_NumberVolumes();
 int Ask_SaveGame();
 int Ask_PlayAgain();
 int Ask_PlayerName();
-

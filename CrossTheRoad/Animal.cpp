@@ -256,6 +256,11 @@ int CANIMAL::getWidth()
 	return width;
 }
 
+string* CANIMAL::getFigure()
+{
+	return animal_table;
+}
+
 
 
 void CANIMAL::setX(int x)

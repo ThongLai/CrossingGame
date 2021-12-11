@@ -19,7 +19,7 @@ private:
 
 public:
 	Bird();
-	Bird(int, int);
+	Bird(int, int, int text_color = BROWN, int bg_color = BLACK);
 	Bird(const Bird&);
 	~Bird();
 

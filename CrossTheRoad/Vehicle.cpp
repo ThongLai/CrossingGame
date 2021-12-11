@@ -259,6 +259,11 @@ int CVEHICLE::getWidth()
 	return width;
 }
 
+string* CVEHICLE::getFigure()
+{
+	return vehicle_table;
+}
+
 void CVEHICLE::setX(int x)
 {
 	mX = x;

@@ -10,12 +10,18 @@ Car::Car() : CVEHICLE()
 
 	height = sizeof(table) / sizeof(string);
 	width = table[0].size();
+
+	text_color = LIGHTCYAN;
+	bg_color = BLACK;
 }
 
-Car::Car(int x, int y) : Car()
+Car::Car(int x, int y, int text_color, int bg_color) : Car()
 {
 	mX = x;
 	mY = y;
+
+	this->text_color = text_color;
+	this->bg_color = bg_color;
 }
 
 Car::Car(const Car& v) : Car()

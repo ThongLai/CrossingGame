@@ -9,12 +9,18 @@ Bird::Bird() : CANIMAL()
 
 	height = sizeof(table) / sizeof(string);
 	width = table[0].size();
+
+	text_color = BROWN;
+	bg_color = BLACK;
 }
 
-Bird::Bird(int x, int y) : Bird()
+Bird::Bird(int x, int y, int text_color, int bg_color) : Bird()
 {
 	mX = x;
 	mY = y;
+
+	this->text_color = text_color;
+	this->bg_color = bg_color;
 }
 
 Bird::Bird(const Bird& b) :Bird()

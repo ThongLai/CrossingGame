@@ -9,13 +9,19 @@ Alien::Alien() : CANIMAL()
 
 	height = sizeof(table) / sizeof(string);
 	width = table[0].size();
+
+	text_color = LIGHTGREEN;
+	bg_color = BLACK;
 }
 
-Alien::Alien(int x, int y) : Alien()
+Alien::Alien(int x, int y, int text_color, int bg_color) : Alien()
 {
 	mX = x;
 	mY = y;
 	count = 0;
+
+	this->text_color = text_color;
+	this->bg_color = bg_color;
 }
 
 Alien::Alien(const Alien& a) :Alien()
@@ -27,19 +33,6 @@ Alien::Alien(const Alien& a) :Alien()
 Alien::~Alien()
 {
 }
-
-//void Alien::Move(int x, int y)
-//{
-//	Remove();
-//
-//	if (mX < x) mX++;
-//	else if (mX > x) mX--;
-//
-//	if (mY < y) mY++;
-//	else if (mY > y) mY--;
-//
-//	Draw();
-//}
 
 void Alien::Turn()
 {
