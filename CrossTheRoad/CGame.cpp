@@ -205,13 +205,13 @@ void CGame::resetGame()
 
 void CGame::exitGame()
 {
-	resetData();
-	Init();
-
 	system("cls");
 
 	if (running && Ask_SaveGame() == 0)
 		saveGame();		
+
+	resetData();
+	Init();
 
 	SavePlayerSaves();
 	SaveLeaderBoard();
