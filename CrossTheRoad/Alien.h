@@ -5,6 +5,7 @@
 class Alien : public CANIMAL
 {
 private:
+	//An one dimensional array that keeps the shape of Alien
 	string table[5] =
 	{
 		"    .-\"\"`\"\"-.    ",
@@ -14,27 +15,37 @@ private:
 		"     ^  ^  ^     "
 	};
 	
-	static bool direct; //Bien quy dinh huong di chuyen cua object, true la qua phai, false la qua trai
-	static int count; //Bien dem so buoc cua object ke tu lan cuoi object doi huong
+	//All Alien objects can only move in one direction so the static variable "direct" is every object direction
+	// true -> move right, false -> move left
+	static bool direct;
+
+	//The static variable "count" will count the number of bird's steps since the last change direction 
+	static int count;
 
 public:
+	//Constructor and destructor
 	Alien();
 	Alien(int x, int y, int text_color = LIGHTGREEN, int bg_color = BLACK);
 	Alien(const Alien&);
 	~Alien();
 
+	//Getter of some properties
 	bool getDirect();
 	int getCount();
 
+	//Setter of some properties
 	void setDirect(bool);
 	void setCount(int);
 
-	void Turn(); //Function doi huong cua object
+	//Turn function will negate "direct" variable to change direction
+	void Turn(); 
 
-	//Bi loi phan lu dau
+	//Alien's Move method 
 	void Move();
+
+	// Alien's check impact occur method (this method will work with Player class)
 	bool isImpact(int, int);
 
+	//Alien's Tell method (sound when impact occurs)
 	void Tell();
-	void SurroundingSound();
 };

@@ -57,9 +57,6 @@
     <ClCompile Include="Car.cpp">
       <Filter>Source Files\Vehicle</Filter>
     </ClCompile>
-    <ClCompile Include="Vans.cpp">
-      <Filter>Source Files\Vehicle</Filter>
-    </ClCompile>
     <ClCompile Include="Vehicle.cpp">
       <Filter>Source Files\Vehicle</Filter>
     </ClCompile>
@@ -71,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Van.cpp">
+      <Filter>Source Files\Vehicle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,9 +98,6 @@
     <ClInclude Include="Trafficlight.h">
       <Filter>Header Files\Vehicle</Filter>
     </ClInclude>
-    <ClInclude Include="Vans.h">
-      <Filter>Header Files\Vehicle</Filter>
-    </ClInclude>
     <ClInclude Include="Vehicle.h">
       <Filter>Header Files\Vehicle</Filter>
     </ClInclude>
@@ -109,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Van.h">
+      <Filter>Header Files\Vehicle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

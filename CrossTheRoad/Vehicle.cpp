@@ -14,10 +14,10 @@ void CVEHICLE::RemoveMoving(bool direct)
 	Status SavedStatus;
 	SetTextColor(SavedStatus.getColor());
 
+	// If direct is the right
 	if (direct)
 	{
-		//Object qua phai
-		//Truong hop binh thuong
+		//In case that object is still at the middle of the line
 		if (mX + width <= GAMEPLAY_W)
 		{
 			for (int i = 0; i < height; ++i)
@@ -34,19 +34,19 @@ void CVEHICLE::RemoveMoving(bool direct)
 			}
 		}
 		
-		//Truong hop object toi bien
+		//In case that object come to the end of the line
 		else if (mX + width > GAMEPLAY_W)
 		{
-			//Chia object ra lam 2 part, part 1 la phan con lai cua xe ben man hinh cu, part 2 la phan moi qua khoi man hinh
+			// We divide the shape into two halves, the first haft of the object is at the   
+			// end of the line and the other is at the beginning of the line
 			int part2_length = (mX + width) - GAMEPLAY_W;
 			int part1_length = width - part2_length;
 
-			//Xu ly part1
+			// Part1
 			for (int i = 0; i < height; ++i)
 			{
 				for (int j = 1; j < part1_length; ++j)
 				{
-					//Kiem tra xem ky tu co khac ' ' va ben trai co phai la ky tu ' ' khong, neu dung thi xoa
 					if (vehicle_table[i][j] != ' ' && vehicle_table[i][j - 1] == ' ')
 					{
 						GotoXY(mX + j, mY + i);
@@ -55,12 +55,11 @@ void CVEHICLE::RemoveMoving(bool direct)
 					}
 			}	
 								
-			// Xu ly part2
+			// Part2
 			for (int i = 0; i < height; ++i)
 				{
 					for (int j = 0; j < part2_length; ++j)
 					{
-						//Kiem tra xem ky tu co khac ' ' va ben trai co phai la ' ', neu dung thi xoa 
 						if (vehicle_table[i][part1_length + j] != ' ' && vehicle_table[i][part1_length + j - 1] == ' ')
 						{
 							GotoXY(0 + j, mY + i);
@@ -70,10 +69,9 @@ void CVEHICLE::RemoveMoving(bool direct)
 				}
 	}
 
-		//Xoa ki tu cuoi cung khi object di chuyen
+		//Delete the last char of object when moving
 		for (int i = 0; i < height; ++i)
 		{	
-			//Xoa neu ky tu do khong phai ' '
 			if (vehicle_table[i][0] != ' ')
 			{
 				GotoXY(mX, mY + i);
@@ -81,17 +79,16 @@ void CVEHICLE::RemoveMoving(bool direct)
 			}
 		}
 	}
+	// If direct is the left
 	else
 	{
-		//Object qua trai
-		//Truong hop binh thuong
+		//In case that object is still at the middle of the line
 		if (mX + width <= GAMEPLAY_W)
 		{
 			for (int i = 0; i < height; ++i)
 			{
 				for (int j = 0; j < width - 1; ++j)
 				{	
-					//Kiem tra xem ky tu co khac ' ' va ben phai co phai la ' ', neu dung thi xoa 
 					if (vehicle_table[i][j] != ' ' && vehicle_table[i][j + 1] == ' ')
 					{
 						GotoXY(mX + j, mY + i);
@@ -99,10 +96,9 @@ void CVEHICLE::RemoveMoving(bool direct)
 					}
 				}
 			}
-			//Xoa ki tu cuoi cung khi object di chuyen
+			//Delete the last char of object when moving
 			for (int i = 0; i < height; ++i)
 			{
-				//Xoa neu ky tu do khong phai ' '
 				if (vehicle_table[i][width - 1] != ' ')
 				{
 					GotoXY(mX + width - 1, mY + i);
@@ -110,14 +106,15 @@ void CVEHICLE::RemoveMoving(bool direct)
 				}
 			}	
 		}
-		//Truong hop object toi bien
+		//In case that object come to the end of the line
 		else if (mX + width > GAMEPLAY_W)
 		{
-			//Chia object ra lam 2 part, part 2 la phan con lai cua xe ben man hinh cu, part 1 la phan moi qua khoi man hinh
+			// We divide the shape into two halves, the first haft of the object is at the   
+			// end of the line and the other is at the beginning of the line
 			int part2_length = (mX + width) - GAMEPLAY_W;
 			int part1_length = width - part2_length;
 
-			//Xu ly part 1
+			//Part 1
 			for (int i = 0; i < height; ++i)
 			{
 				for (int j = 0; j < part1_length; ++j)
@@ -130,7 +127,7 @@ void CVEHICLE::RemoveMoving(bool direct)
 				}
 			}
 
-			//Xu ly part 2
+			//Part 2
 			for (int i = 0; i < height; ++i)
 			{
 				for (int j = 0; j < part2_length - 1; ++j)
@@ -143,8 +140,7 @@ void CVEHICLE::RemoveMoving(bool direct)
 				}
 			}
 				
-
-			//Xoa ki tu cuoi cung khi object di chuyen
+			//Delete the last char of object when moving
 			for (int i = 0; i < height; ++i)
 			{
 				if (vehicle_table[i][width - 1] != ' ')
@@ -159,9 +155,11 @@ void CVEHICLE::RemoveMoving(bool direct)
 
 void CVEHICLE::Remove()
 {
+	//Get color of object
 	Status SavedStatus;
 	SetTextColor(SavedStatus.getColor());
 
+	// If the full object is in the lane
 	if (mX >= 0 && mX + width <= GAMEPLAY_W)
 	{
 		for (int i = 0, iy = mY; iy < mY + height; iy++, i++)
@@ -169,18 +167,19 @@ void CVEHICLE::Remove()
 			GotoXY(mX, iy);
 			cout << string(width, ' ');
 		}
-	}
+	}// If haft of the object is at the end of the line 
+	 // and the other is at the beginning of the line
 	else if (mX + width > GAMEPLAY_W)
 	{
 		int part2_length = (mX + width) - GAMEPLAY_W;
 		int part1_length = width - part2_length;
-
+		//replace all char of the first half object by char ' '
 		for (int i = 0, iy = mY; iy < mY + height; iy++, i++)
 		{
 			GotoXY(mX, iy);
 			cout << string(part1_length, ' ');
 		}
-
+		//replace all char of the second half object by char ' '
 		for (int i = 0, iy = mY; iy < mY + height; iy++, i++)
 		{
 			GotoXY(0, iy);
@@ -191,9 +190,11 @@ void CVEHICLE::Remove()
 
 void CVEHICLE::Draw()
 {
+	//Get color of object
 	Status SavedStatus;
 	SetTextColor(DefineColor(text_color, bg_color));
 
+	// If the full object is in the lane
 	if (mX + width <= GAMEPLAY_W)
 	{
 		for (int i = 0; i < height; i++)
@@ -207,12 +208,13 @@ void CVEHICLE::Draw()
 				}
 			}	
 		}		
-	}
+	}// If haft of the object is at the end of the line 
+	 // and the other is at the beginning of the line
 	else if (mX + width > GAMEPLAY_W)
 	{
 		int part2_length = (mX + width) - GAMEPLAY_W;
 		int part1_length = width - part2_length;
-
+		// Print each char of object' s first haft shape
 		for (int i = 0; i < height; ++i)
 		{
 			for (int j = 0; j < part1_length; ++j)
@@ -224,7 +226,7 @@ void CVEHICLE::Draw()
 				}
 			}			
 		}
-				
+		// Print each char of object' s second haft shape
 		for (int i = 0; i < height; ++i)
 		{
 			for (int j = 0; j < part2_length; ++j)

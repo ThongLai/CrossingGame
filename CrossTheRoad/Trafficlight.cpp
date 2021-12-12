@@ -21,10 +21,11 @@ bool Trafficlight::getState()
 	return state;
 }
 
+
 void Trafficlight::Draw()
 {
 	Status SavedStatus;
-
+	//if state is 1, draw green light at position x, y
 	if (state==1)
 	{
 		SetTextColor(DefineColor(LIGHTGREEN, BLACK));
@@ -37,6 +38,7 @@ void Trafficlight::Draw()
 	}
 	else
 	{
+		//if state is 0, draw red light at position x, y
 		SetTextColor(DefineColor(RED, BLACK));
 		GotoXY(x, y);
 		cout << char(219);
@@ -49,6 +51,7 @@ void Trafficlight::Draw()
 
 void Trafficlight::changeLight()
 {
+	//if state is 1, draw red light at position x, y and change state to red light
 	Status SavedStatus;
 
 	if (state)
@@ -65,6 +68,7 @@ void Trafficlight::changeLight()
 	}
 	else
 	{
+		//if state is 1, draw green light at position x, y and change state to green light
 		SetTextColor(DefineColor(DARKGRAY, BLACK));
 		GotoXY(x, y);
 		cout << char(219);

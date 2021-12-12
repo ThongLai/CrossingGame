@@ -156,17 +156,21 @@ void CANIMAL::RemoveMoving(bool direct)
 
 void CANIMAL::Remove()
 {
+	//Get color of object
 	Status SavedStatus;
 	SetTextColor(SavedStatus.getColor());
 
+	// If the full object is in the lane
 	if (mX >= 0 && mX + width <= GAMEPLAY_W)
 	{
+		//replace all char of object by char ' '
 		for (int i = 0, iy = mY; iy < mY + height; iy++, i++)
 		{
 			GotoXY(mX, iy);
 			cout << string(width, ' ');
 		}
-	}
+	}// If haft of the object is at the end of the line 
+	 // and the other is at the beginning of the line
 	else if (mX + width > GAMEPLAY_W)
 	{
 		int part2_length = (mX + width) - GAMEPLAY_W;
@@ -174,12 +178,14 @@ void CANIMAL::Remove()
 
 		for (int i = 0, iy = mY; iy < mY + height; iy++, i++)
 		{
+			//replace all char of the first half object by char ' '
 			GotoXY(mX, iy);
 			cout << string(part1_length, ' ');
 		}
 
 		for (int i = 0, iy = mY; iy < mY + height; iy++, i++)
 		{
+			//replace all char of the second half object by char ' '
 			GotoXY(0, iy);
 			cout << string(part2_length, ' ');
 		}
@@ -188,45 +194,49 @@ void CANIMAL::Remove()
 
 void CANIMAL::Draw()
 {
+	//Get color of object
 	Status SavedStatus;
 	SetTextColor(DefineColor(text_color, bg_color));
 
+	// If the full object is in the lane
 	if (mX + width <= GAMEPLAY_W)
 	{
+		// print each char of object' s shape
 		for (int i = 0; i < height; i++)
 		{
 			for (int j = 0; j < width; ++j)
 			{
-				if (animal_table[i][j] != ' ')
+				if (animal_table[i][j] != ' ') // No need to print ' ' char
 				{
 					GotoXY(mX + j, mY + i);
 					cout << animal_table[i][j];
 				}
 			}
 		}
-	}
+	}// If haft of the object is at the end of the line 
+	 // and the other is at the beginning of the line
 	else if (mX + width > GAMEPLAY_W)
 	{
 		int part2_length = (mX + width) - GAMEPLAY_W;
 		int part1_length = width - part2_length;
-
+		// print each char of object' s first haft shape
 		for (int i = 0; i < height; ++i)
 		{
 			for (int j = 0; j < part1_length; ++j)
 			{
-				if (animal_table[i].substr(0, part1_length)[j] != ' ')
+				if (animal_table[i].substr(0, part1_length)[j] != ' ') // No need to print ' ' char
 				{
 					GotoXY(mX + j, mY + i);
 					cout << animal_table[i].substr(0, part1_length)[j];
 				}
 			}
 		}
-
+		// print each char of object' s second haft shape
 		for (int i = 0; i < height; ++i)
 		{
 			for (int j = 0; j < part2_length; ++j)
 			{
-				if (animal_table[i].substr(part1_length, part2_length)[j] != ' ')
+				if (animal_table[i].substr(part1_length, part2_length)[j] != ' ') // No need to print ' ' char
 				{
 					GotoXY(0 + j, mY + i);
 					cout << animal_table[i].substr(part1_length, part2_length)[j];

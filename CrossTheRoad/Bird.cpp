@@ -60,40 +60,41 @@ void Bird::Turn()
 
 void Bird::Move() 
 {
-	RemoveMoving(direct); //Xoa object
+	//RemoveMoving will set direction for object and delete the shape at the old position
+	RemoveMoving(direct); 
 	
-	if (direct) //Bien direct quyet dinh huong di chuyen cua object, direct = true => qua phai
+	if (direct) // We have to check direction before moving
 	{
-		++mX; //Tang toa do de object di chuyen qua phai
-		++count; //Tang bien dem count de tinh so buoc da di tu lan cuoi doi huong
-		if (mX == GAMEPLAY_W) //Neu toi bien phai, gan toa do X = 0
+		++mX; // If the direction is right 
+		++count; // Update number of steps 
+		if (mX == GAMEPLAY_W) // If object goes to the end of the line, back to 0
 			mX = 0;
 	}
 	else //Tuong tu o tren, direct = false => qua trai
 	{
-		--mX;
+		--mX; // If the direction is left 
 		++count;
-		if (mX < 0)
+		if (mX < 0) // If object goes to the start of the line, come to the end
 			mX = GAMEPLAY_W - 1;
 	}
 
-	Draw(); //Ve object
+	//Draw the object after RemoveMoving
+	Draw(); 
 }
 
 bool Bird::isImpact(int x, int y) 
 {	
-	//Nam ngoai table
+	//	x, y will be the position of Player
+	//	So use x,y to check each character in the shape of the object 
+	//	If x,y is in the shape of the object => impact occurs 
 	if (x <= X() - 3 || x >= X() + 15 || y <= Y() - 3 || y >= Y() + 5) return false;
 	else
 	{	
-		//Kiem tra phan chan
 		if (y == Y() + 4)
 		{
 			if (x <= X() + 3 || x >= X() + 9) return false;
 			else return true;
 		}
-
-		//Kiem tra phan canh chim
 
 		if (y == Y() + 3) return true;
 
@@ -113,7 +114,7 @@ bool Bird::isImpact(int x, int y)
 			else return true;
 		}
 
-		//Kiem tra phan dau
+
 		if (y == Y() - 2)
 		{
 			if (x <= X() + 3 || x >= X() + 10) return false;
@@ -124,147 +125,6 @@ bool Bird::isImpact(int x, int y)
 
 void Bird::Tell()
 {
+	// Play impact sound when Bird impact with Player
 	mciSendString(TEXT("play Bird_Crash from 0"), NULL, 0, NULL);
 }
-
-void Bird::SurroundingSound()
-{
-	mciSendString(TEXT("play Bird_SD from 0"), NULL, 0, NULL);
-}
-
-//void Bird::moveLeft()
-//{
-//	Status SavedStatus;
-//	SetTextColor(DefineColor(text_color, bg_color));
-//
-//	mX--;
-//	int x = mX;
-//	int y = mY;
-//
-//	if (x == -1)
-//	{
-//		x = 124;
-//		setX(x);
-//	}
-//
-//	if (x + 14 >= 124)
-//	{
-//		//Xoa
-//		for (int j = y; j <= y + 4; ++j)
-//		{
-//			GotoXY(x + 15 - 125, j);
-//			cout << char(32);
-//		}
-//
-//		//Them
-//		int count = 0;
-//		for (int i = x; i <= 124; ++i)
-//		{
-//			for (int j = y; j <= y + 4; ++j)
-//			{
-//				GotoXY(i, j);
-//				cout << char(table[j - y][i - x]);
-//			}
-//			++count;
-//		}
-//
-//		for (int i = 0; i < x + 14 - 124; ++i)
-//		{
-//			for (int j = y; j <= y + 4; ++j)
-//			{
-//				GotoXY(i, j);
-//				cout << char(table[j - y][count]);
-//			}
-//			++count;
-//			if (count > 14)
-//				break;
-//		}
-//
-//	}
-//	else
-//	{
-//		//Xoa
-//		for (int j = y; j <= y + 4; ++j)
-//		{
-//			GotoXY(x + 15, j);
-//			cout << char(32);
-//		}
-//
-//		//Them
-//		for (int i = x; i <= x + 14; ++i)
-//		{
-//			for (int j = y; j <= y + 4; ++j)
-//			{
-//				GotoXY(i, j);
-//				cout << char(table[j - y][i - x]);
-//			}
-//		}
-//	}
-//}
-
-//void Bird::moveRight()
-//{
-//	setX(X() + 1);
-//	int x = X();
-//	int y = Y();
-//
-//	if (x == 125)
-//	{
-//		x = 0;
-//		setX(x);
-//	}
-//
-//	if (x + 14 >= 124)
-//	{
-//		//Xoa
-//		for (int j = y; j <= y + 4; ++j)
-//		{
-//			GotoXY(x - 1, j);
-//			cout << char(32);
-//		}
-//
-//		//Them
-//		int count = 0;
-//		for (int i = x; i <= 124; ++i)
-//		{
-//			for (int j = y; j <= y + 4; ++j)
-//			{
-//				GotoXY(i, j, char(table[j - y][i - x]));
-//			}
-//			++count;
-//		}
-//
-//		for (int i = 0; i < x + 14 - 124; ++i)
-//		{
-//			for (int j = y; j <= y + 4; ++j)
-//			{
-//				ConsoleTask::gotoXY(i, j, char(table[j - y][count]));
-//			}
-//			++count;
-//			if (count > 14)
-//				break;
-//		}
-//	}
-//	else
-//	{
-//		//Xoa
-//		for (int j = y; j <= y + 4; ++j)
-//		{
-//			if (x == 0)
-//			{
-//				ConsoleTask::gotoXY(124, j, char(32));
-//			}
-//			else ConsoleTask::gotoXY(x - 1, j, char(32));
-//
-//		}
-//
-//		//Them
-//		for (int i = x; i <= x + 14; ++i)
-//		{
-//			for (int j = y; j <= y + 4; ++j)
-//			{
-//				ConsoleTask::gotoXY(i, j, char(table[j - y][i - x]));
-//			}
-//		}
-//	}
-//}

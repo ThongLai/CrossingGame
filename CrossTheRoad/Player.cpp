@@ -30,7 +30,7 @@ int Player::X()
 int Player::Y()
 {
 	return mY;
-}
+}	
 
 int Player::getHeight()
 {
@@ -66,9 +66,10 @@ void Player::setColor(int _text_color, int _bg_color)
 
 void Player::Draw()
 {
+	//Get color
 	Status SavedStatus;
 	SetTextColor(DefineColor(text_color, bg_color));
-
+	// Print each chars of Player shape 
 	for (int i = 0; i < height; ++i)
 		for (int j = 0; j < width; ++j)
 			if (table[i][j] != ' ')
@@ -95,10 +96,12 @@ void Player::Remove()
 
 void Player::UP()
 {
+	// If Player is at finish line => Can't go up 
 	if (mY == SIDEWALK[1])
 		return;
 	else
 	{
+		// Print Player going up animation
 		Remove();
 		setY(mY - 1);
 		Draw();
@@ -108,6 +111,7 @@ void Player::UP()
 
 void Player::DOWN()
 {
+	// If Player is at start line => Can't go down 
 	if (mY == SIDEWALK[0])
 		return;
 	else
@@ -120,6 +124,7 @@ void Player::DOWN()
 
 void Player::LEFT()
 {
+	// If Player is at the left side of screen => Can't go left 
 	if (mX == 0)
 		return;
 	else
@@ -132,6 +137,7 @@ void Player::LEFT()
 
 void Player::RIGHT()
 {
+	// If Player is at the right side of screen => Can't go right
 	if (mX + width == GAMEPLAY_W)
 		return;
 	else
@@ -145,13 +151,4 @@ void Player::RIGHT()
 bool Player::isDead()
 {
 	return !mState;
-}
-
-void Player::drawDead()
-{
-
-
-
-
-
 }

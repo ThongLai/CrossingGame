@@ -5,6 +5,7 @@
 class Bird : public CANIMAL
 {
 private:
+	//An one dimensional array that keeps the shape of Bird
 	string table[5] =
 	{
 		"      /'{>     ",
@@ -14,26 +15,37 @@ private:
 		"      m m      ",
 	};
 
-	static bool direct; //Bien quy dinh huong di chuyen cua object, true la qua phai, false la qua trai
-	static int count; //Bien dem so buoc cua object ke tu lan cuoi object doi huong
+	//All Bird objects can only move in one direction so the static variable "direct" is every object direction
+	// true -> move right, false -> move left
+	static bool direct; 
+
+	//The static variable "count" will count the number of bird's steps since the last change direction 
+	static int count;
 
 public:
+	//Constructor and destructor
 	Bird();
 	Bird(int, int, int text_color = BROWN, int bg_color = BLACK);
 	Bird(const Bird&);
 	~Bird();
 
+	//Getter of some properties
 	bool getDirect();
 	int getCount();
 
+	//Setter of some properties
 	void setDirect(bool);
 	void setCount(int);
 
-	void Turn(); //Function doi huong cua object
+	//Turn function will negate "direct" variable to change direction
+	void Turn();
 
-	void Move(); //Function di chuyen cua object
-	bool isImpact(int, int); //Function tra ve gia tri bool true neu nguoi va cham voi object
+	//Bird's Move method 
+	void Move(); 
 
+	// Bird's check impact occur method (this method will work with Player class)
+	bool isImpact(int, int); 
+
+	//Bird's Tell method (sound when impact occurs)
 	void Tell();
-	void SurroundingSound();
 };

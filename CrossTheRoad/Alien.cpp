@@ -41,29 +41,35 @@ void Alien::Turn()
 
 void Alien::Move()
 {
-	//Xoa object
+	//RemoveMoving will set direction for object and delete the shape at the old position
 	RemoveMoving(direct);
 
-	if (direct)
+	if (direct) // We have to check direction before moving
 	{
+		// If the direction is right 
 		++mX;
-		++count;
-		if (mX == GAMEPLAY_W) //Neu toi bien phai, gan toa do X = 0
+		++count; // Update number of steps 
+		if (mX == GAMEPLAY_W) // If object goes to the end of the line, back to 0
 			mX = 0;
 	}
 	else
 	{
+		// If the direction is left
 		--mX;
-		++count;
-		if (mX < 0)
+		++count; // Update number of steps
+		if (mX < 0) // If object goes to the start of the line, come to the end
 			mX = GAMEPLAY_W - 1;
 	}
 
+	//Draw the object after RemoveMoving
 	Draw();
 }
 
 bool Alien::isImpact(int x, int y)
 {
+	//	x, y will be the position of Player
+	//	So use x,y to check each character in the shape of the object 
+	//	If x,y is in the shape of the object => impact occurs 
 	if (x <= X() - 3 || x >= X() + 17 || y <= Y() - 3 || y >= Y() + 5) return false;
 	else
 	{
@@ -101,13 +107,10 @@ bool Alien::isImpact(int x, int y)
 
 void Alien::Tell()
 {
+	// Play impact sound when Alien impact with Player
 	mciSendString(TEXT("play Alien_Crash from 0"), NULL, 0, NULL);
 }
 
-void Alien::SurroundingSound()
-{
-	mciSendString(TEXT("play Alien_SD from 0"), NULL, 0, NULL);
-}
 
 bool Alien::getDirect()
 {
