@@ -444,7 +444,7 @@ void drawStatusBox()
 
 }
 
-void drawScoreBoard(const Data& data)
+void displayScoreBoard(const Data& data)
 {
 	int box_width = SCREEN_WIDTH / 3;
 	int box_height = SCREEN_HEIGHT / 2;
@@ -477,7 +477,7 @@ void drawScoreBoard(const Data& data)
 		scoreBoard[i].printBox();
 }
 
-void drawLeaderBoard()
+void displayLeaderBoard()
 {
 	string leaderBoard_title = "LEADER BOARD";
 	string continue_title = "<PRESS ANY KEY TO CONTINUE>";

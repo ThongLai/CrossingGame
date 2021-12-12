@@ -50,7 +50,7 @@ extern int SIDEWALK_H;
 
 extern int LANE[4];
 extern int SIDEWALK[2];
-extern int MAX_DISTANCE;
+extern int MIN_DISTANCE;
 
 extern int LEADERBOARD_SIZE;
 

@@ -11,75 +11,90 @@
 class CGame
 {
 private:	
+	//Obstacles
 	vector <Van> vans;
 	vector <Car> cars;
 	vector <Alien> aliens;
 	vector <Bird> birds;
+
+	//Player Character
 	Player player;
 
-	Trafficlight vansLight;
+	//Trafficlight for Van and Car
+	Trafficlight vanLight;
 	Trafficlight carLight;
 
+	//Current level
 	int level;
+
+	//The number of objects each road
 	int objNum;
 
+	//Current score
 	int score;
-	bool checkPoint[4]; //Check point de tranh viec cong diem nhieu lan
 
-	//Check cheatcode de test game
-	string buf;
-	bool UnDeadCMD;
+	//Check point array to prevent count again the score of a road
+	bool checkPoint[4]; 
 
-	//Time in game
+	//Timer indices
 	clock_t START_TIME;
 	clock_t TIME;
 	clock_t PAUSE_TIME;
 
-	//Biến tạm dừng game
+	//Catch other buttons from the keyboard to check whether it is a command or not
+	string buf;
+
+	//Indicate the UNDEAD mode
+	bool UnDeadCMD;
+
+
+	//Pause the thread
 	bool pause;
+
+	//Indicate whether it is in game or not
 	bool running;
 
 public:
-	CGame(); //Chuẩn bị dữ liệu cho tất cả các đối tượng 
-	~CGame(); // Hủy tài nguyên đã cấp phát
+	CGame(); //Contructor
+	~CGame(); //Destructor
 
-	void Init();
-	void drawGame(); //Thực hiện vẽ trò chơi ra màn hình sau khi có dữ liệu
-	void drawPauseScreen(); //Thực hiện vẽ màn hình tạm dừng
-	void drawCommand();
+	void Init(); //Initialize important parameters in the game
+	void drawGame(); //Draw the gameplay screen
+	void drawPauseScreen(); //Draw pause game screen
+	void displayCommand(); //Display command that has been invoked
+	void Remove(); //Remove all the current objects on the screen
 
-	Player getPeople();//Lấy thông tin người
-	vector <CVEHICLE*> getVehicle();//Lấy danh sách các xe
-	vector <CANIMAL*> getAnimal(); //Lấy danh sách các thú
+	Player getPlayer();//Get the player object
+	vector <CVEHICLE*>& getVehicle();//Get the vehicles objects
+	vector <CANIMAL*>& getAnimal(); //Get the animal objects
+	int getPoint(); //Return the [score] attribute
 
-	void resetGame(); // Thực hiện chơi lại từ đầu
-	void exitGame(); // Thực hiện thoát game
-	void loadGame(); // Thực hiện tải lại trò chơi đã lưu
-	void saveGame(); // Thực hiện lưu lại dữ liệu trò chơi
-	void pauseThread(); // Tạm dừng Thread
-	void pauseGame();
-	void resumeThread(); //Quay lai Thread
-	void resumeGame(); //Quay lai Thread
+	void resetGame(); //Operate the reset game process
+	void exitGame(); //Operate the exit game process
+	void loadGame(); //Operate the load game process
+	void saveGame(); //Operate the save game process
+	void pauseThread(); //Change the [pause] attribute to 'true'
+	void pauseGame(); //Operate the pause game process by saving the current [TIME] then calling [pauseThread] method
+	void resumeThread(); //Change the [pause] attribute to 'false'
+	void resumeGame(); //Operate the resume game process by load the current [TIME] then calling [resumeThread] method
 
-	void Remove();
-	void nextLevel();
+	bool updatePosPlayer(char); //Update the position of the player object
+	void updatePosVehicle(int); //Update the position of the vehicle objects
+	void updatePosAnimal(); //Update the position of the aniaml objects
+	void updateTime(); //Update the [TIME] attribute
+	void updateGameStatus(); //Udate status: [level] and [score]
+	void calcScore(); //Check player's current position and calculate the corresponding score
+	void resetData(); //Reset values all of the attributes
 
-	bool updatePosPeople(char); //Thực hiện điều khiển di chuyển của CPEOPLE
-	void updatePosVehicle(int); //Thực hiện cho CTRUCK & CCAR di chuyển
-	void updatePosAnimal();//Thực hiện cho CDINAUSOR & CBIRD di chuyển
-	void updateTime();//Thực hiện cập nhật thời gian
-	void updateGameStatus();//Thực hiện cập nhật level, điểm
-	void resetData(); // Thực hiện thiết lập lại toàn bộ dữ liệu như lúc đầu
-	void processAfterGame(); //Xử lý sau khi người chơi thua
+	void nextLevel(); //Setup new attributes for the following level
+	void processAfterGame(); //Process after an impact
 
-	bool checkImpact();
-	void checkDrawLines();
-	bool isFinish();
-	bool isPause();
-	bool isPlaying();
-	void calcPoint();
-	int getPoint();
+	bool checkImpact(); //Check whether the Player impact with an obstacle
+	void checkDrawLines(); //Draw back the START and FINISH line if the player step on it
+	bool isFinish(); //Check if the player crosses the FINISH line
+	bool isPause(); //Return the [pause] attribute
+	bool isPlaying(); //Return the [running] attribute
 
-	void addBuf(char key);
-	void CheckUnDeadCMD();
+	void addBuf(char key); //Catch a key from keyboard
+	void CheckUnDeadCMD(); //Check whether the player types a command or not
 };

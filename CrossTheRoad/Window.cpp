@@ -14,7 +14,7 @@ int SIDEWALK_H = 3;
 int LANE[4];
 int SIDEWALK[2];
 
-int MAX_DISTANCE = 10;
+int MIN_DISTANCE = 10;
 
 int LEADERBOARD_SIZE;
 

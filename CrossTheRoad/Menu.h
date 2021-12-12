@@ -92,8 +92,8 @@ public:
 
 void drawStartFinishLine();
 void drawStatusBox();
-void drawScoreBoard(const Data&);
-void drawLeaderBoard();
+void displayScoreBoard(const Data&);
+void displayLeaderBoard();
 void drawInstruction();
 void drawCredits();
 void drawArt(string* art, int height, int x, int y, int text_color = WHITE, int bg_color = BLACK);
