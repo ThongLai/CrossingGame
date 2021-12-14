@@ -16,6 +16,7 @@ int SIDEWALK[2];
 
 int MIN_DISTANCE = 10;
 
+int SAVE_SIZE;
 int LEADERBOARD_SIZE;
 
 string CCODE = "THONG";
@@ -89,6 +90,7 @@ void SetUpParameters()
 	GAMEPLAY_W = 0.75 * SCREEN_WIDTH;
 	STATUS_W = SCREEN_WIDTH - GAMEPLAY_W;
 	LEADERBOARD_SIZE = SCREEN_HEIGHT * 0.8 / 3 - 1;
+	SAVE_SIZE = SCREEN_HEIGHT * 0.8 / 5 - 3;
 
 	int GAP = (SCREEN_HEIGHT - (ROAD_H * 4 + SIDEWALK_H * 2)) / 5;
 	int MID_SCREEN_HEIGHT = midHeight(SCREEN_HEIGHT, ROAD_H * 4 + SIDEWALK_H * 2 + GAP * 5);
@@ -171,6 +173,9 @@ void SavePlayer(const Data& playerData, int index)
 void AddPlayer(const Data& playerData)
 {
 	SavedPlayers.push_back(playerData);
+
+	if (SavedPlayers.size() > SAVE_SIZE)
+		SavedPlayers.resize(SAVE_SIZE);
 }
 void RemovePlayer(int index)
 {
@@ -180,6 +185,7 @@ void AddDataToLeaderBoard(const Data& playerData)
 {
 	LeaderBoard.push_back(playerData);
 	sort(LeaderBoard.begin(), LeaderBoard.end(), greater<Data&>());
+
 	if (LeaderBoard.size() > LEADERBOARD_SIZE)
 		LeaderBoard.resize(LEADERBOARD_SIZE);
 }
@@ -206,6 +212,9 @@ void LoadPlayerSaves()
 	while (inList >> playerData)
 		SavedPlayers.push_back(playerData);
 
+	if (SavedPlayers.size() > SAVE_SIZE)
+		SavedPlayers.resize(SAVE_SIZE);
+
 	inList.close();
 }
 void SavePlayerSaves()
@@ -223,14 +232,13 @@ void LoadLeaderBoard()
 
 	Data playerData;
 
-	int count = 0;
-	while (count < LEADERBOARD_SIZE && inList >> playerData)
-	{
+	while (inList >> playerData)
 		LeaderBoard.push_back(playerData);
-		count++;
-	}
 
 	sort(LeaderBoard.begin(), LeaderBoard.end(), greater<Data&>());
+
+	if (LeaderBoard.size() > LEADERBOARD_SIZE)
+		LeaderBoard.resize(LEADERBOARD_SIZE);
 
 	inList.close();
 }

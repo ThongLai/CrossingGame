@@ -52,6 +52,7 @@ extern int LANE[4];
 extern int SIDEWALK[2];
 extern int MIN_DISTANCE;
 
+extern int SAVE_SIZE;
 extern int LEADERBOARD_SIZE;
 
 extern string CCODE;
